@@ -28,17 +28,4 @@ bash scripts/run_evaluation.sh outputs/<run_folder>/predictions.json configs/bea
 ```
 
 
-### Beaver m_schema cache 생성
-```
-# example
-bash scripts/run_experiment.sh configs/beaver_dw_config.yaml
-```
-- If `*_preprocessed_schemas.json` is missing, it will be generated automatically. You can also run it manually:
-```
-python src/data_loader/preprocess.py \
-  --dataset_name beaver \
-  --dataset_path ./data/beaver/dw \
-  --split dw \
-  --db_dir ./data/beaver/dw
-```
 
