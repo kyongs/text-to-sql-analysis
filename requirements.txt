@@ -1,0 +1,13 @@
+# requirements.txt
+
+pyyaml
+sqlalchemy
+openai
+tqdm
+python-dotenv
+rich
+nltk      
+mysql-connector-python
+sqlparse
+pymysql
+func_timeout
