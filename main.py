@@ -25,11 +25,17 @@ EVALUATORS = {"beaver": BeaverEvaluator}
 def check_and_run_preprocessing(config: dict):
     dataset_config = config.get('dataset', {})
     dataset_name = dataset_config.get('name')
-    if not dataset_name: return
+    if not dataset_name:
+        return
 
     dataset_path = dataset_config.get('path')
     split = dataset_config.get('split')
-    
+    schema_style = dataset_config.get('schema_representation', 'basic')
+    mode = config.get('mode', 'baseline')
+
+    if schema_style != 'm_schema' or mode != 'baseline':
+        return
+
     db_config = {"db_type": dataset_config.get("db_type", "sqlite")}
     
     if db_config["db_type"] == "mysql":
