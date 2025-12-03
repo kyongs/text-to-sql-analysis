@@ -12,9 +12,6 @@ pip install -r requirements.txt
 - Create a `.env` file or export these before running:
 ```
 OPENAI_API_KEY=sk-...
-# Optional if using custom endpoints:
-# OPENAI_BASE_URL=...
-
 ```
 
 ## How to run
