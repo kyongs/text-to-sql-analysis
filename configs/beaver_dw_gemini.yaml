@@ -1,6 +1,6 @@
 # configs/beaver_dw_config.yaml
 
-experiment_name: "beaver_dw"
+experiment_name: "beaver_dw_gemini-2.5-flash"
 output_dir: "./outputs"
 mode: "gold_schema"    # baseline, gold_schema
 
@@ -19,8 +19,8 @@ db_connection:
   password: "" 
 
 model:
-  provider: "openai"
-  name: "gpt-4o-mini"
+  provider: "google"          # main.py의 키값과 일치해야 함
+  name: "gemini-2.5-flash"    # 또는 "gemini-1.5-pro"  "gemini-3-pro-preview"  
   
 # model:
 #   provider: "openai"
