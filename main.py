@@ -11,14 +11,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from src.data_loader import BeaverLoader
-from src.model import OpenAIModel, GeminiModel
+from src.model import OpenAIModel, GeminiModel, DeepSeekModel
 from src.evaluator import BeaverEvaluator
 from src.prompt_builder import build_prompt
 from src.utils.logger import TxtLogger
 from src.data_loader.preprocess import run_grand_preprocessing
 
 DATA_LOADERS = {"beaver": BeaverLoader}
-MODELS = {"openai": OpenAIModel, "google": GeminiModel}
+MODELS = {"openai": OpenAIModel, "google": GeminiModel, "deepseek": DeepSeekModel}
 EVALUATORS = {"beaver": BeaverEvaluator}
 
 

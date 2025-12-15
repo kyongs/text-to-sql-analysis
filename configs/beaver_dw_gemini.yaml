@@ -20,7 +20,7 @@ db_connection:
 
 model:
   provider: "google"          # main.py의 키값과 일치해야 함
-  name: "gemini-2.5-flash"    # 또는 "gemini-1.5-pro"  "gemini-3-pro-preview"  
+  name: "gemini-3-pro-preview" # "gemini-2.5-flash"    # 또는 "gemini-1.5-pro"  "gemini-3-pro-preview"  
   
 # model:
 #   provider: "openai"
