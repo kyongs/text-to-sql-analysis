@@ -1,0 +1,34 @@
+# configs/beaver_dw_config.yaml
+
+experiment_name: "beaver_dw"
+output_dir: "./outputs"
+mode: "gold_schema"    # baseline, gold_schema
+
+dataset:
+  name: "beaver"
+  path: "./data/beaver/dw"
+  split: "dw"
+  db_type: "mysql"
+  # schema_representation options: "basic", "basic_plus_type", "ddl", "m_schema"
+  schema_representation: "m_schema" 
+
+db_connection:
+  host: "127.0.0.1"
+  port: 3306
+  user: "root"
+  password: "" 
+
+model:
+  provider: "openai"
+  name: "gpt-4o-mini"
+  
+# model:
+#   provider: "openai"
+#   name: "gpt-4o-mini"
+
+evaluation:
+  script_path: "./eval_scripts/beaver/evaluation.py"
+  ground_truth_dir: "./data/beaver/dw/"
+  
+  num_cpus: 8
+  meta_time_out: 30.0

@@ -129,3 +129,4 @@ if __name__ == '__main__':
     print(f"Correct: {sum(res['res'] for res in exec_result)}")
     print(f"Accuracy: {accuracy:.2f}%")
     print("============================================================")
+    

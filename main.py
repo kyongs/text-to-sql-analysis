@@ -11,14 +11,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from src.data_loader import BeaverLoader
-from src.model import OpenAIModel
+from src.model import OpenAIModel, GeminiModel, DeepSeekModel
 from src.evaluator import BeaverEvaluator
 from src.prompt_builder import build_prompt
 from src.utils.logger import TxtLogger
 from src.data_loader.preprocess import run_grand_preprocessing
 
 DATA_LOADERS = {"beaver": BeaverLoader}
-MODELS = {"openai": OpenAIModel}
+MODELS = {"openai": OpenAIModel, "google": GeminiModel, "deepseek": DeepSeekModel}
 EVALUATORS = {"beaver": BeaverEvaluator}
 
 
@@ -116,10 +116,11 @@ def main():
     parser.add_argument("--max_workers", type=int, default=8, help="Maximum number of threads.")
     args = parser.parse_args()
 
-    with open(args.config, 'r') as f:
+    with open(args.config, 'r', encoding='utf-8') as f:
         config = yaml.safe_load(f)
 
     check_and_run_preprocessing(config)
+
 
     timestamp = datetime.now().strftime("%Y%m%d")
     exp_name = f"{timestamp}_{config['experiment_name']}"
@@ -150,7 +151,7 @@ def main():
     logger = TxtLogger(log_file_path, len(dataset)) # log file 정렬되지는 않고 그냥 무작위로 적힘
 
     all_results = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=args.max_workers) as executor:
+    with concurrent.futures.ThreadPoolExecutor(args.max_workers) as executor:
         print(f"Generating SQL Queries in parallel with {args.max_workers} workers...")
         
         futures = [executor.submit(process_item, item, model, db_type) for item in dataset]
@@ -174,6 +175,8 @@ def main():
     with open(output_pred_file, 'w', encoding='utf-8') as f:
         json.dump(predictions_for_eval, f, indent=4)
     print(f"\nPredictions for evaluation saved to: {output_pred_file}")
+
+
 
 if __name__ == "__main__":
     main()

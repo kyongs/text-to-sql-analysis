@@ -16,7 +16,7 @@ def main():
     parser.add_argument("--config", required=True, help="Path to the configuration file for evaluation settings.")
     args = parser.parse_args()
 
-    with open(args.config, 'r') as f:
+    with open(args.config, 'r', encoding='utf-8') as f:
         config = yaml.safe_load(f)
     print("Evaluation config loaded.")
 
