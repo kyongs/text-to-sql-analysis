@@ -1,0 +1,3 @@
+{
+    "error": "\ud83d\udea8 Evaluation script failed: Command '['python', './eval_scripts/beaver/evaluation.py', '--predicted_sql_path', 'outputs/20251231_beaver_dw', '--ground_truth_path', './data/beaver/dw/', '--data_mode', 'dw', '--db_host', '127.0.0.1', '--db_port', '3306', '--db_user', 'root', '--db_password', 'maue132465!', '--num_cpus', '8', '--meta_time_out', '30.0']' returned non-zero exit status 1."
+}

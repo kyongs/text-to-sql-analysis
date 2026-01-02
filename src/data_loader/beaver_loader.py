@@ -238,6 +238,17 @@ class BeaverLoader(BaseDataLoader):
         mode = self.config.get('mode', 'baseline')
         is_gold_schema_mode = (mode == 'gold_schema')
         
+        # 캐시된 formatted_data 확인 (gold_schema + m_schema 모드에서만)
+        formatted_data_path = r"C:\Users\domir\Desktop\code\text-to-sql-analysis\data\beaver\dw\formatted_data.json"
+        if is_gold_schema_mode and schema_style == "m_schema" and os.path.exists(formatted_data_path):
+            try:
+                with open(formatted_data_path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                print(f"✅ Using cached formatted_data from {formatted_data_path}")
+                return data
+            except Exception as e:
+                print(f"⚠️ Failed to load cached data: {e}. Proceeding with fresh generation...")
+        
         if not self.raw_schema_info:
             print("Error: Raw schema info is required. Cannot proceed.")
             return []
@@ -309,8 +320,13 @@ class BeaverLoader(BaseDataLoader):
                             style=schema_style
                         )
 
+            
+
             mode_str = "'view'" if load_views else ("'gold_schema'" if is_gold_schema_mode else "'baseline'")
-            print(f"✅ Successfully loaded and processed {len(data)} examples for Beaver in {mode_str} mode.")
+            print(f"Successfully loaded and processed {len(data)} examples for Beaver in {mode_str} mode.")
+            with open(r"C:\Users\domir\Desktop\code\text-to-sql-analysis\data\beaver\dw\formatted_data.json", "w", encoding="utf-8") as f: 
+                json.dump(data, f, ensure_ascii=False, indent=2)
+                print("Formatted data saved to formatted_data.json")
             return data
         except FileNotFoundError:
             print(f"Error: Data file not found at {json_path}")

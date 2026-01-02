@@ -1,0 +1,17 @@
+[
+    {
+        "db_id": "dw",
+        "question": "What is the current building key, building street address, city, state, and postal code of the history department?",
+        "predicted_sql": "Error: Could not generate SQL"
+    },
+    {
+        "db_id": "dw",
+        "question": "Show the unique activity titles, locations, term start date, and supervisor name for all independent activities, sorted by the ascending order of start date.",
+        "predicted_sql": "Error: Could not generate SQL"
+    },
+    {
+        "db_id": "dw",
+        "question": "List the unique course instructor names, course titles, and the amount of material for each course instructor key and the key of subject offered.",
+        "predicted_sql": "SELECT \n    DISTINCT lci.INSTRUCTOR_NAME, \n    lci.COURSE_NAME, \n    COUNT(DISTINCT lrd.LIBRARY_RESERVE_CATALOG_KEY) AS material_count,\n    lrd.LIBRARY_SUBJECT_OFFERED_KEY\nFROM \n    LIBRARY_COURSE_INSTRUCTOR lci\nJOIN \n    LIBRARY_RESERVE_MATRL_DETAIL lrd ON lci.LIBRARY_COURSE_INSTRUCTOR_KEY = lrd.LIBRARY_COURSE_INSTRUCTOR_KEY\nJOIN \n    LIBRARY_SUBJECT_OFFERED lso ON lrd.LIBRARY_SUBJECT_OFFERED_KEY = lso.LIBRARY_SUBJECT_OFFERED_KEY\nGROUP BY \n    lci.INSTRUCTOR_NAME, lci.COURSE_NAME, lrd.LIBRARY_SUBJECT_OFFERED_KEY;"
+    }
+]
