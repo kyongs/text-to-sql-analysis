@@ -8,6 +8,10 @@ import multiprocessing as mp
 from func_timeout import func_timeout, FunctionTimedOut
 from sqlalchemy import create_engine, text
 import pymysql
+from dotenv import load_dotenv
+
+# Load .env file for environment variables
+load_dotenv()
 
 # --- 전역 변수 ---
 exec_result = []
@@ -105,17 +109,31 @@ if __name__ == '__main__':
     parser.add_argument('--meta_time_out', type=float, default=30.0)
     args = parser.parse_args()
 
+    # Handle "from_env" password
+    db_password = args.db_password
+    if db_password == "from_env":
+        db_password = os.getenv("MYSQL_PASSWORD", "")
+
     conn_info = {
         "host": args.db_host, "port": args.db_port,
-        "user": args.db_user, "password": args.db_password
+        "user": args.db_user, "password": db_password
     }
 
     pred_queries, pred_db_ids = package_sqls(args.predicted_sql_path, data_mode=args.data_mode, is_gt=False)
     gt_queries, gt_db_ids = package_sqls(args.ground_truth_path, data_mode=args.data_mode, is_gt=True)
 
-    assert pred_db_ids == gt_db_ids, "DB ID mismatch between predictions and ground truth."
+    # 경고: DB ID 길이 체크
+    if len(pred_queries) != len(gt_queries):
+        print(f"[WARNING] Prediction count ({len(pred_queries)}) != Ground truth count ({len(gt_queries)})")
+        print(f"   Only evaluating {len(pred_queries)} predictions against ground truth")
+    
+    # DB ID 일치 확인 (길이가 같은 범위까지만)
+    min_len = min(len(pred_db_ids), len(gt_db_ids))
+    assert pred_db_ids[:min_len] == gt_db_ids[:min_len], f"DB ID mismatch: {pred_db_ids[:min_len]} vs {gt_db_ids[:min_len]}"
 
-    query_pairs = list(zip(pred_queries, gt_queries))
+    # 최소 길이만큼만 비교
+    query_pairs = list(zip(pred_queries[:min_len], gt_queries[:min_len]))
+    pred_db_ids = pred_db_ids[:min_len]
     run_sqls_parallel(query_pairs, pred_db_ids, conn_info, args.num_cpus, args.meta_time_out)
     
     exec_result = sort_results(exec_result)

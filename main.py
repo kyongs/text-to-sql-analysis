@@ -40,10 +40,10 @@ def check_and_run_preprocessing(config: dict):
     
     if db_config["db_type"] == "mysql":
         conn_info = config.get("db_connection", {})
-        db_config['host'] = conn_info.get('host', os.getenv("MYSQL_HOST"))
-        db_config['port'] = int(conn_info.get('port', os.getenv("MYSQL_PORT", 3306)))
-        db_config['user'] = conn_info.get('user', os.getenv("MYSQL_USER"))
-        db_config['password'] = conn_info.get('password', os.getenv("MYSQL_PASSWORD"))
+        db_config['host'] = os.getenv("MYSQL_HOST", "127.0.0.1") if conn_info.get('host') == 'from_env' else conn_info.get('host', "127.0.0.1")
+        db_config['port'] = int(os.getenv("MYSQL_PORT", 3306) if conn_info.get('port') == 'from_env' else conn_info.get('port', 3306))
+        db_config['user'] = os.getenv("MYSQL_USER", "root") if conn_info.get('user') == 'from_env' else conn_info.get('user', "root")
+        db_config['password'] = os.getenv("MYSQL_PASSWORD", "") if conn_info.get('password') == 'from_env' else conn_info.get('password', "")
     else: 
         db_config['db_dir'] = dataset_config.get('db_dir')
 
@@ -154,14 +154,22 @@ def main():
     with concurrent.futures.ThreadPoolExecutor(args.max_workers) as executor:
         print(f"Generating SQL Queries in parallel with {args.max_workers} workers...")
         
-        futures = [executor.submit(process_item, item, model, db_type) for item in dataset]
+        futures = {executor.submit(process_item, item, model, db_type): item for item in dataset}
         for future in tqdm(concurrent.futures.as_completed(futures), total=len(dataset), desc="Overall Progress"):
             try:
                 result = future.result()
                 all_results.append(result)
                 logger.format_and_log(result) 
             except Exception as e:
-                print(f"An error occurred while processing an item: {e}")
+                # 예외 발생 시에도 에러 결과로 저장
+                item = futures[future]
+                error_result = {
+                    "db_id": item.get('db_id', 'unknown'),
+                    "question": item.get('question', 'unknown'),
+                    "predicted_sql": f"Error: {str(e)[:200]}"
+                }
+                all_results.append(error_result)
+                print(f"Error processing question '{item.get('question_id', 'unknown')}': {str(e)[:100]}")
 
     # Sort results for consistent output
     all_results.sort(key=lambda x: [item['question'] for item in dataset].index(x['question']))
