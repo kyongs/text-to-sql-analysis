@@ -1,0 +1,834 @@
+--- Log Session Started at 2026-01-09 18:25:38 ---
+
+***** FINAL PROMPT *****
+### System Instructions ###
+You are an expert SQL developer.
+You must generate an accurate and efficient MySQL query based on the provided database schema and natural language question.
+Never use tables or columns that are not specified in the schema.
+Do not add any explanations other than the final SQL query.
+Now generate MySQL SQL query to answer the given "Question" without any explanation.
+
+### Schema ###
+[DB_ID] dw
+# Schema
+# Table: BUILDINGS
+[
+(BUILDING_KEY:VARCHAR2, Examples: ['1', '10', '11']),
+(BUILDING_NUMBER:VARCHAR2, Examples: ['1', '10', '11']),
+(BUILDING_NAME:VARCHAR2, Examples: ['BUILDING NW32', 'Ashdown House', 'BUILDING NW36']),
+(BUILDING_STREET_ADDRESS:VARCHAR2, Examples: ['230 ALBANY STREET', '235  ALBANY ST', '250 ALBANY STREET']),
+(BUILDING_MAILING_ADDRESS:VARCHAR2),
+(BLDG_GROSS_SQUARE_FOOTAGE:NUMBER, Examples: [30053, 252747, 2045]),
+(BLDG_ASSIGNABLE_SQUARE_FOOTAGE:NUMBER, Examples: [18919, 158677, 1605]),
+(BUILDING_COUNTER:NUMBER, Examples: [1]),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24'])
+]
+# Table: EMPLOYEE_DIRECTORY
+[
+(MIT_ID:VARCHAR2, Examples: ['900013216', '900018937', '900019389']),
+(LAST_NAME:VARCHAR2, Examples: ['Austin', 'Hopkins', 'Bell']),
+(FIRST_NAME:VARCHAR2, Examples: ['Sasha', 'Jamal', 'Mahir']),
+(MIDDLE_NAME:VARCHAR2, Examples: ['C', 'Lucero', 'R']),
+(FULL_NAME:VARCHAR2, Examples: ['Austin, Sasha', 'Hopkins, Jamal C.', 'Bell, Mahir']),
+(DIRECTORY_FULL_NAME:VARCHAR2, Examples: ['Austin, Sasha', 'Hopkins, Jamal C.', 'Bell, Mahir']),
+(OFFICE_LOCATION:VARCHAR2, Examples: ['1', '1-018', '1-037E']),
+(OFFICE_PHONE:VARCHAR2, Examples: ['1593468096', '8028104479', '285881157']),
+(DIRECTORY_TITLE:VARCHAR2),
+(PRIMARY_TITLE:VARCHAR2),
+(DEPARTMENT_NUMBER:VARCHAR2, Examples: ['402000', '871060', '310000']),
+(DEPARTMENT_NAME:VARCHAR2, Examples: ['David H Koch Institute for Integrative Cancer Res', 'Alumni Association Alumni Relations', 'Lincoln Laboratory']),
+(KRB_NAME:VARCHAR2, Examples: ['aa', 'aadama', 'aadamb']),
+(KRB_NAME_UPPERCASE:VARCHAR2, Examples: ['SASHAA', 'JH3', 'MAHIRB']),
+(EMAIL_ADDRESS:VARCHAR2, Examples: ['sashaa@worker.com', 'jh3@worker.com', 'mahirb@gmail.business.com']),
+(PERSONAL_URL:VARCHAR2, Examples: ['http://www.darrent.net', 'http://www.lilir.com', 'https://www.zahras.edu']),
+(NAME_KNOWN_BY:VARCHAR2, Examples: ['Sasha', 'Jamal', 'Mahir']),
+(EMAIL_ADDRESS_UPPERCASE:VARCHAR2, Examples: ['SASHAA@WORKER.COM', 'JH3@WORKER.COM', 'MAHIRB@GMAIL.BUSINESS.COM']),
+(FULL_NAME_UPPERCASE:VARCHAR2, Examples: ['AUSTIN, SASHA', 'HOPKINS, JAMAL C.', 'BELL, MAHIR']),
+(PREFERRED_FIRST_NAME_UPPER:VARCHAR2, Examples: ['SASHA', 'JAMAL', 'MAHIR']),
+(PREFERRED_LAST_NAME_UPPER:VARCHAR2, Examples: ['AUSTIN', 'HOPKINS', 'BELL']),
+(PREFERRED_FIRST_NAME:VARCHAR2, Examples: ['Sasha', 'Jamal', 'Mahir']),
+(PREFERRED_MIDDLE_NAME:VARCHAR2, Examples: ['Lucero', 'R', 'Mcgee']),
+(PREFERRED_LAST_NAME:VARCHAR2, Examples: ['Austin', 'Hopkins', 'Bell'])
+]
+# Table: FAC_BUILDING_ADDRESS
+[
+(BUILDING_ADDRESS_KEY:DATE, Examples: ['66-STREET', '68-E911_1', '68-MAIL']),
+(BUILDING_KEY:VARCHAR2, Examples: ['1', '10', '11']),
+(ADDRESS_PURPOSE:VARCHAR2, Examples: ['STREET', 'E911_1', 'MAIL']),
+(ADDRESS_CITY_ID:VARCHAR2, Examples: ['25344', '25345', '708']),
+(IS_E911_ADDRESS:VARCHAR2),
+(STREET_NUMBER:VARCHAR2, Examples: ['25', '31', '77']),
+(STREET_NUMBER_SUFFIX:VARCHAR2, Examples: ['R']),
+(PRE_DIRECTIONAL:VARCHAR2),
+(STREET_NAME:VARCHAR2, Examples: ['AMES', 'MASSACHUSETTS', 'MAIN']),
+(STREET_SUFFIX:VARCHAR2, Examples: ['ST', 'AVE', 'DR']),
+(POST_DIRECTIONAL:VARCHAR2, Examples: ['(Rear)', 'NE', 'NW']),
+(CITY:VARCHAR2, Examples: ['CAMBRIDGE', 'DEDHAM', 'BOSTON']),
+(STATE:VARCHAR2, Examples: ['MA', 'DC']),
+(POSTAL_CODE:VARCHAR2, Examples: ['2142', '2139', '2026']),
+(WAREHOUSE_LOAD_DATE:VARCHAR2, Examples: ['19-DEC-24'])
+]
+# Table: FAC_ROOMS
+[
+(FAC_ROOM_KEY:DATE, Examples: ['1-001C', '1-001E', '1-002']),
+(BUILDING_KEY:VARCHAR2, Examples: ['1', '10', '11']),
+(FLOOR:VARCHAR2, Examples: ['1', '0', '3']),
+(FLOOR_KEY:VARCHAR2, Examples: ['1-0', '1-1', '1-2']),
+(ROOM:VARCHAR2, Examples: ['000', '0000', '000012']),
+(SPACE_ID:VARCHAR2, Examples: ['1-1-175', '1-1-195F', '1-1-140']),
+(MAJOR_USE_KEY:VARCHAR2, Examples: ['101', '102', '103']),
+(MAJOR_USE_DESC:VARCHAR2, Examples: ['MECHANIC', 'BLDG SRV', 'CIRCULAT']),
+(USE_KEY:VARCHAR2, Examples: ['153', '155', '156']),
+(USE_DESC:VARCHAR2),
+(MINOR_USE_KEY:VARCHAR2),
+(MINOR_USE_DESC:VARCHAR2),
+(ORGANIZATION_KEY:VARCHAR2, Examples: ['101', '102', '103']),
+(ORGANIZATION_NAME:VARCHAR2, Examples: ['DOF', 'MIBR', 'PILM']),
+(MINOR_ORGANIZATION_KEY:VARCHAR2),
+(MINOR_ORGANIZATION:VARCHAR2),
+(AREA:VARCHAR2, Examples: [7.11, 10.0, 45.42]),
+(ROOM_FULL_NAME:NUMBER, Examples: ['KRESGE LOBBY', 'WEST LOUNGE', 'SALA DE PUERTO RICO']),
+(DEPT_CODE:VARCHAR2, Examples: ['93700', '93800', '93400']),
+(ACCESS_LEVEL:VARCHAR2, Examples: ['0', '1', '3']),
+(LATITUDE_WGS:VARCHAR2),
+(LONGITUDE_WGS:NUMBER),
+(NORTHING_SPCS:NUMBER),
+(EASTING_SPCS:NUMBER),
+(WAREHOUSE_LOAD_DATE:NUMBER, Examples: ['19-DEC-24'])
+]
+
+### Question ###
+What is the room, floor, building key, building street address, city, state, and postal code of Professor Summer Haynes's office?
+
+(Hints: Schema Mapping Hints:
+- 'room' is related to FAC_ROOMS.ROOM
+- 'floor' is related to FAC_ROOMS.FLOOR
+- 'building key' is related to FAC_BUILDING_ADDRESS.BUILDING_KEY
+- 'building street address' is related to BUILDINGS.BUILDING_STREET_ADDRESS, FAC_BUILDING_ADDRESS.ADDRESS_PURPOSE
+- 'city' is related to FAC_BUILDING_ADDRESS.CITY
+- 'state' is related to FAC_BUILDING_ADDRESS.STATE
+- 'postal code' is related to FAC_BUILDING_ADDRESS.POSTAL_CODE
+- 'Professor Summer Haynes' is related to EMPLOYEE_DIRECTORY.FULL_NAME
+- 'office' is related to EMPLOYEE_DIRECTORY.OFFICE_LOCATION
+
+Join Information: (EMPLOYEE_DIRECTORY.OFFICE_LOCATION = FAC_ROOMS.FAC_ROOM_KEY), (FAC_BUILDING_ADDRESS.BUILDING_KEY = FAC_ROOMS.BUILDING_KEY), (BUILDINGS.BUILDING_KEY = FAC_BUILDING_ADDRESS.BUILDING_KEY))
+
+### Generated SQL Query ###
+Generated SQL:
+
+
+***** TOOL CALL LOG *****
+
+[Iteration 1] ✅ Final SQL Response:
+  ```sql
+SELECT 
+    fr.ROOM AS room,
+    fr.FLOOR AS floor,
+    fr.BUILDING_KEY AS building_key,
+    b.BUILDING_STREET_ADDRESS AS building_street_address,
+    fba.CITY AS city,
+    fba.STATE AS state,
+    fba.POSTAL_CODE AS postal_code
+FROM 
+    EMPLOYEE_DIRECTORY ed
+JOIN 
+    FAC_ROOMS fr ON ed.OFFICE_LOCATION = fr.FAC_ROOM_KEY
+JOIN 
+    FAC_BUILDING_ADDRESS fba ON fr.BUILDING_KEY = fba.BUILDING_KEY
+JOIN 
+    BUILDINGS b ON fba.BUILDING_KEY = b.BUILDING_KEY
+WHERE 
+    ed.FULL_NAME = 'Haynes, Summer'
+    AND fba.ADDRESS_PURPOSE = 'STREET';
+```
+
+***** RESPONSE *****
+<src.model.openai_model.OpenAIModel.generate.<locals>.ResponseWrapper object at 0x0000025D2846E1D0>
+
+***** TOKEN INFO *****
+CompletionUsage(completion_tokens=168, prompt_tokens=1904, total_tokens=2072, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0))
+
+***** FINAL SQL QUERY *****
+SELECT 
+    fr.ROOM AS room,
+    fr.FLOOR AS floor,
+    fr.BUILDING_KEY AS building_key,
+    b.BUILDING_STREET_ADDRESS AS building_street_address,
+    fba.CITY AS city,
+    fba.STATE AS state,
+    fba.POSTAL_CODE AS postal_code
+FROM 
+    EMPLOYEE_DIRECTORY ed
+JOIN 
+    FAC_ROOMS fr ON ed.OFFICE_LOCATION = fr.FAC_ROOM_KEY
+JOIN 
+    FAC_BUILDING_ADDRESS fba ON fr.BUILDING_KEY = fba.BUILDING_KEY
+JOIN 
+    BUILDINGS b ON fba.BUILDING_KEY = b.BUILDING_KEY
+WHERE 
+    ed.FULL_NAME = 'Haynes, Summer'
+    AND fba.ADDRESS_PURPOSE = 'STREET';
+
+***** TOKEN MONITORING *****
+TOKEN PER ITERATION    : 1904, 168
+TOTAL                  : 2072, 1904, 168
+AVG                    : 2072.00, 1904.00, 168.00
+******************************************************************************************************************************************************
+******************************************************************************************************************************************************
+
+***** FINAL PROMPT *****
+### System Instructions ###
+You are an expert SQL developer.
+You must generate an accurate and efficient MySQL query based on the provided database schema and natural language question.
+Never use tables or columns that are not specified in the schema.
+Do not add any explanations other than the final SQL query.
+Now generate MySQL SQL query to answer the given "Question" without any explanation.
+
+### Schema ###
+[DB_ID] dw
+# Schema
+# Table: TIP_DETAIL
+[
+(TIP_SUBJECT_OFFERED_KEY:VARCHAR2, Examples: ['0010000002015FA', '0010000002017FA', '0010000002018FA']),
+(TIP_MATERIAL_KEY:VARCHAR2, Examples: ['0 AMERICAN POPULAR MUSIC-TEXT ONLY4TH 142016FA', '0 AMERICAN POPULAR MUSIC-TEXT ONLY4TH 142017FA', '0 BASIC MANDARIN CHINESE:RDG.+WRTG.-TEXT172019JA']),
+(TIP_MATERIAL_STATUS_KEY:VARCHAR2, Examples: ['  ', 'BR', 'CL']),
+(TERM_CODE:VARCHAR2, Examples: ['2010FA', '2010JA', '2010SP']),
+(SUBJECT_ID:VARCHAR2, Examples: ['1.00', '1.000', '1.001']),
+(ISBN:VARCHAR2, Examples: ['9780486113647', '9780486112152', '8220102799158']),
+(RECORD_COUNT:NUMBER, Examples: [1]),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['20-DEC-24'])
+]
+# Table: TIP_MATERIAL
+[
+(TIP_MATERIAL_KEY:VARCHAR2, Examples: ['0 AMERICAN POPULAR MUSIC-TEXT ONLY4TH 142016FA', '0 AMERICAN POPULAR MUSIC-TEXT ONLY4TH 142017FA', '0 BASIC MANDARIN CHINESE:RDG.+WRTG.-TEXT172019JA']),
+(ISBN:VARCHAR2, Examples: ['9780486161976', '9780486153803', '9780486111452']),
+(TITLE:VARCHAR2, Examples: ['Course has no materials', 'Ebk The Emperor Of Ice-Cream And Other ', 'Ebk Imagist Poetry                     ']),
+(AUTHOR:VARCHAR2, Examples: ['Course has no materials', 'Stevens       ', 'Blaisdell     ']),
+(EDITION:VARCHAR2, Examples: ['Ann    ', '       ', 'Fourth ']),
+(PUBLISHER:VARCHAR2, Examples: ['Yuzu      ', 'Vst', 'Dgtl Bncom']),
+(YEAR:VARCHAR2, Examples: ['2000', '1996', '2011']),
+(NEW_SHELF_PRICE:NUMBER, Examples: [0, 6, 4]),
+(USED_SHELF_PRICE:NUMBER, Examples: [0, 70, 80]),
+(RENTAL_NEW_PRICE:NUMBER, Examples: [0, 10, 53]),
+(RENTAL_USED_PRICE:NUMBER, Examples: [0, 7, 39]),
+(MATERIAL_INFO_SOURCE:VARCHAR2, Examples: ['ISBN', 'COOP', 'OTI'])
+]
+# Table: TIP_SUBJECT_OFFERED
+[
+(TIP_SUBJECT_OFFERED_KEY:VARCHAR2, Examples: ['0010000002016FA', '0010000002017FA', '0010000002020FA']),
+(TERM_CODE:VARCHAR2, Examples: ['1986FA', '1992FA', '1993FA']),
+(IS_NO_COURSE_MATERIAL:VARCHAR2, Examples: ['Y', 'N']),
+(MASTER_COURSE_NUMBER:VARCHAR2, Examples: ['5', '18', '15']),
+(MASTER_COURSE_NUMBER_SORT:VARCHAR2, Examples: ['  5', ' 18', ' 15']),
+(MASTER_COURSE_NUMBER_DESC:VARCHAR2, Examples: ['Chemistry', 'Mathematics', 'Management']),
+(MASTER_SUBJECT_ID:VARCHAR2, Examples: ['1.00', '1.000', '1.004']),
+(MASTER_SUBJECT_ID_SORT:VARCHAR2, Examples: ['  1.041', '  1.141', '  1.212']),
+(COURSE_NUMBER:VARCHAR2, Examples: ['5', '18', '15']),
+(COURSE_NUMBER_SORT:VARCHAR2, Examples: ['  5', ' 18', ' 15']),
+(COURSE_NUMBER_DESC:VARCHAR2, Examples: ['Chemistry', 'Mathematics', 'Management']),
+(SUBJECT_ID:VARCHAR2, Examples: ['1.00', '1.000', '1.001']),
+(SUBJECT_ID_SORT:VARCHAR2, Examples: ['  1.00', '  1.000', '  1.001']),
+(SUBJECT_TITLE:VARCHAR2, Examples: ['Chemistry Lab Techniques', 'Undergrad Research Wellesley', 'Special Seminar in Management']),
+(OFFER_DEPT_CODE:VARCHAR2, Examples: ['1', '10', '11']),
+(OFFER_DEPT_NAME:VARCHAR2, Examples: ['Chemistry', 'Mathematics', 'Management']),
+(OFFER_SCHOOL_NAME:VARCHAR2, Examples: ['Science', 'Sloan School of Management', 'Hum, Arts & Social Sciences']),
+(RESPONSIBLE_FACULTY_NAME:VARCHAR2, Examples: ['Ryan, Mario', 'Newman, Halima', 'Morales, Brianna']),
+(RESPONSIBLE_FACULTY_MIT_ID:VARCHAR2, Examples: ['900013216', '900026651', '900043308']),
+(NUM_ENROLLED_STUDENTS:NUMBER, Examples: [8, 1, 55]),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['20-DEC-24'])
+]
+
+### Question ###
+What is the department name, total number of types of TIP subjects, total number of enrolled students, the minimum and maximum rental new price for each department?
+
+(Hints: Schema Mapping Hints:
+- 'department name' is related to TIP_SUBJECT_OFFERED.OFFER_DEPT_NAME
+- 'TIP subjects' is related to TIP_SUBJECT_OFFERED.SUBJECT_ID
+- 'enrolled students' is related to TIP_SUBJECT_OFFERED.NUM_ENROLLED_STUDENTS
+- 'rental new price' is related to TIP_MATERIAL.RENTAL_NEW_PRICE
+
+Join Information: (TIP_SUBJECT_OFFERED.TIP_SUBJECT_OFFERED_KEY = TIP_DETAIL.TIP_SUBJECT_OFFERED_KEY), (TIP_MATERIAL.TIP_MATERIAL_KEY = TIP_DETAIL.TIP_MATERIAL_KEY))
+
+### Generated SQL Query ###
+Generated SQL:
+
+
+***** TOOL CALL LOG *****
+
+[Iteration 1] ✅ Final SQL Response:
+  ```sql
+SELECT 
+    tso.OFFER_DEPT_NAME AS department_name,
+    COUNT(DISTINCT tso.SUBJECT_ID) AS total_number_of_types_of_TIP_subjects,
+    SUM(tso.NUM_ENROLLED_STUDENTS) AS total_number_of_enrolled_students,
+    MIN(tm.RENTAL_NEW_PRICE) AS minimum_rental_new_price,
+    MAX(tm.RENTAL_NEW_PRICE) AS maximum_rental_new_price
+FROM 
+    TIP_SUBJECT_OFFERED tso
+JOIN 
+    TIP_DETAIL td ON tso.TIP_SUBJECT_OFFERED_KEY = td.TIP_SUBJECT_OFFERED_KEY
+JOIN 
+    TIP_MATERIAL tm ON td.TIP_MATERIAL_KEY = tm.TIP_MATERIAL_KEY
+GROUP BY 
+    tso.OFFER_DEPT_NAME;
+```
+
+***** RESPONSE *****
+<src.model.openai_model.OpenAIModel.generate.<locals>.ResponseWrapper object at 0x0000025D289975E0>
+
+***** TOKEN INFO *****
+CompletionUsage(completion_tokens=161, prompt_tokens=1425, total_tokens=1586, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0))
+
+***** FINAL SQL QUERY *****
+SELECT 
+    tso.OFFER_DEPT_NAME AS department_name,
+    COUNT(DISTINCT tso.SUBJECT_ID) AS total_number_of_types_of_TIP_subjects,
+    SUM(tso.NUM_ENROLLED_STUDENTS) AS total_number_of_enrolled_students,
+    MIN(tm.RENTAL_NEW_PRICE) AS minimum_rental_new_price,
+    MAX(tm.RENTAL_NEW_PRICE) AS maximum_rental_new_price
+FROM 
+    TIP_SUBJECT_OFFERED tso
+JOIN 
+    TIP_DETAIL td ON tso.TIP_SUBJECT_OFFERED_KEY = td.TIP_SUBJECT_OFFERED_KEY
+JOIN 
+    TIP_MATERIAL tm ON td.TIP_MATERIAL_KEY = tm.TIP_MATERIAL_KEY
+GROUP BY 
+    tso.OFFER_DEPT_NAME;
+
+***** TOKEN MONITORING *****
+TOKEN PER ITERATION    : 1425, 161
+TOTAL                  : 3658, 3329, 329
+AVG                    : 1829.00, 1664.50, 164.50
+******************************************************************************************************************************************************
+******************************************************************************************************************************************************
+
+***** FINAL PROMPT *****
+### System Instructions ###
+You are an expert SQL developer.
+You must generate an accurate and efficient MySQL query based on the provided database schema and natural language question.
+Never use tables or columns that are not specified in the schema.
+Do not add any explanations other than the final SQL query.
+Now generate MySQL SQL query to answer the given "Question" without any explanation.
+
+### Schema ###
+[DB_ID] dw
+# Schema
+# Table: MOIRA_LIST
+[
+(MOIRA_LIST_KEY:VARCHAR2, Examples: ['amber-amber', 'amber-amber-emerald', 'amber-amber-frog']),
+(MOIRA_LIST_NAME:VARCHAR2, Examples: ['cat-duo-users', 'quince-mountain', 'quest-fortune-iguana']),
+(MOIRA_LIST_DESCRIPTION:VARCHAR2),
+(IS_ACTIVE:VARCHAR2, Examples: ['Y']),
+(IS_MOIRA_MAILING_LIST:VARCHAR2, Examples: ['Y', 'N']),
+(IS_MOIRA_GROUP:VARCHAR2, Examples: ['N', 'Y']),
+(IS_NFS_GROUP:VARCHAR2, Examples: ['N', 'Y']),
+(IS_PUBLIC:VARCHAR2, Examples: ['N', 'Y']),
+(IS_HIDDEN:VARCHAR2, Examples: ['N'])
+]
+# Table: MOIRA_LIST_DETAIL
+[
+(MOIRA_LIST_KEY:VARCHAR2, Examples: ['amber-amber', 'amber-amber-uplift', 'amber-ant']),
+(MOIRA_LIST_OWNER_KEY:VARCHAR2, Examples: ['KERBEROS32.550-raspberry-nectar', 'KERBEROSapple-raspberry', 'KERBEROSbeacon-bear']),
+(MOIRA_LIST_MEMBER:VARCHAR2, Examples: ['aa', 'aa@aol.com', 'aa@employee.com']),
+(MOIRA_LIST_MEMBER_FULL_NAME:VARCHAR2, Examples: ['Sloan, Axel', 'Griffith, Ronnie', 'Frost, Georgina']),
+(MOIRA_LIST_MEMBER_MIT_ID:VARCHAR2, Examples: ['900000167', '900012716', '900013216']),
+(LAST_UPDATE_DATE:DATE, Examples: ['17-OCT-23', '12-AUG-21', '18-SEP-21']),
+(COUNTER:NUMBER, Examples: [1]),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24'])
+]
+# Table: MOIRA_LIST_OWNER
+[
+(MOIRA_LIST_OWNER_KEY:VARCHAR2, Examples: ['KERBEROS32.550-raspberry-nectar', 'KERBEROS45.604-kangaroo-courage', 'KERBEROSapple-raspberry']),
+(OWNER:VARCHAR2, Examples: ['56.928-tangerine-snake', '69.377-keeper-xenon', '75.187-vivid-fortune']),
+(OWNER_TYPE:VARCHAR2, Examples: ['LIST', 'USER', 'KERBEROS']),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24'])
+]
+
+### Question ###
+For each distinct mailing list containing more than 1000 people and with a name starting with A (case insensitive), provide its name, whether it is a mailing list, whether it is a moira group, whether it is a NFS group, the owner of the mailing list, and the number of people in the list.
+
+(Hints: Schema Mapping Hints:
+- 'name' is related to MOIRA_LIST.MOIRA_LIST_NAME
+- 'mailing list' is related to MOIRA_LIST.IS_MOIRA_MAILING_LIST
+- 'moira group' is related to MOIRA_LIST.IS_MOIRA_GROUP
+- 'NFS group' is related to MOIRA_LIST.IS_NFS_GROUP
+- 'owner' is related to MOIRA_LIST_OWNER.OWNER
+- 'people' is related to MOIRA_LIST_DETAIL.MOIRA_LIST_MEMBER
+
+Join Information: (MOIRA_LIST.MOIRA_LIST_KEY = MOIRA_LIST_DETAIL.MOIRA_LIST_KEY), (MOIRA_LIST_OWNER.MOIRA_LIST_OWNER_KEY = MOIRA_LIST_DETAIL.MOIRA_LIST_OWNER_KEY))
+
+### Generated SQL Query ###
+Generated SQL:
+
+
+***** TOOL CALL LOG *****
+
+[Iteration 1] ✅ Final SQL Response:
+  ```sql
+SELECT 
+    ml.MOIRA_LIST_NAME AS name,
+    ml.IS_MOIRA_MAILING_LIST AS mailing_list,
+    ml.IS_MOIRA_GROUP AS moira_group,
+    ml.IS_NFS_GROUP AS nfs_group,
+    mlo.OWNER AS owner,
+    COUNT(mld.MOIRA_LIST_MEMBER) AS number_of_people
+FROM 
+    MOIRA_LIST ml
+JOIN 
+    MOIRA_LIST_DETAIL mld ON ml.MOIRA_LIST_KEY = mld.MOIRA_LIST_KEY
+JOIN 
+    MOIRA_LIST_OWNER mlo ON mld.MOIRA_LIST_OWNER_KEY = mlo.MOIRA_LIST_OWNER_KEY
+WHERE 
+    ml.MOIRA_LIST_NAME LIKE 'A%' COLLATE utf8mb4_general_ci
+GROUP BY 
+    ml.MOIRA_LIST_NAME, ml.IS_MOIRA_MAILING_LIST, ml.IS_MOIRA_GROUP, ml.IS_NFS_GROUP, mlo.OWNER
+HAVING 
+    COUNT(mld.MOIRA_LIST_MEMBER) > 1000;
+```
+
+***** RESPONSE *****
+<src.model.openai_model.OpenAIModel.generate.<locals>.ResponseWrapper object at 0x0000025D289C86D0>
+
+***** TOKEN INFO *****
+CompletionUsage(completion_tokens=214, prompt_tokens=890, total_tokens=1104, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0))
+
+***** FINAL SQL QUERY *****
+SELECT 
+    ml.MOIRA_LIST_NAME AS name,
+    ml.IS_MOIRA_MAILING_LIST AS mailing_list,
+    ml.IS_MOIRA_GROUP AS moira_group,
+    ml.IS_NFS_GROUP AS nfs_group,
+    mlo.OWNER AS owner,
+    COUNT(mld.MOIRA_LIST_MEMBER) AS number_of_people
+FROM 
+    MOIRA_LIST ml
+JOIN 
+    MOIRA_LIST_DETAIL mld ON ml.MOIRA_LIST_KEY = mld.MOIRA_LIST_KEY
+JOIN 
+    MOIRA_LIST_OWNER mlo ON mld.MOIRA_LIST_OWNER_KEY = mlo.MOIRA_LIST_OWNER_KEY
+WHERE 
+    ml.MOIRA_LIST_NAME LIKE 'A%' COLLATE utf8mb4_general_ci
+GROUP BY 
+    ml.MOIRA_LIST_NAME, ml.IS_MOIRA_MAILING_LIST, ml.IS_MOIRA_GROUP, ml.IS_NFS_GROUP, mlo.OWNER
+HAVING 
+    COUNT(mld.MOIRA_LIST_MEMBER) > 1000;
+
+***** TOKEN MONITORING *****
+TOKEN PER ITERATION    : 890, 214
+TOTAL                  : 4762, 4219, 543
+AVG                    : 1587.33, 1406.33, 181.00
+******************************************************************************************************************************************************
+******************************************************************************************************************************************************
+
+***** FINAL PROMPT *****
+### System Instructions ###
+You are an expert SQL developer.
+You must generate an accurate and efficient MySQL query based on the provided database schema and natural language question.
+Never use tables or columns that are not specified in the schema.
+Do not add any explanations other than the final SQL query.
+Now generate MySQL SQL query to answer the given "Question" without any explanation.
+
+### Schema ###
+[DB_ID] dw
+# Schema
+# Table: BUILDINGS
+[
+(BUILDING_KEY:VARCHAR2, Examples: ['1', '10', '11']),
+(BUILDING_NUMBER:VARCHAR2, Examples: ['1', '10', '11']),
+(BUILDING_NAME:VARCHAR2, Examples: ['BUILDING NW32', 'Ashdown House', 'BUILDING NW36']),
+(BUILDING_STREET_ADDRESS:VARCHAR2, Examples: ['230 ALBANY STREET', '235  ALBANY ST', '250 ALBANY STREET']),
+(BUILDING_MAILING_ADDRESS:VARCHAR2),
+(BLDG_GROSS_SQUARE_FOOTAGE:NUMBER, Examples: [30053, 252747, 2045]),
+(BLDG_ASSIGNABLE_SQUARE_FOOTAGE:NUMBER, Examples: [18919, 158677, 1605]),
+(BUILDING_COUNTER:NUMBER, Examples: [1]),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24'])
+]
+# Table: FAC_BUILDING
+[
+(FAC_BUILDING_KEY:VARCHAR2, Examples: ['1', '10', '11']),
+(BUILDING_NUMBER:VARCHAR2, Examples: ['2', '39', '41']),
+(PARENT_BUILDING_NUMBER:DATE, Examples: ['62', '64', 'W85DE']),
+(PARENT_BUILDING_NAME:NUMBER, Examples: ['ALUMNI HOUSES: MUNROE HAYDEN WOOD', 'EAST CAMPUS: WALCOTT BEMIS GOODALE', 'WESTGATE (DE)']),
+(PARENT_BUILDING_NAME_LONG:VARCHAR2, Examples: ['Alumni Houses: Munroe Hayden Wood', 'Alumni Houses: Walcott Bemis Goodale', 'Westgate DE']),
+(BUILDING_NAME_LONG:VARCHAR2, Examples: ['THE SIMONS BUILDING', 'Stanley Gordon Brown Building', 'Building 41']),
+(EXT_GROSS_AREA:VARCHAR2, Examples: [133168.0, 76639.9, 26148.2]),
+(ASSIGNABLE_AREA:VARCHAR2, Examples: [73695.2, 39391.1, 20058.6]),
+(NON_ASSIGNABLE_AREA:VARCHAR2, Examples: [43048.0, 30704.7, 4407.76]),
+(SITE:VARCHAR2, Examples: ['MIT', 'BATES', 'HAY']),
+(CAMPUS_SECTOR:NUMBER, Examples: ['MAIN GROUP', 'EAST', 'NORTHEAST']),
+(ACCESS_LEVEL_CODE:NUMBER, Examples: [2, 0, 1]),
+(ACCESS_LEVEL_NAME:NUMBER, Examples: ['2', '0', '1']),
+(BUILDING_TYPE:VARCHAR2, Examples: ['ACADEMIC', 'SERVICE', 'RESIDENT']),
+(OWNERSHIP_TYPE:VARCHAR2, Examples: ['OWNED', 'LEASED']),
+(BUILDING_USE:NUMBER, Examples: ['AER', 'OTH', 'DHOA']),
+(OCCUPANCY_CLASS:VARCHAR2, Examples: ['UGBA3', 'UGB', '(NULL)']),
+(BUILDING_HEIGHT:VARCHAR2, Examples: ['82.6', '91.1', '61.2']),
+(COST_CENTER_CODE:VARCHAR2, Examples: ['1810200', '1813900', '1814100']),
+(COST_COLLECTOR_KEY:VARCHAR2, Examples: ['1810200', '1813900', '1814100']),
+(LATITUDE_WGS:VARCHAR2, Examples: [42.3588, 42.3609, 42.3608]),
+(LONGITUDE_WGS:VARCHAR2, Examples: [-71.0902, -71.0927, -71.0942]),
+(EASTING_X_SPCS:VARCHAR2, Examples: [766931.0, 766239.0, 765853.0]),
+(NORTHING_Y_SPCS:VARCHAR2, Examples: [2956050.0, 2956790.0, 2956750.0]),
+(BUILDING_SORT:NUMBER, Examples: ['02', '39', '41']),
+(BUILDING_NAMED_FOR:NUMBER, Examples: ['James H. and Marilyn Simons', 'GORDON STANLEY BROWN', '-']),
+(BUILDING_NAME:NUMBER, Examples: ['THE SIMONS BUILDING', 'BROWN BUILDING', 'BUILDING 41']),
+(DATE_BUILT:NUMBER, Examples: ['07/01/1913', '08/01/1966', '12/31/1915']),
+(DATE_ACQUIRED:VARCHAR2, Examples: ['10/01/1958', '02/13/2024', '07/01/2016']),
+(DATE_OCCUPIED:VARCHAR2, Examples: ['12/31/1916', '12/31/1968', '12/31/1917']),
+(WAREHOUSE_LOAD_DATE:VARCHAR2, Examples: ['19-DEC-24']),
+(NUM_OF_ROOMS:VARCHAR2, Examples: [383, 250, 106])
+]
+# Table: FAC_BUILDING_ADDRESS
+[
+(BUILDING_ADDRESS_KEY:DATE, Examples: ['66-STREET', '68-E911_1', '68-MAIL']),
+(BUILDING_KEY:VARCHAR2, Examples: ['1', '10', '11']),
+(ADDRESS_PURPOSE:VARCHAR2, Examples: ['STREET', 'E911_1', 'MAIL']),
+(ADDRESS_CITY_ID:VARCHAR2, Examples: ['25344', '25345', '708']),
+(IS_E911_ADDRESS:VARCHAR2),
+(STREET_NUMBER:VARCHAR2, Examples: ['25', '31', '77']),
+(STREET_NUMBER_SUFFIX:VARCHAR2, Examples: ['R']),
+(PRE_DIRECTIONAL:VARCHAR2),
+(STREET_NAME:VARCHAR2, Examples: ['AMES', 'MASSACHUSETTS', 'MAIN']),
+(STREET_SUFFIX:VARCHAR2, Examples: ['ST', 'AVE', 'DR']),
+(POST_DIRECTIONAL:VARCHAR2, Examples: ['(Rear)', 'NE', 'NW']),
+(CITY:VARCHAR2, Examples: ['CAMBRIDGE', 'DEDHAM', 'BOSTON']),
+(STATE:VARCHAR2, Examples: ['MA', 'DC']),
+(POSTAL_CODE:VARCHAR2, Examples: ['2142', '2139', '2026']),
+(WAREHOUSE_LOAD_DATE:VARCHAR2, Examples: ['19-DEC-24'])
+]
+# Table: FAC_FLOOR
+[
+(BUILDING_KEY:DATE, Examples: ['1', '10', '11']),
+(FLOOR:VARCHAR2, Examples: ['4', '5', '1']),
+(FLOOR_KEY:VARCHAR2, Examples: ['1-0', '1-1', '1-2']),
+(EXT_GROSS_AREA:VARCHAR2, Examples: [15472.5, 1045.28, 6443.95]),
+(ASSIGNABLE_AREA:NUMBER, Examples: [5264.78, 309.76, 6910.44]),
+(NON_ASSIGNABLE_AREA:NUMBER, Examples: [8451.17, 534.72, 711.61]),
+(FLOOR_SORT_SEQUENCE:NUMBER, Examples: ['4', '5', '1']),
+(LEVEL_ID:VARCHAR2, Examples: ['4', '5', '1']),
+(BUILDING_WINGS_ID:VARCHAR2, Examples: ['W61A.3', 'W61E.2 W61F.2 W61G.2 W61H.2 W61J.2 W61M.2', 'W61E.3 W61F.3 W61G.3 W61H.3 W61J.3 W61M.3']),
+(ACCESS_LEVEL:VARCHAR2, Examples: ['2', '0', '3']),
+(WAREHOUSE_LOAD_DATE:VARCHAR2, Examples: ['19-DEC-24'])
+]
+# Table: FAC_ROOMS
+[
+(FAC_ROOM_KEY:DATE, Examples: ['1-001C', '1-001E', '1-002']),
+(BUILDING_KEY:VARCHAR2, Examples: ['1', '10', '11']),
+(FLOOR:VARCHAR2, Examples: ['1', '0', '3']),
+(FLOOR_KEY:VARCHAR2, Examples: ['1-0', '1-1', '1-2']),
+(ROOM:VARCHAR2, Examples: ['000', '0000', '000012']),
+(SPACE_ID:VARCHAR2, Examples: ['1-1-175', '1-1-195F', '1-1-140']),
+(MAJOR_USE_KEY:VARCHAR2, Examples: ['101', '102', '103']),
+(MAJOR_USE_DESC:VARCHAR2, Examples: ['MECHANIC', 'BLDG SRV', 'CIRCULAT']),
+(USE_KEY:VARCHAR2, Examples: ['153', '155', '156']),
+(USE_DESC:VARCHAR2),
+(MINOR_USE_KEY:VARCHAR2),
+(MINOR_USE_DESC:VARCHAR2),
+(ORGANIZATION_KEY:VARCHAR2, Examples: ['101', '102', '103']),
+(ORGANIZATION_NAME:VARCHAR2, Examples: ['DOF', 'MIBR', 'PILM']),
+(MINOR_ORGANIZATION_KEY:VARCHAR2),
+(MINOR_ORGANIZATION:VARCHAR2),
+(AREA:VARCHAR2, Examples: [7.11, 10.0, 45.42]),
+(ROOM_FULL_NAME:NUMBER, Examples: ['KRESGE LOBBY', 'WEST LOUNGE', 'SALA DE PUERTO RICO']),
+(DEPT_CODE:VARCHAR2, Examples: ['93700', '93800', '93400']),
+(ACCESS_LEVEL:VARCHAR2, Examples: ['0', '1', '3']),
+(LATITUDE_WGS:VARCHAR2),
+(LONGITUDE_WGS:NUMBER),
+(NORTHING_SPCS:NUMBER),
+(EASTING_SPCS:NUMBER),
+(WAREHOUSE_LOAD_DATE:NUMBER, Examples: ['19-DEC-24'])
+]
+
+### Question ###
+List building names, their height, street address, city, state, postal code, their gross and assignable square footage, the smallest and largest floor level and the total area of all rooms for each building key.
+
+(Hints: Schema Mapping Hints:
+- 'building names' is related to FAC_BUILDING.BUILDING_NAME
+- 'height' is related to FAC_BUILDING.BUILDING_HEIGHT
+- 'street address' is related to BUILDINGS.BUILDING_STREET_ADDRESS, FAC_BUILDING_ADDRESS.ADDRESS_PURPOSE
+- 'city' is related to FAC_BUILDING_ADDRESS.CITY
+- 'state' is related to FAC_BUILDING_ADDRESS.STATE
+- 'postal code' is related to FAC_BUILDING_ADDRESS.POSTAL_CODE
+- 'gross square footage' is related to FAC_BUILDING.EXT_GROSS_AREA
+- 'assignable square footage' is related to FAC_BUILDING.ASSIGNABLE_AREA
+- 'floor level' is related to FAC_FLOOR.LEVEL_ID
+- 'area' is related to FAC_ROOMS.AREA
+- 'building key' is related to FAC_BUILDING.FAC_BUILDING_KEY
+
+Join Information: (FAC_BUILDING.FAC_BUILDING_KEY = FAC_BUILDING_ADDRESS.BUILDING_KEY), (FAC_BUILDING.FAC_BUILDING_KEY = FAC_FLOOR.BUILDING_KEY), (FAC_FLOOR.FLOOR_KEY = FAC_ROOMS.FLOOR_KEY), (FAC_BUILDING.FAC_BUILDING_KEY = BUILDINGS.BUILDING_KEY))
+
+### Generated SQL Query ###
+Generated SQL:
+
+
+***** TOOL CALL LOG *****
+
+[Iteration 1] ✅ Final SQL Response:
+  ```sql
+SELECT 
+    fb.BUILDING_NAME,
+    fb.BUILDING_HEIGHT,
+    b.BUILDING_STREET_ADDRESS,
+    fba.CITY,
+    fba.STATE,
+    fba.POSTAL_CODE,
+    fb.EXT_GROSS_AREA,
+    fb.ASSIGNABLE_AREA,
+    MIN(ff.LEVEL_ID) AS SMALLEST_FLOOR_LEVEL,
+    MAX(ff.LEVEL_ID) AS LARGEST_FLOOR_LEVEL,
+    SUM(CAST(fr.AREA AS DECIMAL(10, 2))) AS TOTAL_ROOM_AREA
+FROM 
+    FAC_BUILDING fb
+JOIN 
+    BUILDINGS b ON fb.FAC_BUILDING_KEY = b.BUILDING_KEY
+JOIN 
+    FAC_BUILDING_ADDRESS fba ON fb.FAC_BUILDING_KEY = fba.BUILDING_KEY
+JOIN 
+    FAC_FLOOR ff ON fb.FAC_BUILDING_KEY = ff.BUILDING_KEY
+JOIN 
+    FAC_ROOMS fr ON ff.FLOOR_KEY = fr.FLOOR_KEY
+WHERE 
+    fba.ADDRESS_PURPOSE = 'STREET'
+GROUP BY 
+    fb.FAC_BUILDING_KEY, fb.BUILDING_NAME, fb.BUILDING_HEIGHT, b.BUILDING_STREET_ADDRESS, fba.CITY, fba.STATE, fba.POSTAL_CODE, fb.EXT_GROSS_AREA, fb.ASSIGNABLE_AREA;
+```
+
+***** RESPONSE *****
+<src.model.openai_model.OpenAIModel.generate.<locals>.ResponseWrapper object at 0x0000025D289C88B0>
+
+***** TOKEN INFO *****
+CompletionUsage(completion_tokens=284, prompt_tokens=2540, total_tokens=2824, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0))
+
+***** FINAL SQL QUERY *****
+SELECT 
+    fb.BUILDING_NAME,
+    fb.BUILDING_HEIGHT,
+    b.BUILDING_STREET_ADDRESS,
+    fba.CITY,
+    fba.STATE,
+    fba.POSTAL_CODE,
+    fb.EXT_GROSS_AREA,
+    fb.ASSIGNABLE_AREA,
+    MIN(ff.LEVEL_ID) AS SMALLEST_FLOOR_LEVEL,
+    MAX(ff.LEVEL_ID) AS LARGEST_FLOOR_LEVEL,
+    SUM(CAST(fr.AREA AS DECIMAL(10, 2))) AS TOTAL_ROOM_AREA
+FROM 
+    FAC_BUILDING fb
+JOIN 
+    BUILDINGS b ON fb.FAC_BUILDING_KEY = b.BUILDING_KEY
+JOIN 
+    FAC_BUILDING_ADDRESS fba ON fb.FAC_BUILDING_KEY = fba.BUILDING_KEY
+JOIN 
+    FAC_FLOOR ff ON fb.FAC_BUILDING_KEY = ff.BUILDING_KEY
+JOIN 
+    FAC_ROOMS fr ON ff.FLOOR_KEY = fr.FLOOR_KEY
+WHERE 
+    fba.ADDRESS_PURPOSE = 'STREET'
+GROUP BY 
+    fb.FAC_BUILDING_KEY, fb.BUILDING_NAME, fb.BUILDING_HEIGHT, b.BUILDING_STREET_ADDRESS, fba.CITY, fba.STATE, fba.POSTAL_CODE, fb.EXT_GROSS_AREA, fb.ASSIGNABLE_AREA;
+
+***** TOKEN MONITORING *****
+TOKEN PER ITERATION    : 2540, 284
+TOTAL                  : 7586, 6759, 827
+AVG                    : 1896.50, 1689.75, 206.75
+******************************************************************************************************************************************************
+******************************************************************************************************************************************************
+
+***** FINAL PROMPT *****
+### System Instructions ###
+You are an expert SQL developer.
+You must generate an accurate and efficient MySQL query based on the provided database schema and natural language question.
+Never use tables or columns that are not specified in the schema.
+Do not add any explanations other than the final SQL query.
+Now generate MySQL SQL query to answer the given "Question" without any explanation.
+
+### Schema ###
+[DB_ID] dw
+# Schema
+# Table: FCLT_BUILDING
+[
+(FCLT_BUILDING_KEY:VARCHAR2, Examples: ['1', '10', '11']),
+(BUILDING_NUMBER:VARCHAR2, Examples: ['2', '39', '41']),
+(PARENT_BUILDING_NUMBER:VARCHAR2, Examples: ['62', '64', 'W85DE']),
+(PARENT_BUILDING_NAME:VARCHAR2, Examples: ['ALUMNI HOUSES: MUNROE HAYDEN WOOD', 'EAST CAMPUS: WALCOTT BEMIS GOODALE', 'WESTGATE (DE)']),
+(PARENT_BUILDING_NAME_LONG:VARCHAR2, Examples: ['Alumni Houses: Munroe Hayden Wood', 'Alumni Houses: Walcott Bemis Goodale', 'Westgate DE']),
+(BUILDING_NAME_LONG:VARCHAR2, Examples: ['THE SIMONS BUILDING', 'Stanley Gordon Brown Building', 'Building 41']),
+(EXT_GROSS_AREA:NUMBER, Examples: [133168.0, 76639.9, 26148.2]),
+(ASSIGNABLE_AREA:NUMBER, Examples: [73695.2, 39391.1, 20058.6]),
+(NON_ASSIGNABLE_AREA:NUMBER, Examples: [43048.0, 30704.7, 4407.76]),
+(SITE:VARCHAR2, Examples: ['MIT', 'BATES', 'HAY']),
+(CAMPUS_SECTOR:VARCHAR2, Examples: ['MAIN GROUP', 'EAST', 'NORTHEAST']),
+(ACCESS_LEVEL_CODE:NUMBER, Examples: [0, 1, 2]),
+(ACCESS_LEVEL_NAME:VARCHAR2, Examples: ['2', '0', '1']),
+(BUILDING_TYPE:VARCHAR2, Examples: ['ACADEMIC', 'SERVICE', 'RESIDENT']),
+(OWNERSHIP_TYPE:VARCHAR2, Examples: ['OWNED', 'LEASED']),
+(BUILDING_USE:VARCHAR2, Examples: ['AER', 'OTH', 'DHOA']),
+(OCCUPANCY_CLASS:VARCHAR2, Examples: ['UGBA3', 'UGB', '(NULL)']),
+(BUILDING_HEIGHT:VARCHAR2, Examples: ['82.6', '91.1', '61.2']),
+(COST_CENTER_CODE:VARCHAR2, Examples: ['1342002', '1345000', '1345300']),
+(COST_COLLECTOR_KEY:VARCHAR2, Examples: ['1342002', '1345000', '1345300']),
+(LATITUDE_WGS:NUMBER, Examples: [42.3588, 42.3609, 42.3608]),
+(LONGITUDE_WGS:NUMBER, Examples: [-71.0902, -71.0927, -71.0942]),
+(EASTING_X_SPCS:NUMBER, Examples: [766931.0, 766239.0, 765853.0]),
+(NORTHING_Y_SPCS:NUMBER, Examples: [2956050.0, 2956790.0, 2956750.0]),
+(BUILDING_SORT:VARCHAR2, Examples: ['02', '39', '41']),
+(BUILDING_NAMED_FOR:VARCHAR2, Examples: ['James H. and Marilyn Simons', 'GORDON STANLEY BROWN', '-']),
+(BUILDING_NAME:VARCHAR2, Examples: ['THE SIMONS BUILDING', 'BROWN BUILDING', 'BUILDING 41']),
+(DATE_BUILT:VARCHAR2, Examples: ['07/01/1913', '08/01/1966', '12/31/1915']),
+(DATE_ACQUIRED:VARCHAR2, Examples: ['10/01/1958', '02/13/2024', '07/01/2016']),
+(DATE_OCCUPIED:VARCHAR2, Examples: ['12/31/1916', '12/31/1968', '12/31/1917']),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24']),
+(NUM_OF_ROOMS:NUMBER, Examples: [383, 250, 106])
+]
+# Table: FCLT_ORGANIZATION
+[
+(FCLT_ORGANIZATION_KEY:VARCHAR2, Examples: ['101', '102', '103']),
+(ORGANIZATION_ID:VARCHAR2, Examples: ['101', '102', '103']),
+(ORGANIZATION:VARCHAR2, Examples: ['A/VSVC', 'ACT', 'ADMISS']),
+(ORGANIZATION_NAME:VARCHAR2, Examples: ['AUDIO-VISUAL SVC', 'ART CULT & TECH', 'ADMISSIONS']),
+(FCLT_ORG_PARENT_KEY:VARCHAR2, Examples: ['160', '247', '152']),
+(ORG_PARENT:VARCHAR2, Examples: ['ENTSVC', 'SAP', 'OVC']),
+(FCLT_MAJOR_ORG_KEY:VARCHAR2, Examples: ['129', '230', '105']),
+(MAJOR_ORG:VARCHAR2, Examples: ['CHNCLR', 'PROVST', 'ALL']),
+(ORGANIZATION_LEVEL:VARCHAR2, Examples: ['6', '5', '1']),
+(ORGANIZATION_NUMBER:VARCHAR2, Examples: ['874100', '38000', '446100']),
+(ORGANIZATION_SORT:VARCHAR2, Examples: ['101030309', '101060034', '101030402']),
+(ASSIGNABLE:VARCHAR2, Examples: ['1', '0']),
+(COURSE:VARCHAR2, Examples: ['16', '21A', '4']),
+(DESCRIPTION:VARCHAR2, Examples: ['Department of Aeronautics and Astronautics', 'Anthropology Program', 'Department of Architecture']),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24']),
+(DLC_KEY:VARCHAR2, Examples: ['D_ACT', 'D_ADM', 'D_AEROASTRO']),
+(DLC_NAME:VARCHAR2, Examples: ['Audiovisual Services', 'Program in Art Culture & Technology', 'Admissions']),
+(HR_DEPARTMENT_CODE_OLD:VARCHAR2, Examples: ['10000', '121000', '150000']),
+(HR_ORG_UNIT_ID:VARCHAR2, Examples: ['10000265', '10000267', '10000270']),
+(HR_DEPARTMENT_NAME:VARCHAR2, Examples: ['Audio Visual Services', 'Program in Art, Culture and Technology', 'Admissions Office'])
+]
+# Table: SPACE_DETAIL
+[
+(BUILDING_KEY:VARCHAR2, Examples: ['1', '10', '11']),
+(FLOOR_KEY:VARCHAR2, Examples: ['0', '00', '000']),
+(SPACE_UNIT_KEY:VARCHAR2, Examples: ['121000', '150000', '151000']),
+(SPACE_USAGE_KEY:NUMBER, Examples: [1, 2, 3]),
+(BUILDING_ROOM:VARCHAR2, Examples: ['1-080', '1-082F', '1-025F']),
+(BUILDING_ROOM_NAME:VARCHAR2, Examples: ['1-080', '1-082F', '1-025F']),
+(ROOM_NUMBER:VARCHAR2, Examples: ['80', '82F', '25F']),
+(ROOM_SQUARE_FOOTAGE:NUMBER, Examples: [1033, 147, 271]),
+(ROOM_COUNTER:NUMBER, Examples: [1]),
+(BUILDING_COMPONENT:VARCHAR2, Examples: ['1', '10', '11']),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24'])
+]
+# Table: SPACE_FLOOR
+[
+(FLOOR_KEY:VARCHAR2, Examples: ['0', '00', '000']),
+(FLOOR:VARCHAR2, Examples: ['0', '00', '000']),
+(FLOOR_NAME:VARCHAR2, Examples: ['0 Floor', '00 Floor', '000 Floor']),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24'])
+]
+# Table: SPACE_SUPERVISOR_USAGE
+[
+(MIT_ID:VARCHAR2, Examples: ['932464132', '989998641', '904031741']),
+(DEPT_COUNT:NUMBER, Examples: [1, 2, 4]),
+(DEPT_NAMES:VARCHAR2, Examples: ['D_ACT', 'D_ACT,D_RESDEV', 'D_ADM']),
+(NUM_OF_SUPERVISEES:NUMBER, Examples: [1, 4, 2]),
+(SQFT:NUMBER, Examples: [0.0, 103.0, 162.0]),
+(RESEARCH_VOLUME:NUMBER, Examples: [0.0, 1350070.0, 56280.0]),
+(SQFT_PER_SUPERVISEE:NUMBER, Examples: [0.0, 103.0, 162.0]),
+(SQFT_PER_RES_VOL:NUMBER, Examples: [0.0, -18.0, 5.0]),
+(RES_VOL_PER_SQFT:NUMBER, Examples: [0.0, 522.0, 253.0])
+]
+# Table: SPACE_UNIT
+[
+(FCLT_ORGANIZATION_KEY:VARCHAR2, Examples: ['101', '102', '103']),
+(SPACE_UNIT_KEY:VARCHAR2, Examples: ['10000', '121000', '150000']),
+(SPACE_UNIT_CODE:VARCHAR2, Examples: ['10000', '121000', '150000']),
+(SPACE_UNIT:VARCHAR2, Examples: ['Technology & Policy Program', 'Division Of Comparative Medicine', 'Physics']),
+(DLC_KEY:VARCHAR2, Examples: ['D_ACT', 'D_ADM', 'D_AEROASTRO']),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24'])
+]
+
+### Question ###
+What is the DLC key, name of the DLC, total number of floors, total square footage, total number of facility organizations, total number of supervisors, total number of supervisees, and total building heights for each DLC?
+
+(Hints: Schema Mapping Hints:
+- 'DLC key' is related to SPACE_UNIT.DLC_KEY
+- 'name of the DLC' is related to FCLT_ORGANIZATION.DLC_NAME
+- 'floors' is related to SPACE_FLOOR.FLOOR
+- 'square footage' is related to SPACE_DETAIL.ROOM_SQUARE_FOOTAGE
+- 'facility organizations' is related to SPACE_UNIT.FCLT_ORGANIZATION_KEY
+- 'supervisors' is related to SPACE_SUPERVISOR_USAGE.MIT_ID
+- 'supervisees' is related to SPACE_SUPERVISOR_USAGE.NUM_OF_SUPERVISEES
+- 'building heights' is related to FCLT_BUILDING.BUILDING_HEIGHT
+
+Join Information: (SPACE_UNIT.DLC_KEY = SPACE_SUPERVISOR_USAGE.DEPT_NAMES))
+
+### Generated SQL Query ###
+Generated SQL:
+
+
+***** TOOL CALL LOG *****
+
+[Iteration 1] ✅ Final SQL Response:
+  ```sql
+SELECT 
+    su.DLC_KEY,
+    fo.DLC_NAME,
+    COUNT(DISTINCT sf.FLOOR_KEY) AS total_floors,
+    SUM(sd.ROOM_SQUARE_FOOTAGE) AS total_square_footage,
+    COUNT(DISTINCT su.FCLT_ORGANIZATION_KEY) AS total_facility_organizations,
+    COUNT(DISTINCT ssu.MIT_ID) AS total_supervisors,
+    SUM(ssu.NUM_OF_SUPERVISEES) AS total_supervisees,
+    SUM(CAST(fb.BUILDING_HEIGHT AS DECIMAL(10, 2))) AS total_building_heights
+FROM 
+    SPACE_UNIT su
+JOIN 
+    FCLT_ORGANIZATION fo ON su.DLC_KEY = fo.DLC_KEY
+JOIN 
+    SPACE_DETAIL sd ON su.SPACE_UNIT_KEY = sd.SPACE_UNIT_KEY
+JOIN 
+    SPACE_FLOOR sf ON sd.FLOOR_KEY = sf.FLOOR_KEY
+JOIN 
+    SPACE_SUPERVISOR_USAGE ssu ON FIND_IN_SET(su.DLC_KEY, ssu.DEPT_NAMES) > 0
+JOIN 
+    FCLT_BUILDING fb ON sd.BUILDING_KEY = fb.FCLT_BUILDING_KEY
+GROUP BY 
+    su.DLC_KEY, fo.DLC_NAME;
+```
+
+***** RESPONSE *****
+<src.model.openai_model.OpenAIModel.generate.<locals>.ResponseWrapper object at 0x0000025D2846E230>
+
+***** TOKEN INFO *****
+CompletionUsage(completion_tokens=271, prompt_tokens=2374, total_tokens=2645, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0))
+
+***** FINAL SQL QUERY *****
+SELECT 
+    su.DLC_KEY,
+    fo.DLC_NAME,
+    COUNT(DISTINCT sf.FLOOR_KEY) AS total_floors,
+    SUM(sd.ROOM_SQUARE_FOOTAGE) AS total_square_footage,
+    COUNT(DISTINCT su.FCLT_ORGANIZATION_KEY) AS total_facility_organizations,
+    COUNT(DISTINCT ssu.MIT_ID) AS total_supervisors,
+    SUM(ssu.NUM_OF_SUPERVISEES) AS total_supervisees,
+    SUM(CAST(fb.BUILDING_HEIGHT AS DECIMAL(10, 2))) AS total_building_heights
+FROM 
+    SPACE_UNIT su
+JOIN 
+    FCLT_ORGANIZATION fo ON su.DLC_KEY = fo.DLC_KEY
+JOIN 
+    SPACE_DETAIL sd ON su.SPACE_UNIT_KEY = sd.SPACE_UNIT_KEY
+JOIN 
+    SPACE_FLOOR sf ON sd.FLOOR_KEY = sf.FLOOR_KEY
+JOIN 
+    SPACE_SUPERVISOR_USAGE ssu ON FIND_IN_SET(su.DLC_KEY, ssu.DEPT_NAMES) > 0
+JOIN 
+    FCLT_BUILDING fb ON sd.BUILDING_KEY = fb.FCLT_BUILDING_KEY
+GROUP BY 
+    su.DLC_KEY, fo.DLC_NAME;
+
+***** TOKEN MONITORING *****
+TOKEN PER ITERATION    : 2374, 271
+TOTAL                  : 10231, 9133, 1098
+AVG                    : 2046.20, 1826.60, 219.60
+******************************************************************************************************************************************************
+******************************************************************************************************************************************************
+

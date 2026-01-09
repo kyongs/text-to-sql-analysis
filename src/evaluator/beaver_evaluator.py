@@ -67,6 +67,18 @@ class BeaverEvaluator(BaseEvaluator):
 
         try:
             subprocess.run(command, check=True)
+            
+            # Load detailed results
+            exec_results_path = os.path.join(output_dir, 'exec_results_detail.json')
+            if os.path.exists(exec_results_path):
+                with open(exec_results_path, 'r') as f:
+                    exec_results = json.load(f)
+                return {
+                    "status": "Evaluation script executed successfully.",
+                    "exec_results_path": exec_results_path,
+                    "total": len(exec_results),
+                    "correct": sum(r['res'] for r in exec_results)
+                }
             return {"status": "Evaluation script executed successfully."}
         except (FileNotFoundError, subprocess.CalledProcessError) as e:
             return {"error": f"🚨 Evaluation script failed: {e}"}

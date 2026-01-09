@@ -1,0 +1,209 @@
+{
+  "model": "4o",
+  "configs": {
+    "base": "20260106_4o_base",
+    "path_only": "20260106_4o_path",
+    "insp_only": "20260106_4o_insp",
+    "both": "20260106_4o_both"
+  },
+  "summary": {
+    "base": {
+      "total": 121,
+      "correct": 19,
+      "incorrect": 102,
+      "accuracy": 15.702479338842975
+    },
+    "path_only": {
+      "total": 121,
+      "correct": 23,
+      "incorrect": 98,
+      "accuracy": 19.00826446280992
+    },
+    "insp_only": {
+      "total": 121,
+      "correct": 23,
+      "incorrect": 98,
+      "accuracy": 19.00826446280992
+    },
+    "both": {
+      "total": 121,
+      "correct": 19,
+      "incorrect": 102,
+      "accuracy": 15.702479338842975
+    }
+  },
+  "intersection": {
+    "all_four_wrong": [
+      2,
+      4,
+      6,
+      7,
+      8,
+      10,
+      15,
+      16,
+      18,
+      20,
+      21,
+      24,
+      25,
+      26,
+      27,
+      30,
+      32,
+      33,
+      34,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      43,
+      44,
+      45,
+      47,
+      48,
+      49,
+      50,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      111,
+      114,
+      116,
+      117
+    ],
+    "all_four_wrong_count": 90,
+    "all_four_correct": [
+      12,
+      14,
+      17,
+      19,
+      29,
+      51,
+      112,
+      113,
+      115,
+      119
+    ],
+    "all_four_correct_count": 10,
+    "unique_errors_total": 111,
+    "overlap_rate": 81.08108108108108,
+    "three_way": {
+      "base_path_insp": [],
+      "base_path_both": [
+        0,
+        67,
+        120
+      ],
+      "base_insp_both": [
+        46,
+        118
+      ],
+      "path_insp_both": [
+        5
+      ]
+    },
+    "pairwise": {
+      "base_path": [
+        1
+      ],
+      "base_insp": [
+        31,
+        110
+      ],
+      "base_both": [
+        109
+      ],
+      "path_insp": [],
+      "path_both": [
+        58
+      ],
+      "insp_both": [
+        42,
+        96
+      ]
+    },
+    "unique": {
+      "base_unique": [
+        9,
+        22,
+        23
+      ],
+      "path_unique": [
+        13,
+        35
+      ],
+      "insp_unique": [
+        28
+      ],
+      "both_unique": [
+        3,
+        11
+      ]
+    }
+  },
+  "effectiveness_vs_base": {
+    "fixed_by_path": 8,
+    "fixed_by_insp": 8,
+    "fixed_by_both": 6,
+    "new_by_path": 4,
+    "new_by_insp": 4,
+    "new_by_both": 6,
+    "net_path": 4,
+    "net_insp": 4,
+    "net_both": 0
+  }
+}

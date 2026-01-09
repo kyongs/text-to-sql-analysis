@@ -1,0 +1,2072 @@
+{
+  "ACADEMIC_TERM_PARAMETER": {
+    "pk_candidates": [
+      {
+        "column": "TERM_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "2024SU",
+          "2025FA",
+          "2025JA"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "TERM_CODE"
+  },
+  "ACADEMIC_TERMS": {
+    "pk_candidates": [
+      {
+        "column": "ACADEMIC_TERMS_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1995FA",
+          "1995JA",
+          "1995SP",
+          "1995SU",
+          "1996FA"
+        ],
+        "uniqueness_percent": 100.0
+      },
+      {
+        "column": "TERM_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1995FA",
+          "1995JA",
+          "1995SP",
+          "1995SU",
+          "1996FA"
+        ],
+        "uniqueness_percent": 100.0
+      },
+      {
+        "column": "TERM_START_DATE",
+        "data_type": "varchar",
+        "column_type": "varchar(255)",
+        "sample_values": [
+          "01-FEB-10",
+          "01-FEB-16",
+          "01-FEB-20",
+          "01-FEB-25",
+          "01-FEB-27"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "ACADEMIC_TERMS_KEY"
+  },
+  "ACADEMIC_TERMS_ALL": {
+    "pk_candidates": [
+      {
+        "column": "ACADEMIC_TERMS_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1951FA",
+          "1951SP",
+          "1951SU",
+          "1952FA",
+          "1952SP"
+        ],
+        "uniqueness_percent": 100.0
+      },
+      {
+        "column": "TERM_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1951FA",
+          "1951SP",
+          "1951SU",
+          "1952FA",
+          "1952SP"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "ACADEMIC_TERMS_KEY"
+  },
+  "BUILDINGS": {
+    "pk_candidates": [
+      {
+        "column": "BUILDING_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "uniqueness_percent": 100.0
+      },
+      {
+        "column": "BUILDING_NUMBER",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "BUILDING_KEY"
+  },
+  "CIP": {
+    "pk_candidates": [
+      {
+        "column": "PROGRAM_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "010000",
+          "010100",
+          "010101",
+          "010102",
+          "010103"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "PROGRAM_CODE"
+  },
+  "CIP_WITH_VERSION": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "CIS_COURSE_CATALOG": {
+    "pk_candidates": [
+      {
+        "column": "SUBJECT_ID",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1.00",
+          "1.000",
+          "1.001",
+          "1.002",
+          "1.004"
+        ],
+        "uniqueness_percent": 9.02
+      },
+      {
+        "column": "SUBJECT_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "uniqueness_percent": 0.05
+      },
+      {
+        "column": "MASTER_SUBJECT_ID",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1.00",
+          "1.000",
+          "1.005",
+          "1.006",
+          "1.007"
+        ],
+        "uniqueness_percent": 9.07
+      }
+    ],
+    "recommended_pk": "SUBJECT_ID"
+  },
+  "CIS_HASS_ATTRIBUTE": {
+    "pk_candidates": [
+      {
+        "column": "HASS_ATTRIBUTE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "HA",
+          "HA,HH",
+          "HA,HS",
+          "HA2",
+          "HD1"
+        ],
+        "uniqueness_percent": 94.12
+      }
+    ],
+    "recommended_pk": "HASS_ATTRIBUTE"
+  },
+  "COURSE_CATALOG_SUBJECT_OFFERED": {
+    "pk_candidates": [
+      {
+        "column": "TERM_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "2002FA",
+          "2002JA",
+          "2002SP",
+          "2002SU",
+          "2003FA"
+        ],
+        "uniqueness_percent": 0.53
+      },
+      {
+        "column": "RESPONSIBLE_FACULTY_MIT_ID",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "900013216",
+          "900026651",
+          "900043308",
+          "900077411",
+          "900213955"
+        ],
+        "uniqueness_percent": 18.53
+      },
+      {
+        "column": "SUBJECT_ID",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1.00",
+          "1.000",
+          "1.001",
+          "1.002",
+          "1.007"
+        ],
+        "uniqueness_percent": 34.23
+      }
+    ],
+    "recommended_pk": "TERM_CODE"
+  },
+  "DRUPAL_COURSE_CATALOG": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "DRUPAL_EMPLOYEE_DIRECTORY": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "EMPLOYEE_DIRECTORY": {
+    "pk_candidates": [
+      {
+        "column": "MIT_ID",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "900013216",
+          "900018937",
+          "900019389",
+          "900019713",
+          "900022748"
+        ],
+        "uniqueness_percent": 100.0
+      },
+      {
+        "column": "OFFICE_LOCATION",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "1-018",
+          "1-037E",
+          "1-055",
+          "1-063"
+        ],
+        "uniqueness_percent": 42.17
+      },
+      {
+        "column": "KRB_NAME",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "aa",
+          "aadama",
+          "aadamb",
+          "aadamc",
+          "aadamd"
+        ],
+        "uniqueness_percent": 41.24
+      }
+    ],
+    "recommended_pk": "MIT_ID"
+  },
+  "ESTIMATED_SURCHARGES_ESTONLY": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "FAC_BUILDING": {
+    "pk_candidates": [
+      {
+        "column": "FAC_BUILDING_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "FAC_BUILDING_KEY"
+  },
+  "FAC_BUILDING_ADDRESS": {
+    "pk_candidates": [
+      {
+        "column": "BUILDING_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "uniqueness_percent": 30.83
+      }
+    ],
+    "recommended_pk": "BUILDING_KEY"
+  },
+  "FAC_FLOOR": {
+    "pk_candidates": [
+      {
+        "column": "BUILDING_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "uniqueness_percent": 22.15
+      },
+      {
+        "column": "FLOOR_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1-0",
+          "1-1",
+          "1-2",
+          "1-3",
+          "1-4"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "BUILDING_KEY"
+  },
+  "FAC_MAJOR_USE": {
+    "pk_candidates": [
+      {
+        "column": "MAJOR_USE_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "101",
+          "102",
+          "103",
+          "104",
+          "105"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "MAJOR_USE_KEY"
+  },
+  "FAC_ORGANIZATION": {
+    "pk_candidates": [
+      {
+        "column": "ORGANIZATION_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "101",
+          "102",
+          "103",
+          "104",
+          "105"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "ORGANIZATION_KEY"
+  },
+  "FAC_ROOMS": {
+    "pk_candidates": [
+      {
+        "column": "BUILDING_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "uniqueness_percent": 0.54
+      },
+      {
+        "column": "FLOOR_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1-0",
+          "1-1",
+          "1-2",
+          "1-3",
+          "1-4"
+        ],
+        "uniqueness_percent": 2.37
+      },
+      {
+        "column": "ORGANIZATION_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "101",
+          "102",
+          "103",
+          "104",
+          "106"
+        ],
+        "uniqueness_percent": 0.3
+      }
+    ],
+    "recommended_pk": "BUILDING_KEY"
+  },
+  "FCLT_BUILDING": {
+    "pk_candidates": [
+      {
+        "column": "FCLT_BUILDING_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "uniqueness_percent": 100.0
+      },
+      {
+        "column": "COST_COLLECTOR_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1342002",
+          "1345000",
+          "1345300",
+          "1345500",
+          "1345770"
+        ],
+        "uniqueness_percent": 83.21
+      },
+      {
+        "column": "ACCESS_LEVEL_CODE",
+        "data_type": "int",
+        "column_type": "int",
+        "sample_values": [
+          "0",
+          "1",
+          "2"
+        ],
+        "uniqueness_percent": 1.24
+      }
+    ],
+    "recommended_pk": "FCLT_BUILDING_KEY"
+  },
+  "FCLT_BUILDING_ADDRESS": {
+    "pk_candidates": [
+      {
+        "column": "FCLT_BUILDING_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "uniqueness_percent": 30.83
+      }
+    ],
+    "recommended_pk": "FCLT_BUILDING_KEY"
+  },
+  "FCLT_BUILDING_ADDRESS_HIST": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "FCLT_BUILDING_HIST": {
+    "pk_candidates": [
+      {
+        "column": "FCLT_BUILDING_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "12A"
+        ],
+        "uniqueness_percent": 0.96
+      },
+      {
+        "column": "COST_COLLECTOR_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1342002",
+          "1345000",
+          "1345300",
+          "1345500",
+          "1345600"
+        ],
+        "uniqueness_percent": 0.74
+      },
+      {
+        "column": "ACCESS_LEVEL_CODE",
+        "data_type": "int",
+        "column_type": "int",
+        "sample_values": [
+          "0",
+          "1",
+          "2",
+          "3"
+        ],
+        "uniqueness_percent": 0.01
+      }
+    ],
+    "recommended_pk": "FCLT_BUILDING_KEY"
+  },
+  "FCLT_BUILDING_HIST_1": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "FCLT_FLOOR": {
+    "pk_candidates": [
+      {
+        "column": "FCLT_BUILDING_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "uniqueness_percent": 22.15
+      },
+      {
+        "column": "FCLT_FLOOR_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1-0",
+          "1-1",
+          "1-2",
+          "1-3",
+          "1-4"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "FCLT_BUILDING_KEY"
+  },
+  "FCLT_FLOOR_HIST": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "FCLT_MAJOR_USE": {
+    "pk_candidates": [
+      {
+        "column": "FCLT_MAJOR_USE_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "101",
+          "102",
+          "103",
+          "104",
+          "105"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "FCLT_MAJOR_USE_KEY"
+  },
+  "FCLT_MAJOR_USE_HIST": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "FCLT_ORG_DLC_KEY": {
+    "pk_candidates": [
+      {
+        "column": "FCLT_ORGANIZATION_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "101",
+          "102",
+          "103",
+          "104",
+          "105"
+        ],
+        "uniqueness_percent": 100.0
+      },
+      {
+        "column": "DLC_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "D_ACT",
+          "D_ADM",
+          "D_AEROASTRO",
+          "D_ALUM",
+          "D_ANTHRO"
+        ],
+        "uniqueness_percent": 85.0
+      }
+    ],
+    "recommended_pk": "FCLT_ORGANIZATION_KEY"
+  },
+  "FCLT_ORGANIZATION": {
+    "pk_candidates": [
+      {
+        "column": "FCLT_ORGANIZATION_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "101",
+          "102",
+          "103",
+          "104",
+          "105"
+        ],
+        "uniqueness_percent": 93.33
+      },
+      {
+        "column": "DLC_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "D_ACT",
+          "D_ADM",
+          "D_AEROASTRO",
+          "D_ALUM",
+          "D_ANTHRO"
+        ],
+        "uniqueness_percent": 79.07
+      },
+      {
+        "column": "HR_ORG_UNIT_ID",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "10000265",
+          "10000267",
+          "10000270",
+          "10000272",
+          "10000273"
+        ],
+        "uniqueness_percent": 94.64
+      }
+    ],
+    "recommended_pk": "FCLT_ORGANIZATION_KEY"
+  },
+  "FCLT_ORGANIZATION_HIST": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "FCLT_ROOMS": {
+    "pk_candidates": [
+      {
+        "column": "FCLT_BUILDING_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "uniqueness_percent": 1.1
+      },
+      {
+        "column": "FCLT_ORGANIZATION_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "101",
+          "102",
+          "103",
+          "104",
+          "106"
+        ],
+        "uniqueness_percent": 0.64
+      },
+      {
+        "column": "FCLT_ROOM_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1-001C",
+          "1-001E",
+          "1-007B",
+          "1-018",
+          "1-025"
+        ],
+        "uniqueness_percent": 96.89
+      }
+    ],
+    "recommended_pk": "FCLT_BUILDING_KEY"
+  },
+  "FCLT_ROOMS_HIST": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "FRC_FISCAL_PERIODS": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "FUND_CENTER_HIERARCHY": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "HR_FACULTY_ROSTER": {
+    "pk_candidates": [
+      {
+        "column": "HR_ORG_UNIT_TITLE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "Aeronautics and Astronautics",
+          "Anthropology Program",
+          "Architecture",
+          "Biology",
+          "Brain & Cognitive Sciences"
+        ],
+        "uniqueness_percent": 4.41
+      }
+    ],
+    "recommended_pk": "HR_ORG_UNIT_TITLE"
+  },
+  "HR_ORG_UNIT": {
+    "pk_candidates": [
+      {
+        "column": "DLC_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "D_ACAD",
+          "D_ACT",
+          "D_ADM",
+          "D_AEROASTRO",
+          "D_ALLIANCE_MGMT"
+        ],
+        "uniqueness_percent": 45.47
+      },
+      {
+        "column": "HR_ORG_UNIT_TITLE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "[MEDIA82] OXMAN /NERI",
+          "Abdul Latif Jameel Poverty Action Lab",
+          "Academic Media Production Services",
+          "Administrative Services: Chem E/DMSE",
+          "Admissions Office"
+        ],
+        "uniqueness_percent": 99.53
+      },
+      {
+        "column": "HR_ORG_UNIT_ID",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "0",
+          "10000000",
+          "10000001",
+          "10000002",
+          "10000003"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "DLC_KEY"
+  },
+  "HR_ORG_UNIT_NEW": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "IAP_SUBJECT_CATEGORY": {
+    "pk_candidates": [
+      {
+        "column": "IAP_SUBJECT_CATEGORY_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "9289af8d58f2d2ba0158fdf98fc30270",
+          "9289af8f50a3a6fb0150a483f24c0000",
+          "9289af8f517c291d0151921beca0022b",
+          "9289af8f517c291d0151921c1c02022c",
+          "B9953FF477BC12EFE0440003BAB016E8"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "IAP_SUBJECT_CATEGORY_KEY"
+  },
+  "IAP_SUBJECT_DETAIL": {
+    "pk_candidates": [
+      {
+        "column": "IAP_SUBJECT_SESSION_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "9289afec70152d3f0175324c2314001a",
+          "9289afec754ffaf20175769fd4930015",
+          "9289afec754ffaf201759a818f9b0036",
+          "9289afec754ffaf20175a989412b0059",
+          "9289afec754ffaf20175b3e9bc570083"
+        ],
+        "uniqueness_percent": 30.54
+      },
+      {
+        "column": "IAP_SUBJECT_CATEGORY_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "9289af8d58f2d2ba0158fdf98fc30270",
+          "9289af8f50a3a6fb0150a483f24c0000",
+          "9289af8f517c291d0151921beca0022b",
+          "9289af8f517c291d0151921c1c02022c",
+          "B9953FF477BC12EFE0440003BAB016E8"
+        ],
+        "uniqueness_percent": 9.89
+      },
+      {
+        "column": "IAP_SUBJECT_SPONSOR_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "923dd085363aeb5a01363af9e91c0001",
+          "9289af8d3a1d9153013a219643070002",
+          "9289af8d3ba8cc8d013bb3910ef00114",
+          "9289af8d4a29b055014a34ac4ebe00ed",
+          "9289af8f41a9115e0141dba850380079"
+        ],
+        "uniqueness_percent": 14.62
+      }
+    ],
+    "recommended_pk": "IAP_SUBJECT_SESSION_KEY"
+  },
+  "IAP_SUBJECT_PERSON": {
+    "pk_candidates": [
+      {
+        "column": "IAP_SUBJECT_PERSON_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "9289afec70152d3f01752dbcd728000f",
+          "9289afec70152d3f0175324c2314001a",
+          "9289afec754ffaf201756da4b165000e",
+          "9289afec754ffaf20175769fd4930015",
+          "9289afec754ffaf201758191bcdb0024"
+        ],
+        "uniqueness_percent": 35.04
+      }
+    ],
+    "recommended_pk": "IAP_SUBJECT_PERSON_KEY"
+  },
+  "IAP_SUBJECT_SESSION": {
+    "pk_candidates": [
+      {
+        "column": "IAP_SUBJECT_SESSION_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "9289afec70152d3f01752dbcd728000f",
+          "9289afec70152d3f0175324c2314001a",
+          "9289afec754ffaf201756da4b165000e",
+          "9289afec754ffaf20175769fd4930015",
+          "9289afec754ffaf201758191bcdb0024"
+        ],
+        "uniqueness_percent": 35.11
+      },
+      {
+        "column": "SESSION_LOCATION",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "https://mit.zoom.us/",
+          "NE45",
+          "On line",
+          "On Zoom",
+          "On Zoom-TBA"
+        ],
+        "uniqueness_percent": 3.79
+      }
+    ],
+    "recommended_pk": "IAP_SUBJECT_SESSION_KEY"
+  },
+  "IAP_SUBJECT_SPONSOR": {
+    "pk_candidates": [
+      {
+        "column": "IAP_SUBJECT_SPONSOR_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "923dd085363aeb5a01363af9e91c0001",
+          "9289af8d3a1d9153013a219643070002",
+          "9289af8d3ba8cc8d013bb3910ef00114",
+          "9289af8d4a29b055014a34ac4ebe00ed",
+          "9289af8f41a9115e0141dba850380079"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "IAP_SUBJECT_SPONSOR_KEY"
+  },
+  "IR_INSTITUTION": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "LIBRARY_COURSE_INSTRUCTOR": {
+    "pk_candidates": [
+      {
+        "column": "LIBRARY_COURSE_INSTRUCTOR_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1.00-BRADFORD2009FA:1.00",
+          "1.00-BRYANT132014FA:1.00",
+          "1.00-CASE212021SP:1.00",
+          "1.00-GALLEGOS122013FA:1.00",
+          "1.00-GALLEGOS2011SU:1.00"
+        ],
+        "uniqueness_percent": 99.99
+      },
+      {
+        "column": "INSTRUCTOR_NAME",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "Abbott, Aadam",
+          "Abbott, Adele",
+          "Abbott, Ahmed",
+          "Abbott, Alejandro",
+          "Abbott, Alison"
+        ],
+        "uniqueness_percent": 92.75
+      }
+    ],
+    "recommended_pk": "LIBRARY_COURSE_INSTRUCTOR_KEY"
+  },
+  "LIBRARY_MATERIAL_STATUS": {
+    "pk_candidates": [
+      {
+        "column": "LIBRARY_MATERIAL_STATUS_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "N",
+          "O",
+          "R",
+          "U",
+          "X"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "LIBRARY_MATERIAL_STATUS_KEY"
+  },
+  "LIBRARY_RESERVE_CATALOG": {
+    "pk_candidates": [
+      {
+        "column": "LIBRARY_RESERVE_CATALOG_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "1000",
+          "100001",
+          "100003"
+        ],
+        "uniqueness_percent": 67.58
+      }
+    ],
+    "recommended_pk": "LIBRARY_RESERVE_CATALOG_KEY"
+  },
+  "LIBRARY_RESERVE_MATRL_DETAIL": {
+    "pk_candidates": [
+      {
+        "column": "LIBRARY_RESERVE_CATALOG_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "100050",
+          "100051",
+          "100053",
+          "100054",
+          "100055"
+        ],
+        "uniqueness_percent": 89.16
+      },
+      {
+        "column": "LIBRARY_SUBJECT_OFFERED_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1.0012008SP",
+          "1.0012010SP",
+          "1.0012010SU",
+          "1.0012011FA",
+          "1.0012011SP"
+        ],
+        "uniqueness_percent": 31.67
+      },
+      {
+        "column": "LIBRARY_COURSE_INSTRUCTOR_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1.00-BRADFORD2009FA:1.00",
+          "1.00-BRYANT132014FA:1.00",
+          "1.00-CASE212021SP:1.00",
+          "1.00-GALLEGOS122013FA:1.00",
+          "1.00-GALLEGOS2011SU:1.00"
+        ],
+        "uniqueness_percent": 32.01
+      }
+    ],
+    "recommended_pk": "LIBRARY_RESERVE_CATALOG_KEY"
+  },
+  "LIBRARY_SUBJECT_OFFERED": {
+    "pk_candidates": [
+      {
+        "column": "LIBRARY_SUBJECT_OFFERED_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1.0012008SP",
+          "1.0012010SP",
+          "1.0012011FA",
+          "1.0012011SP",
+          "1.0012012FA"
+        ],
+        "uniqueness_percent": 100.0
+      },
+      {
+        "column": "TERM_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "2008SP",
+          "2008SU",
+          "2009FA",
+          "2009JA",
+          "2009SP"
+        ],
+        "uniqueness_percent": 0.3
+      },
+      {
+        "column": "SUBJECT_ID",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1.00",
+          "1.001",
+          "1.002",
+          "1.010",
+          "1.011"
+        ],
+        "uniqueness_percent": 23.19
+      }
+    ],
+    "recommended_pk": "LIBRARY_SUBJECT_OFFERED_KEY"
+  },
+  "MASTER_DEPT_DCODE_PARENT": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "MASTER_DEPT_HIERARCHY": {
+    "pk_candidates": [
+      {
+        "column": "DLC_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "D_ACAD",
+          "D_ACT",
+          "D_ADM",
+          "D_AEROASTRO",
+          "D_ALLIANCE_MGMT"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "DLC_KEY"
+  },
+  "MASTER_DEPT_HIERARCHY_LINKS": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "MIT_HOLIDAY_CLOSING_CALENDAR": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "MIT_STUDENT_DIRECTORY": {
+    "pk_candidates": [
+      {
+        "column": "DEPARTMENT",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "14"
+        ],
+        "uniqueness_percent": 0.35
+      },
+      {
+        "column": "OFFICE_LOCATION",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          ": 75 Amherst St-37408",
+          "1-018",
+          "1-221",
+          "1-234",
+          "1-245"
+        ],
+        "uniqueness_percent": 72.61
+      },
+      {
+        "column": "FULL_NAME",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "Abbott, Adele",
+          "Abbott, Alastair",
+          "Abbott, Aleksander",
+          "Abbott, Alissa",
+          "Abbott, Axel"
+        ],
+        "uniqueness_percent": 85.5
+      }
+    ],
+    "recommended_pk": "DEPARTMENT"
+  },
+  "MOIRA_LIST": {
+    "pk_candidates": [
+      {
+        "column": "MOIRA_LIST_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "amber-amber",
+          "amber-amber-emerald",
+          "amber-amber-frog",
+          "amber-amber-keeper",
+          "amber-amber-quest"
+        ],
+        "uniqueness_percent": 58.07
+      }
+    ],
+    "recommended_pk": "MOIRA_LIST_KEY"
+  },
+  "MOIRA_LIST_DETAIL": {
+    "pk_candidates": [
+      {
+        "column": "MOIRA_LIST_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "amber-amber",
+          "amber-amber-uplift",
+          "amber-ant",
+          "amber-ant-elephant",
+          "amber-ant-tangerine"
+        ],
+        "uniqueness_percent": 26.58
+      },
+      {
+        "column": "MOIRA_LIST_OWNER_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "KERBEROS32.550-raspberry-nectar",
+          "KERBEROSapple-raspberry",
+          "KERBEROSbeacon-bear",
+          "KERBEROSfrog-kindness",
+          "KERBEROShoneydew-kangaroo"
+        ],
+        "uniqueness_percent": 13.04
+      },
+      {
+        "column": "MOIRA_LIST_MEMBER",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "aa",
+          "aa@aol.com",
+          "aa@employee.com",
+          "aa@gmail.com",
+          "aa@learner.net"
+        ],
+        "uniqueness_percent": 27.97
+      }
+    ],
+    "recommended_pk": "MOIRA_LIST_KEY"
+  },
+  "MOIRA_LIST_OWNER": {
+    "pk_candidates": [
+      {
+        "column": "MOIRA_LIST_OWNER_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "KERBEROS32.550-raspberry-nectar",
+          "KERBEROS45.604-kangaroo-courage",
+          "KERBEROSapple-raspberry",
+          "KERBEROSbanana-cat",
+          "KERBEROSbeacon-bear"
+        ],
+        "uniqueness_percent": 52.55
+      }
+    ],
+    "recommended_pk": "MOIRA_LIST_OWNER_KEY"
+  },
+  "OPA_PERSON_CURRENT": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "PERSON_AUTH_AREA": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "PROFIT_CENTER_GROUP": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "ROLES_FIN_PA": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "SE_PERSON": {
+    "pk_candidates": [
+      {
+        "column": "FULL_NAME",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "Abbott, Aiza",
+          "Abbott, Alessandro",
+          "Abbott, Audrey",
+          "Abbott, Calvin",
+          "Abbott, Cara"
+        ],
+        "uniqueness_percent": 94.17
+      },
+      {
+        "column": "MIT_ID",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "900007147",
+          "900010861",
+          "900032543",
+          "900032990",
+          "900037933"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "FULL_NAME"
+  },
+  "SIS_ADMIN_DEPARTMENT": {
+    "pk_candidates": [
+      {
+        "column": "SIS_ADMIN_DEPARTMENT_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "SIS_ADMIN_DEPARTMENT_CODE"
+  },
+  "SIS_COURSE_DESCRIPTION": {
+    "pk_candidates": [
+      {
+        "column": "COURSE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "1 12",
+          "1 A",
+          "1 C",
+          "1 CME"
+        ],
+        "uniqueness_percent": 90.65
+      },
+      {
+        "column": "DEPARTMENT",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "uniqueness_percent": 10.36
+      },
+      {
+        "column": "CIP_PROGRAM_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "110101",
+          "110102",
+          "110701",
+          "123456",
+          "140201"
+        ],
+        "uniqueness_percent": 9.21
+      }
+    ],
+    "recommended_pk": "COURSE"
+  },
+  "SIS_DEPARTMENT": {
+    "pk_candidates": [
+      {
+        "column": "DEPARTMENT_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "uniqueness_percent": 100.0
+      },
+      {
+        "column": "SCHOOL_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "A",
+          "E",
+          "H",
+          "M",
+          "S"
+        ],
+        "uniqueness_percent": 7.87
+      }
+    ],
+    "recommended_pk": "DEPARTMENT_CODE"
+  },
+  "SIS_LOOKUP": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "SIS_SUBJECT_CODE": {
+    "pk_candidates": [
+      {
+        "column": "DEPARTMENT_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "uniqueness_percent": 32.11
+      },
+      {
+        "column": "SUBJECT_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "uniqueness_percent": 100.0
+      },
+      {
+        "column": "SCHOOL_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "A",
+          "E",
+          "H",
+          "M",
+          "S"
+        ],
+        "uniqueness_percent": 4.89
+      }
+    ],
+    "recommended_pk": "DEPARTMENT_CODE"
+  },
+  "SIS_TERM_ADDRESS_CATEGORY": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "SPACE_DETAIL": {
+    "pk_candidates": [
+      {
+        "column": "SPACE_UNIT_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "121000",
+          "150000",
+          "151000",
+          "152000",
+          "153000"
+        ],
+        "uniqueness_percent": 0.28
+      },
+      {
+        "column": "FLOOR_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "0",
+          "00",
+          "000",
+          "0000",
+          "1"
+        ],
+        "uniqueness_percent": 0.11
+      },
+      {
+        "column": "BUILDING_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "uniqueness_percent": 0.48
+      }
+    ],
+    "recommended_pk": "SPACE_UNIT_KEY"
+  },
+  "SPACE_FLOOR": {
+    "pk_candidates": [
+      {
+        "column": "FLOOR_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "0",
+          "00",
+          "000",
+          "0000",
+          "1"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "FLOOR_KEY"
+  },
+  "SPACE_SUPERVISOR_USAGE": {
+    "pk_candidates": [
+      {
+        "column": "DEPT_NAMES",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "D_ACT",
+          "D_ACT,D_RESDEV",
+          "D_ADM",
+          "D_AEROASTRO",
+          "D_AEROASTRO,D_CSAIL"
+        ],
+        "uniqueness_percent": 6.32
+      }
+    ],
+    "recommended_pk": "DEPT_NAMES"
+  },
+  "SPACE_UNIT": {
+    "pk_candidates": [
+      {
+        "column": "DLC_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "D_ACT",
+          "D_ADM",
+          "D_AEROASTRO",
+          "D_ALUM",
+          "D_ANTHRO"
+        ],
+        "uniqueness_percent": 90.41
+      },
+      {
+        "column": "FCLT_ORGANIZATION_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "101",
+          "102",
+          "103",
+          "104",
+          "106"
+        ],
+        "uniqueness_percent": 100.0
+      },
+      {
+        "column": "SPACE_UNIT_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "10000",
+          "121000",
+          "150000",
+          "151000",
+          "152000"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "DLC_KEY"
+  },
+  "SPACE_UNIT2": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "SPACE_USAGE": {
+    "pk_candidates": [
+      {
+        "column": "SPACE_USAGE_KEY",
+        "data_type": "int",
+        "column_type": "int",
+        "sample_values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "SPACE_USAGE_KEY"
+  },
+  "STUDENT_DEGREE_PROGRAM": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "STUDENT_DEPARTMENT": {
+    "pk_candidates": [
+      {
+        "column": "DEPARTMENT_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "DEPARTMENT_CODE"
+  },
+  "STUDENT_ETHNIC_SUBGROUP": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "SUBJECT_ATTRIBUTE": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "SUBJECT_ENROLLABLE": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "SUBJECT_GROUPING": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "SUBJECT_IAP_SCHEDULE": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "SUBJECT_OFFERED": {
+    "pk_candidates": [
+      {
+        "column": "SUBJECT_SUMMARY_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1.0002015FA",
+          "1.0002016FA",
+          "1.0002017FA",
+          "1.0002018FA",
+          "1.0002019FA"
+        ],
+        "uniqueness_percent": 72.41
+      },
+      {
+        "column": "SUBJECT_OFFERED_SUMMARY_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1.0002015FA",
+          "1.0002016FA",
+          "1.0002017FA",
+          "1.0002018FA",
+          "1.0002019FA"
+        ],
+        "uniqueness_percent": 72.41
+      },
+      {
+        "column": "SUBJECT_GROUPING_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "002D096E6CE20509E0533D2F091292DC",
+          "002D096E6CE30509E0533D2F091292DC",
+          "0030CFCD85837BE0E0633D2F09128557",
+          "0030CFCD85857BE0E0633D2F09128557",
+          "0030CFCD85867BE0E0633D2F09128557"
+        ],
+        "uniqueness_percent": 22.5
+      }
+    ],
+    "recommended_pk": "SUBJECT_SUMMARY_KEY"
+  },
+  "SUBJECT_OFFERED_SUMMARY": {
+    "pk_candidates": [
+      {
+        "column": "SUBJECT_SUMMARY_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1.0002015FA",
+          "1.0002016FA",
+          "1.0002017FA",
+          "1.0002018FA",
+          "1.0002019FA"
+        ],
+        "uniqueness_percent": 100.0
+      },
+      {
+        "column": "SUBJECT_OFFERED_SUMMARY_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1.0002015FA",
+          "1.0002016FA",
+          "1.0002017FA",
+          "1.0002018FA",
+          "1.0002019FA"
+        ],
+        "uniqueness_percent": 100.0
+      },
+      {
+        "column": "SUBJECT_GROUPING_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "002D096E6CE20509E0533D2F091292DC",
+          "002D096E6CE30509E0533D2F091292DC",
+          "0030CFCD85837BE0E0633D2F09128557",
+          "0030CFCD85857BE0E0633D2F09128557",
+          "0030CFCD85867BE0E0633D2F09128557"
+        ],
+        "uniqueness_percent": 31.08
+      }
+    ],
+    "recommended_pk": "SUBJECT_SUMMARY_KEY"
+  },
+  "SUBJECT_SELECTOR": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "SUBJECT_SUMMARY": {
+    "pk_candidates": [
+      {
+        "column": "SUBJECT_SUMMARY_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1.0002015FA",
+          "1.0002016FA",
+          "1.0002017FA",
+          "1.0002018FA",
+          "1.0002019FA"
+        ],
+        "uniqueness_percent": 100.0
+      },
+      {
+        "column": "TERM_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1986FA",
+          "1987FA",
+          "1987SP",
+          "1992FA",
+          "1993FA"
+        ],
+        "uniqueness_percent": 0.03
+      },
+      {
+        "column": "SUBJECT_ID",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1.00",
+          "1.000",
+          "1.001",
+          "1.002",
+          "1.004"
+        ],
+        "uniqueness_percent": 4.78
+      }
+    ],
+    "recommended_pk": "SUBJECT_SUMMARY_KEY"
+  },
+  "TIME_DAY": {
+    "pk_candidates": [
+      {
+        "column": "ACADEMIC_TERM_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1951SP",
+          "1951SU",
+          "1952SP",
+          "1952SU",
+          "1953SP"
+        ],
+        "uniqueness_percent": 1.23
+      },
+      {
+        "column": "CALENDAR_DATE",
+        "data_type": "varchar",
+        "column_type": "varchar(255)",
+        "sample_values": [
+          "01-APR-00",
+          "01-APR-01",
+          "01-APR-02",
+          "01-APR-03",
+          "01-APR-04"
+        ],
+        "uniqueness_percent": 100.0
+      },
+      {
+        "column": "FISCAL_PERIOD",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "195007",
+          "195008",
+          "195009",
+          "195010",
+          "195011"
+        ],
+        "uniqueness_percent": 3.29
+      }
+    ],
+    "recommended_pk": "ACADEMIC_TERM_CODE"
+  },
+  "TIME_MONTH": {
+    "pk_candidates": [
+      {
+        "column": "FISCAL_PERIOD",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "199601",
+          "199602",
+          "199603",
+          "199604",
+          "199605"
+        ],
+        "uniqueness_percent": 100.0
+      },
+      {
+        "column": "FISCAL_YEAR",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1996",
+          "1997",
+          "1998",
+          "1999",
+          "2000"
+        ],
+        "uniqueness_percent": 6.25
+      },
+      {
+        "column": "FY_QUARTER_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "FY1996Q1",
+          "FY1996Q2",
+          "FY1996Q3",
+          "FY1996Q4",
+          "FY1997Q1"
+        ],
+        "uniqueness_percent": 25.0
+      }
+    ],
+    "recommended_pk": "FISCAL_PERIOD"
+  },
+  "TIME_QUARTER": {
+    "pk_candidates": [
+      {
+        "column": "FISCAL_YEAR",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "2000",
+          "2001",
+          "2002",
+          "2003",
+          "2004"
+        ],
+        "uniqueness_percent": 25.0
+      },
+      {
+        "column": "FY_QUARTER_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "FY2000Q1",
+          "FY2000Q2",
+          "FY2000Q3",
+          "FY2000Q4",
+          "FY2001Q1"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "FISCAL_YEAR"
+  },
+  "TIP_DETAIL": {
+    "pk_candidates": [
+      {
+        "column": "TIP_MATERIAL_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "0 AMERICAN POPULAR MUSIC-TEXT ONLY4TH 142016FA",
+          "0 AMERICAN POPULAR MUSIC-TEXT ONLY4TH 142017FA",
+          "0 BASIC MANDARIN CHINESE:RDG.+WRTG.-TEXT172019JA",
+          "0 DEVELOPMENTAL BIOLOGY (LOOSE)-TEXT10TH 142017FA",
+          "0 EASY WRITER-TEXT5TH 142016FA"
+        ],
+        "uniqueness_percent": 54.41
+      },
+      {
+        "column": "TIP_SUBJECT_OFFERED_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "0010000002015FA",
+          "0010000002017FA",
+          "0010000002018FA",
+          "0010000002019FA",
+          "0010000002021FA"
+        ],
+        "uniqueness_percent": 43.89
+      },
+      {
+        "column": "TIP_MATERIAL_STATUS_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "  ",
+          "BR",
+          "CL",
+          "EO",
+          "NB"
+        ],
+        "uniqueness_percent": 0.01
+      }
+    ],
+    "recommended_pk": "TIP_MATERIAL_KEY"
+  },
+  "TIP_MATERIAL": {
+    "pk_candidates": [
+      {
+        "column": "TIP_MATERIAL_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "0 AMERICAN POPULAR MUSIC-TEXT ONLY4TH 142016FA",
+          "0 AMERICAN POPULAR MUSIC-TEXT ONLY4TH 142017FA",
+          "0 BASIC MANDARIN CHINESE:RDG.+WRTG.-TEXT172019JA",
+          "0 DEVELOPMENTAL BIOLOGY (LOOSE)-TEXT10TH 142017FA",
+          "0 EASY WRITER-TEXT5TH 142016FA"
+        ],
+        "uniqueness_percent": 98.62
+      }
+    ],
+    "recommended_pk": "TIP_MATERIAL_KEY"
+  },
+  "TIP_MATERIAL_STATUS": {
+    "pk_candidates": [
+      {
+        "column": "TIP_MATERIAL_STATUS_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "  ",
+          "BR",
+          "CL",
+          "EO",
+          "NB"
+        ],
+        "uniqueness_percent": 100.0
+      }
+    ],
+    "recommended_pk": "TIP_MATERIAL_STATUS_KEY"
+  },
+  "TIP_SUBJECT_OFFERED": {
+    "pk_candidates": [
+      {
+        "column": "TIP_SUBJECT_OFFERED_KEY",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "0010000002016FA",
+          "0010000002017FA",
+          "0010000002020FA",
+          "0010000002021FA",
+          "0010000002022FA"
+        ],
+        "uniqueness_percent": 100.0
+      },
+      {
+        "column": "TERM_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1986FA",
+          "1992FA",
+          "1993FA",
+          "1993SP",
+          "1993SU"
+        ],
+        "uniqueness_percent": 0.13
+      },
+      {
+        "column": "SUBJECT_ID",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "1.00",
+          "1.000",
+          "1.001",
+          "1.002",
+          "1.004"
+        ],
+        "uniqueness_percent": 10.69
+      }
+    ],
+    "recommended_pk": "TIP_SUBJECT_OFFERED_KEY"
+  },
+  "TOP_LEVEL_DOMAIN": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "WAREHOUSE_USERS": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "ZIP_CANADA": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "ZIP_USA": {
+    "pk_candidates": [],
+    "note": "Not used in JOINs"
+  },
+  "ZPM_ROOMS_LOAD": {
+    "pk_candidates": [
+      {
+        "column": "SPACE_UNIT_CODE",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "121000",
+          "150000",
+          "151000",
+          "152000",
+          "153000"
+        ],
+        "uniqueness_percent": 0.28
+      },
+      {
+        "column": "HR_ORG_UNIT_ID",
+        "data_type": "varchar",
+        "column_type": "varchar(127)",
+        "sample_values": [
+          "10000267",
+          "10000270",
+          "10000272",
+          "10000273",
+          "10000276"
+        ],
+        "uniqueness_percent": 0.28
+      }
+    ],
+    "recommended_pk": "SPACE_UNIT_CODE"
+  }
+}

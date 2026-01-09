@@ -1,0 +1,38 @@
+[
+    {
+        "db_id": "dw",
+        "question": "Show the unique activity titles, locations, term start date, and supervisor name for all independent activities, sorted by the ascending order of start date.",
+        "predicted_sql": "SELECT DISTINCT \n    IAP_SUBJECT_DETAIL.ACTIVITY_TITLE, \n    IAP_SUBJECT_SESSION.SESSION_LOCATION, \n    ACADEMIC_TERMS_ALL.TERM_START_DATE, \n    IAP_SUBJECT_PERSON.PERSON_NAME\nFROM \n    IAP_SUBJECT_DETAIL\nJOIN \n    IAP_SUBJECT_SESSION ON IAP_SUBJECT_DETAIL.IAP_SUBJECT_SESSION_KEY = IAP_SUBJECT_SESSION.IAP_SUBJECT_SESSION_KEY\nJOIN \n    ACADEMIC_TERMS_ALL ON IAP_SUBJECT_DETAIL.TERM_CODE = ACADEMIC_TERMS_ALL.TERM_CODE\nJOIN \n    IAP_SUBJECT_PERSON ON IAP_SUBJECT_DETAIL.IAP_SUBJECT_PERSON_KEY = IAP_SUBJECT_PERSON.IAP_SUBJECT_PERSON_KEY\nWHERE \n    IAP_SUBJECT_PERSON.PERSON_ROLE = 'Activity leader'\nORDER BY \n    ACADEMIC_TERMS_ALL.TERM_START_DATE ASC;",
+        "original_index": 1
+    },
+    {
+        "db_id": "dw",
+        "question": "List the unique full room names, their corresponding building names, street addresses, cities, states, postal codes, and building heights for rooms associated with subjects that Computer Science students can enroll in.",
+        "predicted_sql": "SELECT DISTINCT \n    FR.ROOM_FULL_NAME, \n    B.BUILDING_NAME, \n    B.BUILDING_STREET_ADDRESS, \n    FBA.CITY, \n    FBA.STATE, \n    FBA.POSTAL_CODE, \n    FB.BUILDING_HEIGHT\nFROM \n    FCLT_ROOMS FR\nJOIN \n    COURSE_CATALOG_SUBJECT_OFFERED CCSO ON CCSO.MEET_PLACE = FR.FCLT_ROOM_KEY\nJOIN \n    FCLT_BUILDING_ADDRESS FBA ON FBA.FCLT_BUILDING_KEY = FR.FCLT_BUILDING_KEY\nJOIN \n    FCLT_BUILDING FB ON FB.FCLT_BUILDING_KEY = FR.FCLT_BUILDING_KEY\nJOIN \n    BUILDINGS B ON B.BUILDING_KEY = FR.FCLT_BUILDING_KEY\nWHERE \n    CCSO.DEPARTMENT_NAME = 'Electrical Eng & Computer Sci';",
+        "original_index": 4
+    },
+    {
+        "db_id": "dw",
+        "question": "For each building key, what is the building name and the number of courses offered by the Center for International Studies?",
+        "predicted_sql": "SELECT \n    FCLT_BUILDING.FCLT_BUILDING_KEY AS building_key,\n    FCLT_BUILDING.BUILDING_NAME AS building_name,\n    COUNT(DISTINCT CIS_COURSE_CATALOG.SUBJECT_ID) AS number_of_courses\nFROM \n    CIS_COURSE_CATALOG\nJOIN \n    COURSE_CATALOG_SUBJECT_OFFERED ON CIS_COURSE_CATALOG.SUBJECT_ID = COURSE_CATALOG_SUBJECT_OFFERED.SUBJECT_ID\nJOIN \n    FCLT_ROOMS ON COURSE_CATALOG_SUBJECT_OFFERED.MEET_PLACE = FCLT_ROOMS.FCLT_ROOM_KEY\nJOIN \n    FCLT_BUILDING ON FCLT_ROOMS.FCLT_BUILDING_KEY = FCLT_BUILDING.FCLT_BUILDING_KEY\nGROUP BY \n    FCLT_BUILDING.FCLT_BUILDING_KEY, FCLT_BUILDING.BUILDING_NAME;",
+        "original_index": 8
+    },
+    {
+        "db_id": "dw",
+        "question": "List the name and floor of the building with the largest floor number.",
+        "predicted_sql": "SELECT b.BUILDING_NAME, f.FLOOR\nFROM FAC_BUILDING b\nJOIN FAC_FLOOR f ON b.FAC_BUILDING_KEY = f.BUILDING_KEY\nORDER BY CAST(f.FLOOR AS UNSIGNED) DESC\nLIMIT 1;",
+        "original_index": 10
+    },
+    {
+        "db_id": "dw",
+        "question": "Give the count of mailing lists with names starting with B that include members from the Electrical Engineering and Computer Science department, along with the name of the list starting with B that have the highest number of members from that department and the corresponding member count.",
+        "predicted_sql": "SELECT \n    COUNT(DISTINCT ml.MOIRA_LIST_NAME) AS mailing_list_count,\n    ml.MOIRA_LIST_NAME AS list_with_max_members,\n    COUNT(mld.MOIRA_LIST_MEMBER) AS max_member_count\nFROM \n    MOIRA_LIST ml\nJOIN \n    MOIRA_LIST_DETAIL mld ON ml.MOIRA_LIST_KEY = mld.MOIRA_LIST_KEY\nJOIN \n    SE_PERSON sp ON mld.MOIRA_LIST_MEMBER = sp.KRB_NAME\nWHERE \n    ml.MOIRA_LIST_NAME LIKE 'B%' \n    AND sp.ORGANIZATION = 'Electrical Engineering-Computer Science'\nGROUP BY \n    ml.MOIRA_LIST_NAME\nORDER BY \n    max_member_count DESC\nLIMIT 1;",
+        "original_index": 59
+    },
+    {
+        "db_id": "dw",
+        "question": "For subjects offered in the summer term, list the subject titles, number of instructors, and the length of the longest instructor name.",
+        "predicted_sql": "SELECT \n    c.SUBJECT_TITLE,\n    COUNT(DISTINCT e.FULL_NAME) AS number_of_instructors,\n    MAX(CHAR_LENGTH(e.FULL_NAME)) AS longest_instructor_name_length\nFROM \n    COURSE_CATALOG_SUBJECT_OFFERED c\nJOIN \n    EMPLOYEE_DIRECTORY e ON c.RESPONSIBLE_FACULTY_MIT_ID = e.MIT_ID\nJOIN \n    ACADEMIC_TERMS_ALL a ON c.TERM_CODE = a.TERM_CODE\nWHERE \n    c.IS_OFFERED_SUMMER_TERM = 'Y'\nGROUP BY \n    c.SUBJECT_TITLE;",
+        "original_index": 117
+    }
+]

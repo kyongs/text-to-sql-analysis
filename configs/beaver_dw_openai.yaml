@@ -1,6 +1,6 @@
 # configs/beaver_dw_config.yaml
 
-experiment_name: "beaver_dw"
+experiment_name: "4o_lookup_insp_full"
 output_dir: "./outputs"
 mode: "gold_schema"    # baseline, gold_schema
 
@@ -20,7 +20,7 @@ db_connection:
 
 model:
   provider: "openai"
-  name: "gpt-4o-mini"
+  name: "gpt-4o"
   
 # model:
 #   provider: "openai"

@@ -25,8 +25,38 @@ class TxtLogger:
         prompt = result_data.get('prompt', 'N/A')
         model_response = result_data.get('model_response')
         predicted_sql = result_data.get('predicted_sql', 'N/A')
+        tool_call_log = result_data.get('tool_call_log')
 
         final_prompt_str = f"***** FINAL PROMPT *****\n{prompt}\n\n"
+        
+        # Tool call 로그 추가
+        tool_log_str = ""
+        if tool_call_log:
+            tool_log_str = "***** TOOL CALL LOG *****\n"
+            for log_entry in tool_call_log:
+                iteration = log_entry.get("iteration", "?")
+                log_type = log_entry.get("type")
+                
+                if log_type == "tool_call":
+                    tool_log_str += f"\n[Iteration {iteration}] 🤖 LLM Tool Call:\n"
+                    tool_log_str += f"  Function: {log_entry['function']}\n"
+                    import json
+                    tool_log_str += f"  Arguments: {json.dumps(log_entry['arguments'], indent=4)}\n"
+                
+                elif log_type == "tool_response":
+                    tool_log_str += f"\n[Iteration {iteration}] 📊 Tool Response:\n"
+                    response = log_entry['response']
+                    # 응답을 들여쓰기 (간략화)
+                    lines = response.split('\n')[:20]  # 처음 20줄만
+                    tool_log_str += "  " + "\n  ".join(lines) + "\n"
+                    if len(response.split('\n')) > 20:
+                        tool_log_str += "  ... (truncated)\n"
+                
+                elif log_type == "final_response":
+                    tool_log_str += f"\n[Iteration {iteration}] ✅ Final SQL Response:\n"
+                    tool_log_str += f"  {log_entry['content']}\n"
+            
+            tool_log_str += "\n"
         
         response_str = f"***** RESPONSE *****\n{model_response}\n\n"
 
@@ -55,6 +85,7 @@ class TxtLogger:
 
         log_entry = (
             final_prompt_str +
+            tool_log_str +
             response_str +
             token_info_str +
             final_sql_str +

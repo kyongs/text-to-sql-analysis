@@ -1,0 +1,31 @@
+# configs/beaver_dw_openai_no_tools.yaml
+# OpenAI model WITHOUT tool calling (baseline)
+
+experiment_name: "4o_both"
+output_dir: "./outputs"
+mode: "gold_schema"    # baseline, gold_schema
+
+dataset:
+  name: "beaver"
+  path: "./data/beaver/dw"
+  split: "dw"
+  db_type: "mysql"
+  # schema_representation options: "basic", "basic_plus_type", "ddl", "m_schema"
+  schema_representation: "m_schema" 
+
+db_connection:
+  host: "127.0.0.1"
+  port: 3306
+  user: "root"
+  password: "from_env"  # Use MYSQL_PASSWORD env variable 
+
+model:
+  provider: "openai_with_tools"
+  name: "gpt-4o"
+
+evaluation:
+  script_path: "./eval_scripts/beaver/evaluation.py"
+  ground_truth_dir: "./data/beaver/dw/"
+  
+  num_cpus: 8
+  meta_time_out: 30.0

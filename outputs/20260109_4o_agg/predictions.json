@@ -1,0 +1,32 @@
+[
+    {
+        "db_id": "dw",
+        "question": "What is the room, floor, building key, building street address, city, state, and postal code of Professor Summer Haynes's office?",
+        "predicted_sql": "SELECT \n    fr.ROOM AS room,\n    fr.FLOOR AS floor,\n    fr.BUILDING_KEY AS building_key,\n    b.BUILDING_STREET_ADDRESS AS building_street_address,\n    fba.CITY AS city,\n    fba.STATE AS state,\n    fba.POSTAL_CODE AS postal_code\nFROM \n    EMPLOYEE_DIRECTORY ed\nJOIN \n    FAC_ROOMS fr ON ed.OFFICE_LOCATION = fr.FAC_ROOM_KEY\nJOIN \n    FAC_BUILDING_ADDRESS fba ON fr.BUILDING_KEY = fba.BUILDING_KEY\nJOIN \n    BUILDINGS b ON fba.BUILDING_KEY = b.BUILDING_KEY\nWHERE \n    ed.FULL_NAME = 'Haynes, Summer'\n    AND fba.ADDRESS_PURPOSE = 'STREET';",
+        "original_index": 3
+    },
+    {
+        "db_id": "dw",
+        "question": "What is the DLC key, name of the DLC, total number of floors, total square footage, total number of facility organizations, total number of supervisors, total number of supervisees, and total building heights for each DLC?",
+        "predicted_sql": "SELECT \n    su.DLC_KEY,\n    fo.DLC_NAME,\n    COUNT(DISTINCT sf.FLOOR_KEY) AS total_floors,\n    SUM(sd.ROOM_SQUARE_FOOTAGE) AS total_square_footage,\n    COUNT(DISTINCT su.FCLT_ORGANIZATION_KEY) AS total_facility_organizations,\n    COUNT(DISTINCT ssu.MIT_ID) AS total_supervisors,\n    SUM(ssu.NUM_OF_SUPERVISEES) AS total_supervisees,\n    SUM(CAST(fb.BUILDING_HEIGHT AS DECIMAL(10, 2))) AS total_building_heights\nFROM \n    SPACE_UNIT su\nJOIN \n    FCLT_ORGANIZATION fo ON su.DLC_KEY = fo.DLC_KEY\nJOIN \n    SPACE_DETAIL sd ON su.SPACE_UNIT_KEY = sd.SPACE_UNIT_KEY\nJOIN \n    SPACE_FLOOR sf ON sd.FLOOR_KEY = sf.FLOOR_KEY\nJOIN \n    SPACE_SUPERVISOR_USAGE ssu ON FIND_IN_SET(su.DLC_KEY, ssu.DEPT_NAMES) > 0\nJOIN \n    FCLT_BUILDING fb ON sd.BUILDING_KEY = fb.FCLT_BUILDING_KEY\nGROUP BY \n    su.DLC_KEY, fo.DLC_NAME;",
+        "original_index": 21
+    },
+    {
+        "db_id": "dw",
+        "question": "What is the department name, total number of types of TIP subjects, total number of enrolled students, the minimum and maximum rental new price for each department?",
+        "predicted_sql": "SELECT \n    tso.OFFER_DEPT_NAME AS department_name,\n    COUNT(DISTINCT tso.SUBJECT_ID) AS total_number_of_types_of_TIP_subjects,\n    SUM(tso.NUM_ENROLLED_STUDENTS) AS total_number_of_enrolled_students,\n    MIN(tm.RENTAL_NEW_PRICE) AS minimum_rental_new_price,\n    MAX(tm.RENTAL_NEW_PRICE) AS maximum_rental_new_price\nFROM \n    TIP_SUBJECT_OFFERED tso\nJOIN \n    TIP_DETAIL td ON tso.TIP_SUBJECT_OFFERED_KEY = td.TIP_SUBJECT_OFFERED_KEY\nJOIN \n    TIP_MATERIAL tm ON td.TIP_MATERIAL_KEY = tm.TIP_MATERIAL_KEY\nGROUP BY \n    tso.OFFER_DEPT_NAME;",
+        "original_index": 22
+    },
+    {
+        "db_id": "dw",
+        "question": "List building names, their height, street address, city, state, postal code, their gross and assignable square footage, the smallest and largest floor level and the total area of all rooms for each building key.",
+        "predicted_sql": "SELECT \n    fb.BUILDING_NAME,\n    fb.BUILDING_HEIGHT,\n    b.BUILDING_STREET_ADDRESS,\n    fba.CITY,\n    fba.STATE,\n    fba.POSTAL_CODE,\n    fb.EXT_GROSS_AREA,\n    fb.ASSIGNABLE_AREA,\n    MIN(ff.LEVEL_ID) AS SMALLEST_FLOOR_LEVEL,\n    MAX(ff.LEVEL_ID) AS LARGEST_FLOOR_LEVEL,\n    SUM(CAST(fr.AREA AS DECIMAL(10, 2))) AS TOTAL_ROOM_AREA\nFROM \n    FAC_BUILDING fb\nJOIN \n    BUILDINGS b ON fb.FAC_BUILDING_KEY = b.BUILDING_KEY\nJOIN \n    FAC_BUILDING_ADDRESS fba ON fb.FAC_BUILDING_KEY = fba.BUILDING_KEY\nJOIN \n    FAC_FLOOR ff ON fb.FAC_BUILDING_KEY = ff.BUILDING_KEY\nJOIN \n    FAC_ROOMS fr ON ff.FLOOR_KEY = fr.FLOOR_KEY\nWHERE \n    fba.ADDRESS_PURPOSE = 'STREET'\nGROUP BY \n    fb.FAC_BUILDING_KEY, fb.BUILDING_NAME, fb.BUILDING_HEIGHT, b.BUILDING_STREET_ADDRESS, fba.CITY, fba.STATE, fba.POSTAL_CODE, fb.EXT_GROSS_AREA, fb.ASSIGNABLE_AREA;",
+        "original_index": 42
+    },
+    {
+        "db_id": "dw",
+        "question": "For each distinct mailing list containing more than 1000 people and with a name starting with A (case insensitive), provide its name, whether it is a mailing list, whether it is a moira group, whether it is a NFS group, the owner of the mailing list, and the number of people in the list.",
+        "predicted_sql": "SELECT \n    ml.MOIRA_LIST_NAME AS name,\n    ml.IS_MOIRA_MAILING_LIST AS mailing_list,\n    ml.IS_MOIRA_GROUP AS moira_group,\n    ml.IS_NFS_GROUP AS nfs_group,\n    mlo.OWNER AS owner,\n    COUNT(mld.MOIRA_LIST_MEMBER) AS number_of_people\nFROM \n    MOIRA_LIST ml\nJOIN \n    MOIRA_LIST_DETAIL mld ON ml.MOIRA_LIST_KEY = mld.MOIRA_LIST_KEY\nJOIN \n    MOIRA_LIST_OWNER mlo ON mld.MOIRA_LIST_OWNER_KEY = mlo.MOIRA_LIST_OWNER_KEY\nWHERE \n    ml.MOIRA_LIST_NAME LIKE 'A%' COLLATE utf8mb4_general_ci\nGROUP BY \n    ml.MOIRA_LIST_NAME, ml.IS_MOIRA_MAILING_LIST, ml.IS_MOIRA_GROUP, ml.IS_NFS_GROUP, mlo.OWNER\nHAVING \n    COUNT(mld.MOIRA_LIST_MEMBER) > 1000;",
+        "original_index": 48
+    }
+]
