@@ -173,22 +173,37 @@ class OpenAIModel:
         Returns:
             response 객체 (tool 사용 시 tool_call_log 포함)
         """
-        # Tool이 있으면 상세 시스템 메시지
+        # Tool이 있으면 상세 시스템 메시지 (활성화된 tool에 따라 동적 생성)
         if self.use_tools:
-            system_message = """You are a MySQL SQL expert. Your job is to write a MySQL SQL query to answer the user's question.
+            system_parts = ["You are a MySQL SQL expert. Your job is to write a MySQL SQL query to answer the user's question.\n"]
+            system_parts.append("You have access to tools that help you write better SQL:\n")
 
-You have access to tools that help you write better SQL:
-
-1. **find_join_path**: Find the optimal JOIN path between two tables
+            tool_num = 1
+            if self.enable_join_path_finder:
+                system_parts.append(f"""{tool_num}. **find_join_path**: Find the optimal JOIN path between two tables
    - **USE THIS FIRST** when you need to join tables that might not be directly related
    - Returns the shortest path including any necessary intermediate (bridge) tables
    - **CRITICAL**: Do NOT skip intermediate tables - each hop is required for data integrity
+""")
+                tool_num += 1
 
-2. **inspect_join_relationship**: Analyze JOIN relationships between tables
+            if self.enable_join_inspector:
+                system_parts.append(f"""{tool_num}. **inspect_join_relationship**: Analyze JOIN relationships between tables
    - Check cardinality (1:1, 1:N, M:N) before writing JOIN queries
    - Identify potential data multiplication issues
+""")
+                tool_num += 1
 
-When writing SQL queries:
+            if self.enable_lookup_column_values:
+                system_parts.append(f"""{tool_num}. **lookup_column_values**: Verify exact column values before using in WHERE clause
+   - **USE THIS** when you need to filter by a string value (department, role, status, type, name)
+   - If the exact value is NOT shown in schema Examples, ALWAYS verify it exists first
+   - Returns whether the value exists + similar values if not found
+   - **CRITICAL**: If NOT FOUND, do NOT use that value - check similar values or re-read hints
+""")
+                tool_num += 1
+
+            system_parts.append("""When writing SQL queries:
 - **Multi-hop JOINs**: If find_join_path shows intermediate tables, you MUST include ALL of them in your query
 - **DISTINCT usage**: If the tool shows M:N (many-to-many) cardinality, consider using SELECT DISTINCT or COUNT(DISTINCT ...) to avoid duplicate rows
 - **JOIN type selection**: Logically determine whether to use INNER JOIN or LEFT JOIN based on:
@@ -196,7 +211,8 @@ When writing SQL queries:
   * The cardinality information from the tool
   * The business logic of the question
 - **GROUP BY optimization**: For M:N relationships, use GROUP BY with appropriate aggregate functions (COUNT DISTINCT, MAX, MIN, etc.)
-"""
+""")
+            system_message = "\n".join(system_parts)
         else:
             system_message = "You are a SQLite SQL expert. Your job is to write a SQLite SQL query to answer the user's question."
 
