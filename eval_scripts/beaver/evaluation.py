@@ -58,14 +58,30 @@ def execute_model(predicted_sql, ground_truth, db_id, conn_info, idx, meta_time_
         
     return {'sql_idx': idx, 'ground_truth': ground_truth, 'res': res}
 
-def package_sqls(data_path, data_mode='dev', is_gt=False):
+def package_sqls(data_path, data_mode='dev', is_gt=False, original_indices=None):
+    """
+    Load SQL queries from files.
+
+    Args:
+        data_path: Path to data directory
+        data_mode: Dataset mode (e.g., 'dev', 'dw')
+        is_gt: Whether loading ground truth
+        original_indices: List of original indices to filter ground truth (for test_set mode)
+    """
     sqls, db_ids = [], []
-    
+
     if is_gt:
         gt_data = load_json(os.path.join(data_path, f'{data_mode}.json'))
-        for item in gt_data:
-            sqls.append(item['sql'])
-            db_ids.append(item['db_id'])
+        if original_indices is not None:
+            # test_set mode: only load ground truth for specified indices
+            for idx in original_indices:
+                if idx < len(gt_data):
+                    sqls.append(gt_data[idx]['sql'])
+                    db_ids.append(gt_data[idx]['db_id'])
+        else:
+            for item in gt_data:
+                sqls.append(item['sql'])
+                db_ids.append(item['db_id'])
     else:
         pred_data = load_json(os.path.join(data_path, f'predict_{data_mode}.json'))
         sorted_keys = sorted(pred_data.keys(), key=int)
@@ -74,7 +90,7 @@ def package_sqls(data_path, data_mode='dev', is_gt=False):
             sql, db_name = sql_str.split('\t----- bird -----\t')
             sqls.append(sql)
             db_ids.append(db_name)
-            
+
     return sqls, db_ids
 
 def run_sqls_parallel(sqls, db_ids, conn_info, num_cpus, meta_time_out):
@@ -119,8 +135,18 @@ if __name__ == '__main__':
         "user": args.db_user, "password": db_password
     }
 
+    # Load predictions and check for original_indices (test_set mode)
+    predictions_file = os.path.join(args.predicted_sql_path, 'predictions.json')
+    original_indices = None
+    if os.path.exists(predictions_file):
+        predictions = load_json(predictions_file)
+        # Check if any prediction has original_index (test_set mode)
+        if predictions and 'original_index' in predictions[0]:
+            original_indices = [p['original_index'] for p in predictions]
+            print(f"Test set mode detected: evaluating indices {original_indices}")
+
     pred_queries, pred_db_ids = package_sqls(args.predicted_sql_path, data_mode=args.data_mode, is_gt=False)
-    gt_queries, gt_db_ids = package_sqls(args.ground_truth_path, data_mode=args.data_mode, is_gt=True)
+    gt_queries, gt_db_ids = package_sqls(args.ground_truth_path, data_mode=args.data_mode, is_gt=True, original_indices=original_indices)
 
     # 경고: DB ID 길이 체크
     if len(pred_queries) != len(gt_queries):
@@ -147,4 +173,11 @@ if __name__ == '__main__':
     print(f"Correct: {sum(res['res'] for res in exec_result)}")
     print(f"Accuracy: {accuracy:.2f}%")
     print("============================================================")
+    
+    # Save detailed results
+    output_dir = args.predicted_sql_path
+    exec_results_path = os.path.join(output_dir, 'exec_results_detail.json')
+    with open(exec_results_path, 'w') as f:
+        json.dump(exec_result, f, indent=2)
+    print(f"✅ Detailed results saved to: {exec_results_path}")
     

@@ -80,8 +80,72 @@ Now generate {sql_dialect} SQL query to answer the given "Question" without any 
 (Hints: {hints})
 
 ### Generated SQL Query ###
-Generated SQL: 
+Generated SQL:
 """
+
+# Tool-specific instructions
+TOOL_INSTRUCTIONS = {
+    'join_inspector': """- **inspect_join_relationship**: When you already know which columns to JOIN on, use this tool to verify:
+  * Cardinality (1:1, 1:N, N:1, M:N) - prevents data multiplication bugs
+  * Sample joined data - confirms keys actually match
+  * Row counts - helps detect unexpected duplicates
+  Required: table1, table2, join_key1, join_key2""",
+
+    'join_path_finder': """- **find_join_path**: When you DON'T know how to join two tables, use this tool to discover:
+  * Optimal JOIN path (including intermediate tables if needed)
+  * Correct join keys between tables
+  * Quality score for each path option
+  Required: table1, table2""",
+
+    'lookup_column_values': """- **lookup_column_values**: **MUST USE** this tool when:
+  * The question mentions a category (role, department, status, type) but doesn't give the EXACT database value
+  * You're about to write WHERE column = 'some string' without seeing that exact string in the schema examples
+  * The column stores categorical data (names, types, statuses, roles, departments)
+  * Even if schema shows example values, they may be incomplete - ALWAYS verify
+
+  Required: table, column"""
+}
+
+def build_tool_guidelines(enabled_tools: list) -> str:
+    """
+    Dynamically build tool usage guidelines based on which tools are enabled.
+
+    Args:
+        enabled_tools: List of enabled tool names (e.g., ['join_inspector', 'join_path_finder'])
+
+    Returns:
+        Formatted tool usage guidelines string
+    """
+    if not enabled_tools:
+        return ""
+
+    guidelines = ["**IMPORTANT: Tool Usage Guidelines**"]
+    guidelines.append("You have access to the following tools for JOIN analysis:\n")
+
+    # Add instructions for each enabled tool
+    for tool in enabled_tools:
+        if tool in TOOL_INSTRUCTIONS:
+            guidelines.append(TOOL_INSTRUCTIONS[tool])
+
+    # Add workflow guidance based on tool combination
+    guidelines.append("\n**Recommended Workflow:**")
+    workflow_steps = []
+
+    if 'lookup_column_values' in enabled_tools:
+        workflow_steps.append("If your WHERE clause needs a string value (role, department, status, etc.) → Use `lookup_column_values` to find the exact value")
+
+    if 'join_path_finder' in enabled_tools:
+        workflow_steps.append("If unsure how to JOIN two tables → Use `find_join_path` to discover the path")
+
+    if 'join_inspector' in enabled_tools:
+        workflow_steps.append("Once you have JOIN keys → Use `inspect_join_relationship` to verify cardinality")
+
+    workflow_steps.append("Write the final SQL query with validated information")
+
+    for i, step in enumerate(workflow_steps, 1):
+        guidelines.append(f"{i}. {step}")
+
+    return "\n".join(guidelines)
 
 
 # ### SPIDER 용 DIN-SQL Prompt

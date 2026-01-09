@@ -1,0 +1,1012 @@
+--- Log Session Started at 2026-01-08 12:50:04 ---
+
+***** FINAL PROMPT *****
+### System Instructions ###
+You are an expert SQL developer.
+You must generate an accurate and efficient MySQL query based on the provided database schema and natural language question.
+Never use tables or columns that are not specified in the schema.
+Do not add any explanations other than the final SQL query.
+Now generate MySQL SQL query to answer the given "Question" without any explanation.
+
+### Schema ###
+[DB_ID] dw
+# Schema
+# Table: FAC_BUILDING
+[
+(FAC_BUILDING_KEY:VARCHAR2, Examples: ['1', '10', '11']),
+(BUILDING_NUMBER:VARCHAR2, Examples: ['2', '39', '41']),
+(PARENT_BUILDING_NUMBER:DATE, Examples: ['62', '64', 'W85DE']),
+(PARENT_BUILDING_NAME:NUMBER, Examples: ['ALUMNI HOUSES: MUNROE HAYDEN WOOD', 'EAST CAMPUS: WALCOTT BEMIS GOODALE', 'WESTGATE (DE)']),
+(PARENT_BUILDING_NAME_LONG:VARCHAR2, Examples: ['Alumni Houses: Munroe Hayden Wood', 'Alumni Houses: Walcott Bemis Goodale', 'Westgate DE']),
+(BUILDING_NAME_LONG:VARCHAR2, Examples: ['THE SIMONS BUILDING', 'Stanley Gordon Brown Building', 'Building 41']),
+(EXT_GROSS_AREA:VARCHAR2, Examples: [133168.0, 76639.9, 26148.2]),
+(ASSIGNABLE_AREA:VARCHAR2, Examples: [73695.2, 39391.1, 20058.6]),
+(NON_ASSIGNABLE_AREA:VARCHAR2, Examples: [43048.0, 30704.7, 4407.76]),
+(SITE:VARCHAR2, Examples: ['MIT', 'BATES', 'HAY']),
+(CAMPUS_SECTOR:NUMBER, Examples: ['MAIN GROUP', 'EAST', 'NORTHEAST']),
+(ACCESS_LEVEL_CODE:NUMBER, Examples: [2, 0, 1]),
+(ACCESS_LEVEL_NAME:NUMBER, Examples: ['2', '0', '1']),
+(BUILDING_TYPE:VARCHAR2, Examples: ['ACADEMIC', 'SERVICE', 'RESIDENT']),
+(OWNERSHIP_TYPE:VARCHAR2, Examples: ['OWNED', 'LEASED']),
+(BUILDING_USE:NUMBER, Examples: ['AER', 'OTH', 'DHOA']),
+(OCCUPANCY_CLASS:VARCHAR2, Examples: ['UGBA3', 'UGB', '(NULL)']),
+(BUILDING_HEIGHT:VARCHAR2, Examples: ['82.6', '91.1', '61.2']),
+(COST_CENTER_CODE:VARCHAR2, Examples: ['1810200', '1813900', '1814100']),
+(COST_COLLECTOR_KEY:VARCHAR2, Examples: ['1810200', '1813900', '1814100']),
+(LATITUDE_WGS:VARCHAR2, Examples: [42.3588, 42.3609, 42.3608]),
+(LONGITUDE_WGS:VARCHAR2, Examples: [-71.0902, -71.0927, -71.0942]),
+(EASTING_X_SPCS:VARCHAR2, Examples: [766931.0, 766239.0, 765853.0]),
+(NORTHING_Y_SPCS:VARCHAR2, Examples: [2956050.0, 2956790.0, 2956750.0]),
+(BUILDING_SORT:NUMBER, Examples: ['02', '39', '41']),
+(BUILDING_NAMED_FOR:NUMBER, Examples: ['James H. and Marilyn Simons', 'GORDON STANLEY BROWN', '-']),
+(BUILDING_NAME:NUMBER, Examples: ['THE SIMONS BUILDING', 'BROWN BUILDING', 'BUILDING 41']),
+(DATE_BUILT:NUMBER, Examples: ['07/01/1913', '08/01/1966', '12/31/1915']),
+(DATE_ACQUIRED:VARCHAR2, Examples: ['10/01/1958', '02/13/2024', '07/01/2016']),
+(DATE_OCCUPIED:VARCHAR2, Examples: ['12/31/1916', '12/31/1968', '12/31/1917']),
+(WAREHOUSE_LOAD_DATE:VARCHAR2, Examples: ['19-DEC-24']),
+(NUM_OF_ROOMS:VARCHAR2, Examples: [383, 250, 106])
+]
+# Table: FAC_FLOOR
+[
+(BUILDING_KEY:DATE, Examples: ['1', '10', '11']),
+(FLOOR:VARCHAR2, Examples: ['4', '5', '1']),
+(FLOOR_KEY:VARCHAR2, Examples: ['1-0', '1-1', '1-2']),
+(EXT_GROSS_AREA:VARCHAR2, Examples: [15472.5, 1045.28, 6443.95]),
+(ASSIGNABLE_AREA:NUMBER, Examples: [5264.78, 309.76, 6910.44]),
+(NON_ASSIGNABLE_AREA:NUMBER, Examples: [8451.17, 534.72, 711.61]),
+(FLOOR_SORT_SEQUENCE:NUMBER, Examples: ['4', '5', '1']),
+(LEVEL_ID:VARCHAR2, Examples: ['4', '5', '1']),
+(BUILDING_WINGS_ID:VARCHAR2, Examples: ['W61A.3', 'W61E.2 W61F.2 W61G.2 W61H.2 W61J.2 W61M.2', 'W61E.3 W61F.3 W61G.3 W61H.3 W61J.3 W61M.3']),
+(ACCESS_LEVEL:VARCHAR2, Examples: ['2', '0', '3']),
+(WAREHOUSE_LOAD_DATE:VARCHAR2, Examples: ['19-DEC-24'])
+]
+
+### Question ###
+List the name and floor of the building with the largest floor number.
+
+(Hints: Schema Mapping Hints:
+- 'name' is related to FAC_BUILDING.BUILDING_NAME
+- 'floor' is related to FAC_FLOOR.FLOOR
+
+Join Information: (FAC_BUILDING.FAC_BUILDING_KEY = FAC_FLOOR.BUILDING_KEY))
+
+### Generated SQL Query ###
+Generated SQL:
+
+
+***** RESPONSE *****
+ChatCompletion(id='chatcmpl-CvbKBUUCq7HR4tnDVquGftxJvsT8t', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='```sql\nSELECT b.BUILDING_NAME, f.FLOOR\nFROM FAC_BUILDING b\nJOIN FAC_FLOOR f ON b.FAC_BUILDING_KEY = f.BUILDING_KEY\nWHERE f.FLOOR = (SELECT MAX(FLOOR) FROM FAC_FLOOR);\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None))], created=1767844207, model='gpt-4o-2024-08-06', object='chat.completion', service_tier='default', system_fingerprint='fp_deacdd5f6f', usage=CompletionUsage(completion_tokens=61, prompt_tokens=1371, total_tokens=1432, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)))
+
+***** TOKEN INFO *****
+CompletionUsage(completion_tokens=61, prompt_tokens=1371, total_tokens=1432, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0))
+
+***** FINAL SQL QUERY *****
+SELECT b.BUILDING_NAME, f.FLOOR
+FROM FAC_BUILDING b
+JOIN FAC_FLOOR f ON b.FAC_BUILDING_KEY = f.BUILDING_KEY
+WHERE f.FLOOR = (SELECT MAX(FLOOR) FROM FAC_FLOOR);
+
+***** TOKEN MONITORING *****
+TOKEN PER ITERATION    : 1371, 61
+TOTAL                  : 1432, 1371, 61
+AVG                    : 1432.00, 1371.00, 61.00
+******************************************************************************************************************************************************
+******************************************************************************************************************************************************
+
+***** FINAL PROMPT *****
+### System Instructions ###
+You are an expert SQL developer.
+You must generate an accurate and efficient MySQL query based on the provided database schema and natural language question.
+Never use tables or columns that are not specified in the schema.
+Do not add any explanations other than the final SQL query.
+Now generate MySQL SQL query to answer the given "Question" without any explanation.
+
+### Schema ###
+[DB_ID] dw
+# Schema
+# Table: ACADEMIC_TERMS_ALL
+[
+(ACADEMIC_TERMS_KEY:VARCHAR2, Examples: ['1951FA', '1951SP', '1951SU']),
+(TERM_CODE:VARCHAR2, Examples: ['1951FA', '1951SP', '1951SU']),
+(TERM_DESCRIPTION:VARCHAR2, Examples: ['Spring Term 1981-1982', 'Spring Term 1982-1983', 'Spring Term 1959-1960']),
+(TERM_SELECTOR:VARCHAR2, Examples: ['1982SP-Spring Term 1981-1982', '1983SP-Spring Term 1982-1983', '1960SP-Spring Term 1959-1960']),
+(TERM_START_DATE:DATE, Examples: ['01-FEB-82', '31-JAN-83', '08-FEB-60']),
+(TERM_END_DATE:DATE, Examples: ['20-MAY-82', '18-MAY-83', '03-JUN-60']),
+(ACADEMIC_YEAR:VARCHAR2, Examples: ['1982', '1983', '1960']),
+(ACADEMIC_YEAR_DESC:VARCHAR2, Examples: ['Academic Year 1981-1982', 'Academic Year 1982-1983', 'Academic Year 1959-1960']),
+(IS_CURRENT_TERM:VARCHAR2, Examples: ['N', 'Y']),
+(TERM_STATUS_INDICATOR:VARCHAR2, Examples: ['P', 'F', 'C']),
+(FINANCIAL_AID_YEAR:VARCHAR2, Examples: ['1982', '1983', '1960']),
+(DEGREE_YEAR:VARCHAR2, Examples: ['1982', '1983', '1960']),
+(LAST_DAY_OF_FINAL_EXAM:DATE, Examples: ['20-MAY-82', '18-MAY-83', '03-JUN-60']),
+(PRE_REGISTRATION_START_DAY:DATE, Examples: ['01-MAY-85', '01-MAY-86', '01-MAY-87']),
+(REGISTRATION_DAY:DATE, Examples: ['01-FEB-82', '31-JAN-83', '08-FEB-60']),
+(FIRST_DAY_OF_CLASSES:DATE, Examples: ['02-FEB-82', '01-FEB-83', '09-FEB-60']),
+(LAST_DAY_OF_CLASSES:DATE, Examples: ['20-MAY-82', '18-MAY-83', '03-JUN-60']),
+(GRADUATE_AWARD_START_DATE:DATE, Examples: ['16-JAN-82', '16-JAN-83', '01-JUN-85']),
+(GRADUATE_AWARD_END_DATE:DATE, Examples: ['31-MAY-82', '31-MAY-83', '31-AUG-85']),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24'])
+]
+# Table: COURSE_CATALOG_SUBJECT_OFFERED
+[
+(ACADEMIC_YEAR:VARCHAR2, Examples: ['2016', '2013', '2008']),
+(TERM_CODE:VARCHAR2, Examples: ['2002FA', '2002JA', '2002SP']),
+(SUBJECT_ID:VARCHAR2, Examples: ['1.00', '1.000', '1.001']),
+(SUBJECT_CODE:VARCHAR2, Examples: ['1', '10', '11']),
+(SUBJECT_NUMBER:VARCHAR2, Examples: ['003', '981', '07']),
+(SOURCE_SUBJECT_ID:VARCHAR2, Examples: ['6.003', '6.981', '5.07']),
+(PRINT_SUBJECT_ID:VARCHAR2, Examples: ['6.003', '6.981', '5.07']),
+(IS_PRINTED_IN_BULLETIN:VARCHAR2, Examples: ['Y', 'N', 'S']),
+(DEPARTMENT_CODE:VARCHAR2, Examples: ['1', '10', '11']),
+(DEPARTMENT_NAME:VARCHAR2, Examples: ['Electrical Eng & Computer Sci', 'Chemistry', 'Edgerton Center']),
+(EFFECTIVE_TERM_CODE:VARCHAR2, Examples: ['1989FA', '1990FA', '1991FA']),
+(SUBJECT_SHORT_TITLE:VARCHAR2, Examples: ['Signals and Systems', 'Teaching Elec Engr & Comp Sci', 'Biological Chemistry']),
+(SUBJECT_TITLE:VARCHAR2, Examples: ['Signals and Systems', 'Teaching Electrical Engineering and Computer Science', 'Biological Chemistry I']),
+(IS_VARIABLE_UNITS:VARCHAR2, Examples: ['N', 'Y']),
+(LECTURE_UNITS:NUMBER, Examples: [5, 0, 4]),
+(LAB_UNITS:NUMBER, Examples: [0, 8, 1]),
+(PREPARATION_UNITS:NUMBER, Examples: [7, 0, 8]),
+(TOTAL_UNITS:NUMBER, Examples: [12, 0, 6]),
+(DESIGN_UNITS:NUMBER, Examples: [4, 0, 3]),
+(GRADE_TYPE:VARCHAR2, Examples: ['L', 'P']),
+(GRADE_TYPE_DESC:VARCHAR2, Examples: ['Letter graded', 'P/D/F']),
+(GRADE_RULE:VARCHAR2, Examples: ['N', 'R', 'J']),
+(GRADE_RULE_DESC:VARCHAR2, Examples: ['Not repeatable for credit', 'Can be repeated for credit', 'Continuing and Repeatable']),
+(HGN_CODE:VARCHAR2, Examples: ['G', 'H', 'U']),
+(HGN_DESC:VARCHAR2, Examples: ['Undergraduate', 'Graduate', 'High Graduate']),
+(HGN_EXCEPT:VARCHAR2, Examples: ['(H except 18)', '(H except 2, 6, 8, 12, 13, 16, 18, 22)', '(H except XVIII)']),
+(GIR_ATTRIBUTE:VARCHAR2, Examples: ['REST', 'HE', 'HD1']),
+(GIR_ATTRIBUTE_DESC:VARCHAR2, Examples: ['Rest Elec in Sci & Tech', 'HASS Elective', 'HASS-D, Category 1']),
+(COMM_REQ_ATTRIBUTE:VARCHAR2, Examples: ['CIM', 'CIH', 'CIHW']),
+(COMM_REQ_ATTRIBUTE_DESC:VARCHAR2, Examples: ['Communication Intensive Major', 'Communication Intensive HASS', 'Communication Intensive Writing']),
+(TUITION_ATTRIBUTE:VARCHAR2, Examples: ['NTRN', 'RESH', 'COOP']),
+(TUITION_ATTRIBUTE_DESC:VARCHAR2, Examples: ['Internship', 'Pre-thesis Research Subject', 'Co-op Subject']),
+(WRITE_REQ_ATTRIBUTE:VARCHAR2, Examples: ['WRT1', 'WRT2']),
+(WRITE_REQ_ATTRIBUTE_DESC:VARCHAR2, Examples: ['Writing Requirement, Phase I', 'Writing Requirement, Phase II']),
+(SUPERVISOR_ATTRIBUTE:VARCHAR2, Examples: ['THG', 'UROP', 'INDP']),
+(SUPERVISOR_ATTRIBUTE_DESC:VARCHAR2, Examples: ['Grad Thesis', 'UROP subject', 'Independent Study']),
+(PREREQUISITES:VARCHAR2, Examples: ['GIR:PHY2, 18.03', '5.12', '1.260, 15.760, or 15.761']),
+(SUBJECT_DESCRIPTION:VARCHAR2, Examples: ['Presents the fundamentals of signal and system analysis. Topics include discrete-time and continuous-time signals, Fourier seri', 'For Teaching Assistants in Electrical Engineering and Computer Science, in cases where teaching assignment is approved for acad', 'Chemical and physical properties of the cell and its building blocks. Structures of proteins and principles of catalysis. The c']),
+(JOINT_SUBJECTS:VARCHAR2, Examples: ['1.274J, ESD.268J', '17.007J, WGS.301J', '21M.608J']),
+(SCHOOL_WIDE_ELECTIVES:VARCHAR2, Examples: ['1.155, 2.943, 3.577, 6.938, 10.816, 13.621, 16.862, 22.82, ESD.72', '1.021, 3.021, 10.333', '1.EPE, 2.EPE, 3.EPE, 6.EPE, 10.EPE, 22.EPE']),
+(MEETS_WITH_SUBJECTS:VARCHAR2, Examples: ['17.006J, 24.637J', '11.474', '10.27, 10.29']),
+(EQUIVALENT_SUBJECTS:VARCHAR2, Examples: ['7.05', '8.05', '21F.871']),
+(IS_OFFERED_THIS_YEAR:VARCHAR2, Examples: ['Y', 'N']),
+(IS_OFFERED_FALL_TERM:VARCHAR2, Examples: ['Y', 'N']),
+(IS_OFFERED_IAP:VARCHAR2, Examples: ['N', 'Y']),
+(IS_OFFERED_SPRING_TERM:VARCHAR2, Examples: ['Y', 'N']),
+(IS_OFFERED_SUMMER_TERM:VARCHAR2, Examples: ['N', 'Y']),
+(FALL_INSTRUCTORS:VARCHAR2, Examples: ['E. M. Harper, M. F. Hebert, A. C. Espinoza', 'H. W. Thompson, S. Richardson', 'M. K. Newman, F. L. Doherty']),
+(SPRING_INSTRUCTORS:VARCHAR2, Examples: ['E. M. Harper, M. F. Hebert, A. C. Espinoza', 'H. W. Thompson, S. Richardson', 'M. K. Newman, F. L. Doherty']),
+(STATUS_CHANGE:VARCHAR2, Examples: ['New subject', 'New joint child (2005: Switch from joint child to subject)', 'Old number: 15.995']),
+(LAST_ACTIVITY_DATE:DATE, Examples: ['12-MAR-15', '28-DEC-11', '14-MAR-08']),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24']),
+(MASTER_SUBJECT_ID:VARCHAR2, Examples: ['1.00', '1.000', '1.007']),
+(HASS_ATTRIBUTE:VARCHAR2, Examples: ['HA', 'HA,HH', 'HE']),
+(HASS_ATTRIBUTE_DESC:VARCHAR2, Examples: ['HASS Humanities', 'HASS Arts', 'HASS Social Sciences']),
+(TERM_DURATION:VARCHAR2, Examples: ['Full Term Subject', 'First Half Term Subject', 'Partial Term Subject']),
+(GLOBAL_REGIONS:VARCHAR2, Examples: ['Global (all regions)', 'Europe', 'Middle East']),
+(GLOBAL_COUNTRIES:VARCHAR2, Examples: ['United States of America|India|South Africa', 'Spain', 'Japan']),
+(ON_LINE_PAGE_NUMBER:VARCHAR2, Examples: ['http://student.mit.edu/catalog/m6a.html', 'http://student.mit.edu/catalog/m6c.html', 'http://student.mit.edu/catalog/mECa.html']),
+(SECTION_ID:VARCHAR2, Examples: ['000', 'B01', 'B02']),
+(IS_MASTER_SECTION:VARCHAR2, Examples: ['N', 'Y']),
+(IS_LECTURE_SECTION:VARCHAR2, Examples: ['N', 'Y']),
+(IS_LAB_SECTION:VARCHAR2, Examples: ['N', 'Y']),
+(IS_RECITATION_SECTION:VARCHAR2, Examples: ['Y', 'N']),
+(IS_DESIGN_SECTION:VARCHAR2, Examples: ['N', 'Y']),
+(RESPONSIBLE_FACULTY_NAME:VARCHAR2, Examples: ['Garcia, Elsa', 'Wilkinson, Eugene', 'Mooney, Willie']),
+(RESPONSIBLE_FACULTY_MIT_ID:VARCHAR2, Examples: ['900013216', '900026651', '900043308']),
+(MEET_TIME:VARCHAR2, Examples: ['WF11', 'R12', 'MW8.30-10 (BEGINS MARCH 31)']),
+(MEET_PLACE:VARCHAR2, Examples: ['*TO BE ARRANGED', '1-001E', '1-037E'])
+]
+# Table: EMPLOYEE_DIRECTORY
+[
+(MIT_ID:VARCHAR2, Examples: ['900013216', '900018937', '900019389']),
+(LAST_NAME:VARCHAR2, Examples: ['Austin', 'Hopkins', 'Bell']),
+(FIRST_NAME:VARCHAR2, Examples: ['Sasha', 'Jamal', 'Mahir']),
+(MIDDLE_NAME:VARCHAR2, Examples: ['C', 'Lucero', 'R']),
+(FULL_NAME:VARCHAR2, Examples: ['Austin, Sasha', 'Hopkins, Jamal C.', 'Bell, Mahir']),
+(DIRECTORY_FULL_NAME:VARCHAR2, Examples: ['Austin, Sasha', 'Hopkins, Jamal C.', 'Bell, Mahir']),
+(OFFICE_LOCATION:VARCHAR2, Examples: ['1', '1-018', '1-037E']),
+(OFFICE_PHONE:VARCHAR2, Examples: ['1593468096', '8028104479', '285881157']),
+(DIRECTORY_TITLE:VARCHAR2),
+(PRIMARY_TITLE:VARCHAR2),
+(DEPARTMENT_NUMBER:VARCHAR2, Examples: ['402000', '871060', '310000']),
+(DEPARTMENT_NAME:VARCHAR2, Examples: ['David H Koch Institute for Integrative Cancer Res', 'Alumni Association Alumni Relations', 'Lincoln Laboratory']),
+(KRB_NAME:VARCHAR2, Examples: ['aa', 'aadama', 'aadamb']),
+(KRB_NAME_UPPERCASE:VARCHAR2, Examples: ['SASHAA', 'JH3', 'MAHIRB']),
+(EMAIL_ADDRESS:VARCHAR2, Examples: ['sashaa@worker.com', 'jh3@worker.com', 'mahirb@gmail.business.com']),
+(PERSONAL_URL:VARCHAR2, Examples: ['http://www.darrent.net', 'http://www.lilir.com', 'https://www.zahras.edu']),
+(NAME_KNOWN_BY:VARCHAR2, Examples: ['Sasha', 'Jamal', 'Mahir']),
+(EMAIL_ADDRESS_UPPERCASE:VARCHAR2, Examples: ['SASHAA@WORKER.COM', 'JH3@WORKER.COM', 'MAHIRB@GMAIL.BUSINESS.COM']),
+(FULL_NAME_UPPERCASE:VARCHAR2, Examples: ['AUSTIN, SASHA', 'HOPKINS, JAMAL C.', 'BELL, MAHIR']),
+(PREFERRED_FIRST_NAME_UPPER:VARCHAR2, Examples: ['SASHA', 'JAMAL', 'MAHIR']),
+(PREFERRED_LAST_NAME_UPPER:VARCHAR2, Examples: ['AUSTIN', 'HOPKINS', 'BELL']),
+(PREFERRED_FIRST_NAME:VARCHAR2, Examples: ['Sasha', 'Jamal', 'Mahir']),
+(PREFERRED_MIDDLE_NAME:VARCHAR2, Examples: ['Lucero', 'R', 'Mcgee']),
+(PREFERRED_LAST_NAME:VARCHAR2, Examples: ['Austin', 'Hopkins', 'Bell'])
+]
+
+### Question ###
+For subjects offered in the summer term, list the subject titles, number of instructors, and the length of the longest instructor name.
+
+(Hints: Schema Mapping Hints:
+- 'summer term' is related to ACADEMIC_TERMS_ALL.TERM_CODE
+- 'subject titles' is related to COURSE_CATALOG_SUBJECT_OFFERED.SUBJECT_TITLE
+- 'instructors' is related to EMPLOYEE_DIRECTORY.FULL_NAME
+- 'instructor name' is related to EMPLOYEE_DIRECTORY.FULL_NAME
+
+Join Information: (COURSE_CATALOG_SUBJECT_OFFERED.RESPONSIBLE_FACULTY_MIT_ID = EMPLOYEE_DIRECTORY.MIT_ID), (COURSE_CATALOG_SUBJECT_OFFERED.TERM_CODE = ACADEMIC_TERMS_ALL.TERM_CODE))
+
+### Generated SQL Query ###
+Generated SQL:
+
+
+***** RESPONSE *****
+ChatCompletion(id='chatcmpl-CvbKBXUlxjjlzAulswDn44jZNYGGi', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content="```sql\nSELECT \n    c.SUBJECT_TITLE,\n    COUNT(DISTINCT e.MIT_ID) AS number_of_instructors,\n    MAX(LENGTH(e.FULL_NAME)) AS longest_instructor_name_length\nFROM \n    COURSE_CATALOG_SUBJECT_OFFERED c\nJOIN \n    EMPLOYEE_DIRECTORY e ON c.RESPONSIBLE_FACULTY_MIT_ID = e.MIT_ID\nJOIN \n    ACADEMIC_TERMS_ALL a ON c.TERM_CODE = a.TERM_CODE\nWHERE \n    c.IS_OFFERED_SUMMER_TERM = 'Y'\nGROUP BY \n    c.SUBJECT_TITLE;\n```", refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None))], created=1767844207, model='gpt-4o-2024-08-06', object='chat.completion', service_tier='default', system_fingerprint='fp_deacdd5f6f', usage=CompletionUsage(completion_tokens=128, prompt_tokens=3411, total_tokens=3539, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)))
+
+***** TOKEN INFO *****
+CompletionUsage(completion_tokens=128, prompt_tokens=3411, total_tokens=3539, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0))
+
+***** FINAL SQL QUERY *****
+SELECT 
+    c.SUBJECT_TITLE,
+    COUNT(DISTINCT e.MIT_ID) AS number_of_instructors,
+    MAX(LENGTH(e.FULL_NAME)) AS longest_instructor_name_length
+FROM 
+    COURSE_CATALOG_SUBJECT_OFFERED c
+JOIN 
+    EMPLOYEE_DIRECTORY e ON c.RESPONSIBLE_FACULTY_MIT_ID = e.MIT_ID
+JOIN 
+    ACADEMIC_TERMS_ALL a ON c.TERM_CODE = a.TERM_CODE
+WHERE 
+    c.IS_OFFERED_SUMMER_TERM = 'Y'
+GROUP BY 
+    c.SUBJECT_TITLE;
+
+***** TOKEN MONITORING *****
+TOKEN PER ITERATION    : 3411, 128
+TOTAL                  : 4971, 4782, 189
+AVG                    : 2485.50, 2391.00, 94.50
+******************************************************************************************************************************************************
+******************************************************************************************************************************************************
+
+***** FINAL PROMPT *****
+### System Instructions ###
+You are an expert SQL developer.
+You must generate an accurate and efficient MySQL query based on the provided database schema and natural language question.
+Never use tables or columns that are not specified in the schema.
+Do not add any explanations other than the final SQL query.
+Now generate MySQL SQL query to answer the given "Question" without any explanation.
+
+### Schema ###
+[DB_ID] dw
+# Schema
+# Table: ACADEMIC_TERMS_ALL
+[
+(ACADEMIC_TERMS_KEY:VARCHAR2, Examples: ['1951FA', '1951SP', '1951SU']),
+(TERM_CODE:VARCHAR2, Examples: ['1951FA', '1951SP', '1951SU']),
+(TERM_DESCRIPTION:VARCHAR2, Examples: ['Spring Term 1981-1982', 'Spring Term 1982-1983', 'Spring Term 1959-1960']),
+(TERM_SELECTOR:VARCHAR2, Examples: ['1982SP-Spring Term 1981-1982', '1983SP-Spring Term 1982-1983', '1960SP-Spring Term 1959-1960']),
+(TERM_START_DATE:DATE, Examples: ['01-FEB-82', '31-JAN-83', '08-FEB-60']),
+(TERM_END_DATE:DATE, Examples: ['20-MAY-82', '18-MAY-83', '03-JUN-60']),
+(ACADEMIC_YEAR:VARCHAR2, Examples: ['1982', '1983', '1960']),
+(ACADEMIC_YEAR_DESC:VARCHAR2, Examples: ['Academic Year 1981-1982', 'Academic Year 1982-1983', 'Academic Year 1959-1960']),
+(IS_CURRENT_TERM:VARCHAR2, Examples: ['N', 'Y']),
+(TERM_STATUS_INDICATOR:VARCHAR2, Examples: ['P', 'F', 'C']),
+(FINANCIAL_AID_YEAR:VARCHAR2, Examples: ['1982', '1983', '1960']),
+(DEGREE_YEAR:VARCHAR2, Examples: ['1982', '1983', '1960']),
+(LAST_DAY_OF_FINAL_EXAM:DATE, Examples: ['20-MAY-82', '18-MAY-83', '03-JUN-60']),
+(PRE_REGISTRATION_START_DAY:DATE, Examples: ['01-MAY-85', '01-MAY-86', '01-MAY-87']),
+(REGISTRATION_DAY:DATE, Examples: ['01-FEB-82', '31-JAN-83', '08-FEB-60']),
+(FIRST_DAY_OF_CLASSES:DATE, Examples: ['02-FEB-82', '01-FEB-83', '09-FEB-60']),
+(LAST_DAY_OF_CLASSES:DATE, Examples: ['20-MAY-82', '18-MAY-83', '03-JUN-60']),
+(GRADUATE_AWARD_START_DATE:DATE, Examples: ['16-JAN-82', '16-JAN-83', '01-JUN-85']),
+(GRADUATE_AWARD_END_DATE:DATE, Examples: ['31-MAY-82', '31-MAY-83', '31-AUG-85']),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24'])
+]
+# Table: IAP_SUBJECT_DETAIL
+[
+(IAP_SUBJECT_CATEGORY_KEY:VARCHAR2, Examples: ['9289af8d58f2d2ba0158fdf98fc30270', '9289af8f50a3a6fb0150a483f24c0000', '9289af8f517c291d0151921beca0022b']),
+(IAP_SUBJECT_SPONSOR_KEY:VARCHAR2, Examples: ['923dd085363aeb5a01363af9e91c0001', '9289af8d3a1d9153013a219643070002', '9289af8d3ba8cc8d013bb3910ef00114']),
+(IAP_SUBJECT_SESSION_KEY:VARCHAR2, Examples: ['9289afec70152d3f0175324c2314001a', '9289afec754ffaf20175769fd4930015', '9289afec754ffaf201759a818f9b0036']),
+(IAP_SUBJECT_PERSON_KEY:VARCHAR2, Examples: ['9289afec70152d3f0175324c2314001a', '9289afec754ffaf20175769fd4930015', '9289afec754ffaf201759a818f9b0036']),
+(ACTIVITY_TITLE:VARCHAR2, Examples: ['Mathematics of Big Data & Machine Learning', 'Private Pilot Ground School (16.687 Special Topics in Aeronautics and Astronautics)', 'Biomechanics in everyday life']),
+(ACTIVITY_DESCRIPTION:VARCHAR2, Examples: ['<p>Big Data describes a new era in the digital age where the volume, velocity, and variety of data created across a wide range ', '<p>Would you like to fly a plane, helicopter, or commercial drone? Or understand the engineering behind today's human-occupied ', '<p>Most of us learn to breathe and walk and move&#160;at a time that we can&#8217;t recall much from and use these skills throu']),
+(TERM_CODE:VARCHAR2, Examples: ['2021JA']),
+(ENROLLMENT_TYPE:VARCHAR2, Examples: ['Advance sign-up required', 'No advance sign-up', 'Other']),
+(MAX_ENROLLMENT:NUMBER, Examples: [30, 25, 20]),
+(ATTENDANCE:VARCHAR2, Examples: ['Participants must attend all sessions', 'Participants welcome at individual sessions', 'Other']),
+(PREREQUISITES:VARCHAR2, Examples: ['Matrix Mathematics', 'Register for 16.687 (U-level; 3 units; graded PDF)', 'none']),
+(FEE:NUMBER, Examples: [10, 168, 36]),
+(FEE_REASON:VARCHAR2, Examples: ['Class Registration', 'employee, $105 stu/postdoc/spouse, $136.50 trad/retiree', 'one lesson, packages of lessons have a discount per lesson']),
+(PREREG_DEADLINE:DATE, Examples: ['31-JAN-21', '10-JAN-20', '26-JAN-21']),
+(CREATE_DATE:DATE, Examples: ['16-OCT-20', '29-OCT-20', '05-NOV-20']),
+(LAST_ACTIVITY_DATE:DATE, Examples: ['26-OCT-20', '02-NOV-20', '13-NOV-20']),
+(IS_MULTIPLE_SESSION:VARCHAR2, Examples: ['Y', 'N']),
+(IS_CANCELLED:VARCHAR2, Examples: ['N', 'Y']),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24'])
+]
+# Table: IAP_SUBJECT_PERSON
+[
+(IAP_SUBJECT_PERSON_KEY:VARCHAR2, Examples: ['9289afec70152d3f01752dbcd728000f', '9289afec70152d3f0175324c2314001a', '9289afec754ffaf201756da4b165000e']),
+(PERSON_ROLE:VARCHAR2, Examples: ['Activity leader', 'Session leader', 'Contact person']),
+(PERSON_MIT_AFFILIATION:VARCHAR2, Examples: ['Staff', 'Senior Lecturer', 'Other MIT']),
+(PERSON_NAME:VARCHAR2, Examples: ['Willie Hewitt', 'Junaid Ochoa', 'Rufus Armstrong']),
+(PERSON_LOCATION:VARCHAR2, Examples: ['Register for Zoom ID', 'NE48', 'E15-413']),
+(PERSON_EMAIL:VARCHAR2, Examples: ['anac@worker.com', 'ec@worker.com', 'pv@worker.com']),
+(PERSON_ORGANIZATION:VARCHAR2),
+(PERSON_TITLE:VARCHAR2),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24'])
+]
+# Table: IAP_SUBJECT_SESSION
+[
+(IAP_SUBJECT_SESSION_KEY:VARCHAR2, Examples: ['9289afec70152d3f01752dbcd728000f', '9289afec70152d3f0175324c2314001a', '9289afec754ffaf201756da4b165000e']),
+(SESSION_SEQUENCE:NUMBER),
+(SESSION_TITLE:VARCHAR2, Examples: ['Module 3', 'Module 1', 'Module 2']),
+(SESSION_DESCRIPTION:VARCHAR2, Examples: ['<p>Module 3 will provide information on NIH proposals more broadly, with an emphasis on biostatistics and COVID related medical', '<p>Module 1 will introduce the physiological monitoring technologies used in MIT's COVID-19 Surveillance Study, a joint initiat', '<p>Module 2 will provide foundational awareness in constraints associated with human subjects research, including ethical and r']),
+(SESSION_LOCATION:VARCHAR2, Examples: ['https://mit.zoom.us/', 'NE45', 'On line']),
+(SESSION_DATE:DATE, Examples: ['14-JAN-21', '15-JAN-21', '20-JAN-21']),
+(SESSION_START_TIME:VARCHAR2, Examples: ['1100AM', '1030AM', '0500PM']),
+(SESSION_END_TIME:VARCHAR2, Examples: ['1200PM', '1130AM', '0600PM']),
+(HAS_SESSION_INFO:VARCHAR2, Examples: ['Y', 'N']),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24'])
+]
+
+### Question ###
+Show the unique activity titles, locations, term start date, and supervisor name for all independent activities, sorted by the ascending order of start date.
+
+(Hints: Schema Mapping Hints:
+- 'activity titles' is related to IAP_SUBJECT_DETAIL.ACTIVITY_TITLE
+- 'locations' is related to IAP_SUBJECT_SESSION.SESSION_LOCATION
+- 'term start date' is related to ACADEMIC_TERMS_ALL.TERM_START_DATE
+- 'supervisor name' is related to IAP_SUBJECT_PERSON.PERSON_NAME, IAP_SUBJECT_PERSON.PERSON_ROLE
+
+Join Information: (IAP_SUBJECT_PERSON.IAP_SUBJECT_PERSON_KEY = IAP_SUBJECT_DETAIL.IAP_SUBJECT_PERSON_KEY), (ACADEMIC_TERMS_ALL.TERM_CODE = IAP_SUBJECT_DETAIL.TERM_CODE), (IAP_SUBJECT_DETAIL.IAP_SUBJECT_SESSION_KEY = IAP_SUBJECT_SESSION.IAP_SUBJECT_SESSION_KEY))
+
+### Generated SQL Query ###
+Generated SQL:
+
+
+***** RESPONSE *****
+ChatCompletion(id='chatcmpl-CvbKBFukOPQAZgAZYEOewuNJGYj37', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content="```sql\nSELECT DISTINCT \n    d.ACTIVITY_TITLE,\n    s.SESSION_LOCATION,\n    t.TERM_START_DATE,\n    p.PERSON_NAME AS SUPERVISOR_NAME\nFROM \n    IAP_SUBJECT_DETAIL d\nJOIN \n    IAP_SUBJECT_SESSION s ON d.IAP_SUBJECT_SESSION_KEY = s.IAP_SUBJECT_SESSION_KEY\nJOIN \n    ACADEMIC_TERMS_ALL t ON d.TERM_CODE = t.TERM_CODE\nJOIN \n    IAP_SUBJECT_PERSON p ON d.IAP_SUBJECT_PERSON_KEY = p.IAP_SUBJECT_PERSON_KEY\nWHERE \n    p.PERSON_ROLE = 'Activity leader'\nORDER BY \n    t.TERM_START_DATE ASC;\n```", refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None))], created=1767844207, model='gpt-4o-2024-08-06', object='chat.completion', service_tier='default', system_fingerprint='fp_deacdd5f6f', usage=CompletionUsage(completion_tokens=146, prompt_tokens=2261, total_tokens=2407, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)))
+
+***** TOKEN INFO *****
+CompletionUsage(completion_tokens=146, prompt_tokens=2261, total_tokens=2407, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0))
+
+***** FINAL SQL QUERY *****
+SELECT DISTINCT 
+    d.ACTIVITY_TITLE,
+    s.SESSION_LOCATION,
+    t.TERM_START_DATE,
+    p.PERSON_NAME AS SUPERVISOR_NAME
+FROM 
+    IAP_SUBJECT_DETAIL d
+JOIN 
+    IAP_SUBJECT_SESSION s ON d.IAP_SUBJECT_SESSION_KEY = s.IAP_SUBJECT_SESSION_KEY
+JOIN 
+    ACADEMIC_TERMS_ALL t ON d.TERM_CODE = t.TERM_CODE
+JOIN 
+    IAP_SUBJECT_PERSON p ON d.IAP_SUBJECT_PERSON_KEY = p.IAP_SUBJECT_PERSON_KEY
+WHERE 
+    p.PERSON_ROLE = 'Activity leader'
+ORDER BY 
+    t.TERM_START_DATE ASC;
+
+***** TOKEN MONITORING *****
+TOKEN PER ITERATION    : 2261, 146
+TOTAL                  : 7378, 7043, 335
+AVG                    : 2459.33, 2347.67, 111.67
+******************************************************************************************************************************************************
+******************************************************************************************************************************************************
+
+***** FINAL PROMPT *****
+### System Instructions ###
+You are an expert SQL developer.
+You must generate an accurate and efficient MySQL query based on the provided database schema and natural language question.
+Never use tables or columns that are not specified in the schema.
+Do not add any explanations other than the final SQL query.
+Now generate MySQL SQL query to answer the given "Question" without any explanation.
+
+### Schema ###
+[DB_ID] dw
+# Schema
+# Table: BUILDINGS
+[
+(BUILDING_KEY:VARCHAR2, Examples: ['1', '10', '11']),
+(BUILDING_NUMBER:VARCHAR2, Examples: ['1', '10', '11']),
+(BUILDING_NAME:VARCHAR2, Examples: ['BUILDING NW32', 'Ashdown House', 'BUILDING NW36']),
+(BUILDING_STREET_ADDRESS:VARCHAR2, Examples: ['230 ALBANY STREET', '235  ALBANY ST', '250 ALBANY STREET']),
+(BUILDING_MAILING_ADDRESS:VARCHAR2),
+(BLDG_GROSS_SQUARE_FOOTAGE:NUMBER, Examples: [30053, 252747, 2045]),
+(BLDG_ASSIGNABLE_SQUARE_FOOTAGE:NUMBER, Examples: [18919, 158677, 1605]),
+(BUILDING_COUNTER:NUMBER, Examples: [1]),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24'])
+]
+# Table: COURSE_CATALOG_SUBJECT_OFFERED
+[
+(ACADEMIC_YEAR:VARCHAR2, Examples: ['2016', '2013', '2008']),
+(TERM_CODE:VARCHAR2, Examples: ['2002FA', '2002JA', '2002SP']),
+(SUBJECT_ID:VARCHAR2, Examples: ['1.00', '1.000', '1.001']),
+(SUBJECT_CODE:VARCHAR2, Examples: ['1', '10', '11']),
+(SUBJECT_NUMBER:VARCHAR2, Examples: ['003', '981', '07']),
+(SOURCE_SUBJECT_ID:VARCHAR2, Examples: ['6.003', '6.981', '5.07']),
+(PRINT_SUBJECT_ID:VARCHAR2, Examples: ['6.003', '6.981', '5.07']),
+(IS_PRINTED_IN_BULLETIN:VARCHAR2, Examples: ['Y', 'N', 'S']),
+(DEPARTMENT_CODE:VARCHAR2, Examples: ['1', '10', '11']),
+(DEPARTMENT_NAME:VARCHAR2, Examples: ['Electrical Eng & Computer Sci', 'Chemistry', 'Edgerton Center']),
+(EFFECTIVE_TERM_CODE:VARCHAR2, Examples: ['1989FA', '1990FA', '1991FA']),
+(SUBJECT_SHORT_TITLE:VARCHAR2, Examples: ['Signals and Systems', 'Teaching Elec Engr & Comp Sci', 'Biological Chemistry']),
+(SUBJECT_TITLE:VARCHAR2, Examples: ['Signals and Systems', 'Teaching Electrical Engineering and Computer Science', 'Biological Chemistry I']),
+(IS_VARIABLE_UNITS:VARCHAR2, Examples: ['N', 'Y']),
+(LECTURE_UNITS:NUMBER, Examples: [5, 0, 4]),
+(LAB_UNITS:NUMBER, Examples: [0, 8, 1]),
+(PREPARATION_UNITS:NUMBER, Examples: [7, 0, 8]),
+(TOTAL_UNITS:NUMBER, Examples: [12, 0, 6]),
+(DESIGN_UNITS:NUMBER, Examples: [4, 0, 3]),
+(GRADE_TYPE:VARCHAR2, Examples: ['L', 'P']),
+(GRADE_TYPE_DESC:VARCHAR2, Examples: ['Letter graded', 'P/D/F']),
+(GRADE_RULE:VARCHAR2, Examples: ['N', 'R', 'J']),
+(GRADE_RULE_DESC:VARCHAR2, Examples: ['Not repeatable for credit', 'Can be repeated for credit', 'Continuing and Repeatable']),
+(HGN_CODE:VARCHAR2, Examples: ['G', 'H', 'U']),
+(HGN_DESC:VARCHAR2, Examples: ['Undergraduate', 'Graduate', 'High Graduate']),
+(HGN_EXCEPT:VARCHAR2, Examples: ['(H except 18)', '(H except 2, 6, 8, 12, 13, 16, 18, 22)', '(H except XVIII)']),
+(GIR_ATTRIBUTE:VARCHAR2, Examples: ['REST', 'HE', 'HD1']),
+(GIR_ATTRIBUTE_DESC:VARCHAR2, Examples: ['Rest Elec in Sci & Tech', 'HASS Elective', 'HASS-D, Category 1']),
+(COMM_REQ_ATTRIBUTE:VARCHAR2, Examples: ['CIM', 'CIH', 'CIHW']),
+(COMM_REQ_ATTRIBUTE_DESC:VARCHAR2, Examples: ['Communication Intensive Major', 'Communication Intensive HASS', 'Communication Intensive Writing']),
+(TUITION_ATTRIBUTE:VARCHAR2, Examples: ['NTRN', 'RESH', 'COOP']),
+(TUITION_ATTRIBUTE_DESC:VARCHAR2, Examples: ['Internship', 'Pre-thesis Research Subject', 'Co-op Subject']),
+(WRITE_REQ_ATTRIBUTE:VARCHAR2, Examples: ['WRT1', 'WRT2']),
+(WRITE_REQ_ATTRIBUTE_DESC:VARCHAR2, Examples: ['Writing Requirement, Phase I', 'Writing Requirement, Phase II']),
+(SUPERVISOR_ATTRIBUTE:VARCHAR2, Examples: ['THG', 'UROP', 'INDP']),
+(SUPERVISOR_ATTRIBUTE_DESC:VARCHAR2, Examples: ['Grad Thesis', 'UROP subject', 'Independent Study']),
+(PREREQUISITES:VARCHAR2, Examples: ['GIR:PHY2, 18.03', '5.12', '1.260, 15.760, or 15.761']),
+(SUBJECT_DESCRIPTION:VARCHAR2, Examples: ['Presents the fundamentals of signal and system analysis. Topics include discrete-time and continuous-time signals, Fourier seri', 'For Teaching Assistants in Electrical Engineering and Computer Science, in cases where teaching assignment is approved for acad', 'Chemical and physical properties of the cell and its building blocks. Structures of proteins and principles of catalysis. The c']),
+(JOINT_SUBJECTS:VARCHAR2, Examples: ['1.274J, ESD.268J', '17.007J, WGS.301J', '21M.608J']),
+(SCHOOL_WIDE_ELECTIVES:VARCHAR2, Examples: ['1.155, 2.943, 3.577, 6.938, 10.816, 13.621, 16.862, 22.82, ESD.72', '1.021, 3.021, 10.333', '1.EPE, 2.EPE, 3.EPE, 6.EPE, 10.EPE, 22.EPE']),
+(MEETS_WITH_SUBJECTS:VARCHAR2, Examples: ['17.006J, 24.637J', '11.474', '10.27, 10.29']),
+(EQUIVALENT_SUBJECTS:VARCHAR2, Examples: ['7.05', '8.05', '21F.871']),
+(IS_OFFERED_THIS_YEAR:VARCHAR2, Examples: ['Y', 'N']),
+(IS_OFFERED_FALL_TERM:VARCHAR2, Examples: ['Y', 'N']),
+(IS_OFFERED_IAP:VARCHAR2, Examples: ['N', 'Y']),
+(IS_OFFERED_SPRING_TERM:VARCHAR2, Examples: ['Y', 'N']),
+(IS_OFFERED_SUMMER_TERM:VARCHAR2, Examples: ['N', 'Y']),
+(FALL_INSTRUCTORS:VARCHAR2, Examples: ['E. M. Harper, M. F. Hebert, A. C. Espinoza', 'H. W. Thompson, S. Richardson', 'M. K. Newman, F. L. Doherty']),
+(SPRING_INSTRUCTORS:VARCHAR2, Examples: ['E. M. Harper, M. F. Hebert, A. C. Espinoza', 'H. W. Thompson, S. Richardson', 'M. K. Newman, F. L. Doherty']),
+(STATUS_CHANGE:VARCHAR2, Examples: ['New subject', 'New joint child (2005: Switch from joint child to subject)', 'Old number: 15.995']),
+(LAST_ACTIVITY_DATE:DATE, Examples: ['12-MAR-15', '28-DEC-11', '14-MAR-08']),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24']),
+(MASTER_SUBJECT_ID:VARCHAR2, Examples: ['1.00', '1.000', '1.007']),
+(HASS_ATTRIBUTE:VARCHAR2, Examples: ['HA', 'HA,HH', 'HE']),
+(HASS_ATTRIBUTE_DESC:VARCHAR2, Examples: ['HASS Humanities', 'HASS Arts', 'HASS Social Sciences']),
+(TERM_DURATION:VARCHAR2, Examples: ['Full Term Subject', 'First Half Term Subject', 'Partial Term Subject']),
+(GLOBAL_REGIONS:VARCHAR2, Examples: ['Global (all regions)', 'Europe', 'Middle East']),
+(GLOBAL_COUNTRIES:VARCHAR2, Examples: ['United States of America|India|South Africa', 'Spain', 'Japan']),
+(ON_LINE_PAGE_NUMBER:VARCHAR2, Examples: ['http://student.mit.edu/catalog/m6a.html', 'http://student.mit.edu/catalog/m6c.html', 'http://student.mit.edu/catalog/mECa.html']),
+(SECTION_ID:VARCHAR2, Examples: ['000', 'B01', 'B02']),
+(IS_MASTER_SECTION:VARCHAR2, Examples: ['N', 'Y']),
+(IS_LECTURE_SECTION:VARCHAR2, Examples: ['N', 'Y']),
+(IS_LAB_SECTION:VARCHAR2, Examples: ['N', 'Y']),
+(IS_RECITATION_SECTION:VARCHAR2, Examples: ['Y', 'N']),
+(IS_DESIGN_SECTION:VARCHAR2, Examples: ['N', 'Y']),
+(RESPONSIBLE_FACULTY_NAME:VARCHAR2, Examples: ['Garcia, Elsa', 'Wilkinson, Eugene', 'Mooney, Willie']),
+(RESPONSIBLE_FACULTY_MIT_ID:VARCHAR2, Examples: ['900013216', '900026651', '900043308']),
+(MEET_TIME:VARCHAR2, Examples: ['WF11', 'R12', 'MW8.30-10 (BEGINS MARCH 31)']),
+(MEET_PLACE:VARCHAR2, Examples: ['*TO BE ARRANGED', '1-001E', '1-037E'])
+]
+# Table: FCLT_BUILDING
+[
+(FCLT_BUILDING_KEY:VARCHAR2, Examples: ['1', '10', '11']),
+(BUILDING_NUMBER:VARCHAR2, Examples: ['2', '39', '41']),
+(PARENT_BUILDING_NUMBER:VARCHAR2, Examples: ['62', '64', 'W85DE']),
+(PARENT_BUILDING_NAME:VARCHAR2, Examples: ['ALUMNI HOUSES: MUNROE HAYDEN WOOD', 'EAST CAMPUS: WALCOTT BEMIS GOODALE', 'WESTGATE (DE)']),
+(PARENT_BUILDING_NAME_LONG:VARCHAR2, Examples: ['Alumni Houses: Munroe Hayden Wood', 'Alumni Houses: Walcott Bemis Goodale', 'Westgate DE']),
+(BUILDING_NAME_LONG:VARCHAR2, Examples: ['THE SIMONS BUILDING', 'Stanley Gordon Brown Building', 'Building 41']),
+(EXT_GROSS_AREA:NUMBER, Examples: [133168.0, 76639.9, 26148.2]),
+(ASSIGNABLE_AREA:NUMBER, Examples: [73695.2, 39391.1, 20058.6]),
+(NON_ASSIGNABLE_AREA:NUMBER, Examples: [43048.0, 30704.7, 4407.76]),
+(SITE:VARCHAR2, Examples: ['MIT', 'BATES', 'HAY']),
+(CAMPUS_SECTOR:VARCHAR2, Examples: ['MAIN GROUP', 'EAST', 'NORTHEAST']),
+(ACCESS_LEVEL_CODE:NUMBER, Examples: [0, 1, 2]),
+(ACCESS_LEVEL_NAME:VARCHAR2, Examples: ['2', '0', '1']),
+(BUILDING_TYPE:VARCHAR2, Examples: ['ACADEMIC', 'SERVICE', 'RESIDENT']),
+(OWNERSHIP_TYPE:VARCHAR2, Examples: ['OWNED', 'LEASED']),
+(BUILDING_USE:VARCHAR2, Examples: ['AER', 'OTH', 'DHOA']),
+(OCCUPANCY_CLASS:VARCHAR2, Examples: ['UGBA3', 'UGB', '(NULL)']),
+(BUILDING_HEIGHT:VARCHAR2, Examples: ['82.6', '91.1', '61.2']),
+(COST_CENTER_CODE:VARCHAR2, Examples: ['1342002', '1345000', '1345300']),
+(COST_COLLECTOR_KEY:VARCHAR2, Examples: ['1342002', '1345000', '1345300']),
+(LATITUDE_WGS:NUMBER, Examples: [42.3588, 42.3609, 42.3608]),
+(LONGITUDE_WGS:NUMBER, Examples: [-71.0902, -71.0927, -71.0942]),
+(EASTING_X_SPCS:NUMBER, Examples: [766931.0, 766239.0, 765853.0]),
+(NORTHING_Y_SPCS:NUMBER, Examples: [2956050.0, 2956790.0, 2956750.0]),
+(BUILDING_SORT:VARCHAR2, Examples: ['02', '39', '41']),
+(BUILDING_NAMED_FOR:VARCHAR2, Examples: ['James H. and Marilyn Simons', 'GORDON STANLEY BROWN', '-']),
+(BUILDING_NAME:VARCHAR2, Examples: ['THE SIMONS BUILDING', 'BROWN BUILDING', 'BUILDING 41']),
+(DATE_BUILT:VARCHAR2, Examples: ['07/01/1913', '08/01/1966', '12/31/1915']),
+(DATE_ACQUIRED:VARCHAR2, Examples: ['10/01/1958', '02/13/2024', '07/01/2016']),
+(DATE_OCCUPIED:VARCHAR2, Examples: ['12/31/1916', '12/31/1968', '12/31/1917']),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24']),
+(NUM_OF_ROOMS:NUMBER, Examples: [383, 250, 106])
+]
+# Table: FCLT_BUILDING_ADDRESS
+[
+(FCLT_BUILDING_ADDRESS_KEY:VARCHAR2, Examples: ['66-STREET', '68-E911_1', '68-MAIL']),
+(FCLT_BUILDING_KEY:DATE, Examples: ['1', '10', '11']),
+(BUILDING_NUMBER:VARCHAR2, Examples: ['66', '68', '76']),
+(ADDRESS_PURPOSE:VARCHAR2, Examples: ['STREET', 'E911_1', 'MAIL']),
+(ADDRESS_CITY_ID:VARCHAR2, Examples: ['25344', '25345', '708']),
+(IS_E911_ADDRESS:VARCHAR2),
+(STREET_NUMBER:VARCHAR2, Examples: ['25', '31', '77']),
+(STREET_NUMBER_SUFFIX:VARCHAR2, Examples: ['R']),
+(PRE_DIRECTIONAL:VARCHAR2),
+(STREET_NAME:VARCHAR2, Examples: ['AMES', 'MASSACHUSETTS', 'MAIN']),
+(STREET_SUFFIX:VARCHAR2, Examples: ['ST', 'AVE', 'DR']),
+(POST_DIRECTIONAL:VARCHAR2, Examples: ['(Rear)', 'NE', 'NW']),
+(CITY:VARCHAR2, Examples: ['CAMBRIDGE', 'DEDHAM', 'BOSTON']),
+(STATE:VARCHAR2, Examples: ['MA', 'DC']),
+(POSTAL_CODE:VARCHAR2, Examples: ['2142', '2139', '2026']),
+(WAREHOUSE_LOAD_DATE:VARCHAR2, Examples: ['19-DEC-24'])
+]
+# Table: FCLT_ROOMS
+[
+(FCLT_ROOM_KEY:VARCHAR2, Examples: ['1-001C', '1-001E', '1-007B']),
+(BUILDING_ROOM:VARCHAR2, Examples: ['1-001C', '1-001E', '1-007B']),
+(FCLT_BUILDING_KEY:VARCHAR2, Examples: ['1', '10', '11']),
+(FLOOR:VARCHAR2, Examples: ['15', '2', '1']),
+(FCLT_FLOOR_KEY:VARCHAR2, Examples: ['1-0', '1-1', '1-2']),
+(ROOM:VARCHAR2, Examples: ['1573D', '293', '137']),
+(SPACE_ID:VARCHAR2, Examples: ['E94-15-1573D', '39-2-293', '9-1-137']),
+(FCLT_MAJOR_USE_KEY:VARCHAR2, Examples: ['101', '102', '103']),
+(MAJOR_USE_DESC:VARCHAR2, Examples: ['OFFICES', 'LABS', 'MECHANIC']),
+(FCLT_USE_KEY:VARCHAR2, Examples: ['158', '145', '154']),
+(USE_DESC:VARCHAR2),
+(FCLT_MINOR_USE_KEY:VARCHAR2),
+(MINOR_USE_DESC:VARCHAR2),
+(FCLT_ORGANIZATION_KEY:VARCHAR2, Examples: ['101', '102', '103']),
+(ORGANIZATION_NAME:VARCHAR2, Examples: ['S MGMT', 'MTL', 'DOF']),
+(FCLT_MINOR_ORGANIZATION_KEY:VARCHAR2),
+(MINOR_ORGANIZATION:VARCHAR2),
+(AREA:NUMBER, Examples: [61.77, 186.69, 359.03]),
+(ROOM_FULL_NAME:VARCHAR2, Examples: ['DE ROTHSCHILD ROOM', 'NORTH LOBDELL BALCONY', 'WOMENS TEAM ROOM']),
+(DEPT_CODE:VARCHAR2, Examples: ['93700', '93400', '93300']),
+(ACCESS_LEVEL:VARCHAR2, Examples: ['2', '0', '1']),
+(LATITUDE_WGS:NUMBER),
+(LONGITUDE_WGS:NUMBER),
+(NORTHING_SPCS:NUMBER),
+(EASTING_SPCS:NUMBER),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24'])
+]
+
+### Question ###
+List the unique full room names, their corresponding building names, street addresses, cities, states, postal codes, and building heights for rooms associated with subjects that Computer Science students can enroll in.
+
+(Hints: Schema Mapping Hints:
+- 'full room names' is related to FCLT_ROOMS.ROOM_FULL_NAME
+- 'building names' is related to BUILDINGS.BUILDING_NAME
+- 'street addresses' is related to BUILDINGS.BUILDING_STREET_ADDRESS, FCLT_BUILDING_ADDRESS.ADDRESS_PURPOSE
+- 'cities' is related to FCLT_BUILDING_ADDRESS.CITY
+- 'states' is related to FCLT_BUILDING_ADDRESS.STATE
+- 'postal codes' is related to FCLT_BUILDING_ADDRESS.POSTAL_CODE
+- 'building heights' is related to FCLT_BUILDING.BUILDING_HEIGHT
+- 'Computer Science' is related to COURSE_CATALOG_SUBJECT_OFFERED.DEPARTMENT_NAME
+
+Join Information: (COURSE_CATALOG_SUBJECT_OFFERED.MEET_PLACE = FCLT_ROOMS.FCLT_ROOM_KEY), (FCLT_BUILDING_ADDRESS.FCLT_BUILDING_KEY = FCLT_ROOMS.FCLT_BUILDING_KEY), (FCLT_BUILDING.FCLT_BUILDING_KEY = FCLT_ROOMS.FCLT_BUILDING_KEY), (BUILDINGS.BUILDING_KEY = FCLT_ROOMS.FCLT_BUILDING_KEY))
+
+### Generated SQL Query ###
+Generated SQL:
+
+
+***** RESPONSE *****
+ChatCompletion(id='chatcmpl-CvbKB2h0XPVGsuGyfJv95kbJipatq', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content="```sql\nSELECT DISTINCT\n    FR.ROOM_FULL_NAME,\n    B.BUILDING_NAME,\n    B.BUILDING_STREET_ADDRESS,\n    FBA.CITY,\n    FBA.STATE,\n    FBA.POSTAL_CODE,\n    FB.BUILDING_HEIGHT\nFROM\n    FCLT_ROOMS FR\nJOIN\n    COURSE_CATALOG_SUBJECT_OFFERED CCO\nON\n    CCO.MEET_PLACE = FR.FCLT_ROOM_KEY\nJOIN\n    FCLT_BUILDING_ADDRESS FBA\nON\n    FBA.FCLT_BUILDING_KEY = FR.FCLT_BUILDING_KEY\nJOIN\n    FCLT_BUILDING FB\nON\n    FB.FCLT_BUILDING_KEY = FR.FCLT_BUILDING_KEY\nJOIN\n    BUILDINGS B\nON\n    B.BUILDING_KEY = FR.FCLT_BUILDING_KEY\nWHERE\n    CCO.DEPARTMENT_NAME = 'Computer Science'\nAND\n    FBA.ADDRESS_PURPOSE = 'STREET';\n```", refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None))], created=1767844207, model='gpt-4o-2024-08-06', object='chat.completion', service_tier='default', system_fingerprint='fp_deacdd5f6f', usage=CompletionUsage(completion_tokens=210, prompt_tokens=4204, total_tokens=4414, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)))
+
+***** TOKEN INFO *****
+CompletionUsage(completion_tokens=210, prompt_tokens=4204, total_tokens=4414, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0))
+
+***** FINAL SQL QUERY *****
+SELECT DISTINCT
+    FR.ROOM_FULL_NAME,
+    B.BUILDING_NAME,
+    B.BUILDING_STREET_ADDRESS,
+    FBA.CITY,
+    FBA.STATE,
+    FBA.POSTAL_CODE,
+    FB.BUILDING_HEIGHT
+FROM
+    FCLT_ROOMS FR
+JOIN
+    COURSE_CATALOG_SUBJECT_OFFERED CCO
+ON
+    CCO.MEET_PLACE = FR.FCLT_ROOM_KEY
+JOIN
+    FCLT_BUILDING_ADDRESS FBA
+ON
+    FBA.FCLT_BUILDING_KEY = FR.FCLT_BUILDING_KEY
+JOIN
+    FCLT_BUILDING FB
+ON
+    FB.FCLT_BUILDING_KEY = FR.FCLT_BUILDING_KEY
+JOIN
+    BUILDINGS B
+ON
+    B.BUILDING_KEY = FR.FCLT_BUILDING_KEY
+WHERE
+    CCO.DEPARTMENT_NAME = 'Computer Science'
+AND
+    FBA.ADDRESS_PURPOSE = 'STREET';
+
+***** TOKEN MONITORING *****
+TOKEN PER ITERATION    : 4204, 210
+TOTAL                  : 11792, 11247, 545
+AVG                    : 2948.00, 2811.75, 136.25
+******************************************************************************************************************************************************
+******************************************************************************************************************************************************
+
+***** FINAL PROMPT *****
+### System Instructions ###
+You are an expert SQL developer.
+You must generate an accurate and efficient MySQL query based on the provided database schema and natural language question.
+Never use tables or columns that are not specified in the schema.
+Do not add any explanations other than the final SQL query.
+Now generate MySQL SQL query to answer the given "Question" without any explanation.
+
+### Schema ###
+[DB_ID] dw
+# Schema
+# Table: MOIRA_LIST
+[
+(MOIRA_LIST_KEY:VARCHAR2, Examples: ['amber-amber', 'amber-amber-emerald', 'amber-amber-frog']),
+(MOIRA_LIST_NAME:VARCHAR2, Examples: ['cat-duo-users', 'quince-mountain', 'quest-fortune-iguana']),
+(MOIRA_LIST_DESCRIPTION:VARCHAR2),
+(IS_ACTIVE:VARCHAR2, Examples: ['Y']),
+(IS_MOIRA_MAILING_LIST:VARCHAR2, Examples: ['Y', 'N']),
+(IS_MOIRA_GROUP:VARCHAR2, Examples: ['N', 'Y']),
+(IS_NFS_GROUP:VARCHAR2, Examples: ['N', 'Y']),
+(IS_PUBLIC:VARCHAR2, Examples: ['N', 'Y']),
+(IS_HIDDEN:VARCHAR2, Examples: ['N'])
+]
+# Table: MOIRA_LIST_DETAIL
+[
+(MOIRA_LIST_KEY:VARCHAR2, Examples: ['amber-amber', 'amber-amber-uplift', 'amber-ant']),
+(MOIRA_LIST_OWNER_KEY:VARCHAR2, Examples: ['KERBEROS32.550-raspberry-nectar', 'KERBEROSapple-raspberry', 'KERBEROSbeacon-bear']),
+(MOIRA_LIST_MEMBER:VARCHAR2, Examples: ['aa', 'aa@aol.com', 'aa@employee.com']),
+(MOIRA_LIST_MEMBER_FULL_NAME:VARCHAR2, Examples: ['Sloan, Axel', 'Griffith, Ronnie', 'Frost, Georgina']),
+(MOIRA_LIST_MEMBER_MIT_ID:VARCHAR2, Examples: ['900000167', '900012716', '900013216']),
+(LAST_UPDATE_DATE:DATE, Examples: ['17-OCT-23', '12-AUG-21', '18-SEP-21']),
+(COUNTER:NUMBER, Examples: [1]),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24'])
+]
+# Table: SE_PERSON
+[
+(MIT_ID:VARCHAR2, Examples: ['900007147', '900010861', '900032543']),
+(KRB_NAME:VARCHAR2, Examples: ['hattiem', 'eliseh5', 'tv5']),
+(FULL_NAME:VARCHAR2, Examples: ['Abbott, Aiza', 'Abbott, Alessandro', 'Abbott, Audrey']),
+(PAYROLL_RANK:VARCHAR2, Examples: ['Grad Std RA', 'Grad Std Fellow', 'Grad Std TA']),
+(POSITION_TITLE:VARCHAR2),
+(IS_ACTIVE:CHAR, Examples: ['Y']),
+(OFFICE_LOCATION:VARCHAR2, Examples: ['37-392H', '8-110', '18-146C']),
+(ORGANIZATION:VARCHAR2, Examples: ['Chemistry', 'Operations Research Center', 'Mechanical Engineering']),
+(FIRST_NAME:VARCHAR2, Examples: ['Hattie', 'Elise', 'Troy']),
+(LAST_NAME:VARCHAR2, Examples: ['Morse', 'Holland', 'Vance']),
+(MIDDLE_NAME:VARCHAR2, Examples: ['Curry', 'Y', 'B']),
+(EMPLOYEE_TYPE:VARCHAR2, Examples: ['Student', 'Other Academic Group', 'Faculty'])
+]
+
+### Question ###
+Give the count of mailing lists with names starting with B that include members from the Electrical Engineering and Computer Science department, along with the name of the list starting with B that have the highest number of members from that department and the corresponding member count.
+
+(Hints: Schema Mapping Hints:
+- 'mailing lists' is related to MOIRA_LIST.MOIRA_LIST_NAME
+- 'names' is related to MOIRA_LIST.MOIRA_LIST_NAME
+- 'members' is related to SE_PERSON.MIT_ID
+- 'Electrical Engineering and Computer Science department' is related to SE_PERSON.ORGANIZATION
+
+Join Information: (MOIRA_LIST_DETAIL.MOIRA_LIST_KEY = MOIRA_LIST.MOIRA_LIST_KEY), (MOIRA_LIST_DETAIL.MOIRA_LIST_MEMBER = SE_PERSON.KRB_NAME))
+
+### Generated SQL Query ###
+Generated SQL:
+
+
+***** RESPONSE *****
+ChatCompletion(id='chatcmpl-CvbKB42kZX4kSlHxTib32yHj4cSH2', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content="```sql\nWITH ListMemberCount AS (\n    SELECT \n        ml.MOIRA_LIST_NAME,\n        COUNT(1) AS MemberCount\n    FROM \n        MOIRA_LIST ml\n    JOIN \n        MOIRA_LIST_DETAIL mld ON ml.MOIRA_LIST_KEY = mld.MOIRA_LIST_KEY\n    JOIN \n        SE_PERSON sp ON mld.MOIRA_LIST_MEMBER = sp.KRB_NAME\n    WHERE \n        ml.MOIRA_LIST_NAME LIKE 'B%' \n        AND ml.IS_MOIRA_MAILING_LIST = 'Y'\n        AND sp.ORGANIZATION = 'Electrical Engineering and Computer Science'\n    GROUP BY \n        ml.MOIRA_LIST_NAME\n),\nMaxMemberList AS (\n    SELECT \n        MOIRA_LIST_NAME, \n        MemberCount\n    FROM \n        ListMemberCount\n    WHERE \n        MemberCount = (SELECT MAX(MemberCount) FROM ListMemberCount)\n)\nSELECT \n    (SELECT COUNT(*) FROM ListMemberCount) AS MailingListCount, \n    MaxMemberList.MOIRA_LIST_NAME AS ListWithMaxMembers, \n    MaxMemberList.MemberCount AS MaxMemberCount\nFROM \n    MaxMemberList;\n```", refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None))], created=1767844207, model='gpt-4o-2024-08-06', object='chat.completion', service_tier='default', system_fingerprint='fp_deacdd5f6f', usage=CompletionUsage(completion_tokens=240, prompt_tokens=953, total_tokens=1193, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)))
+
+***** TOKEN INFO *****
+CompletionUsage(completion_tokens=240, prompt_tokens=953, total_tokens=1193, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0))
+
+***** FINAL SQL QUERY *****
+WITH ListMemberCount AS (
+    SELECT 
+        ml.MOIRA_LIST_NAME,
+        COUNT(1) AS MemberCount
+    FROM 
+        MOIRA_LIST ml
+    JOIN 
+        MOIRA_LIST_DETAIL mld ON ml.MOIRA_LIST_KEY = mld.MOIRA_LIST_KEY
+    JOIN 
+        SE_PERSON sp ON mld.MOIRA_LIST_MEMBER = sp.KRB_NAME
+    WHERE 
+        ml.MOIRA_LIST_NAME LIKE 'B%' 
+        AND ml.IS_MOIRA_MAILING_LIST = 'Y'
+        AND sp.ORGANIZATION = 'Electrical Engineering and Computer Science'
+    GROUP BY 
+        ml.MOIRA_LIST_NAME
+),
+MaxMemberList AS (
+    SELECT 
+        MOIRA_LIST_NAME, 
+        MemberCount
+    FROM 
+        ListMemberCount
+    WHERE 
+        MemberCount = (SELECT MAX(MemberCount) FROM ListMemberCount)
+)
+SELECT 
+    (SELECT COUNT(*) FROM ListMemberCount) AS MailingListCount, 
+    MaxMemberList.MOIRA_LIST_NAME AS ListWithMaxMembers, 
+    MaxMemberList.MemberCount AS MaxMemberCount
+FROM 
+    MaxMemberList;
+
+***** TOKEN MONITORING *****
+TOKEN PER ITERATION    : 953, 240
+TOTAL                  : 12985, 12200, 785
+AVG                    : 2597.00, 2440.00, 157.00
+******************************************************************************************************************************************************
+******************************************************************************************************************************************************
+
+***** FINAL PROMPT *****
+### System Instructions ###
+You are an expert SQL developer.
+You must generate an accurate and efficient MySQL query based on the provided database schema and natural language question.
+Never use tables or columns that are not specified in the schema.
+Do not add any explanations other than the final SQL query.
+Now generate MySQL SQL query to answer the given "Question" without any explanation.
+
+### Schema ###
+[DB_ID] dw
+# Schema
+# Table: CIS_COURSE_CATALOG
+[
+(ACADEMIC_YEAR:VARCHAR2, Examples: ['2003', '2002', '2007']),
+(SUBJECT_ID:VARCHAR2, Examples: ['1.00', '1.000', '1.001']),
+(SUBJECT_CODE:VARCHAR2, Examples: ['1', '10', '11']),
+(SUBJECT_NUMBER:VARCHAR2, Examples: ['097', '098', '090']),
+(SOURCE_SUBJECT_ID:VARCHAR2, Examples: ['6.097', '6.098', '6.090']),
+(PRINT_SUBJECT_ID:VARCHAR2, Examples: ['6.097', '6.098', '6.090']),
+(IS_PRINTED_IN_BULLETIN:VARCHAR2, Examples: ['N', 'Y', 'S']),
+(DEPARTMENT_CODE:DATE, Examples: ['1', '10', '11']),
+(DEPARTMENT_NAME:DATE, Examples: ['Electrical Eng & Computer Sci', 'Architecture', 'Chemistry']),
+(EFFECTIVE_TERM_CODE:VARCHAR2, Examples: ['1991FA', '1995FA', '1989FA']),
+(SUBJECT_SHORT_TITLE:VARCHAR2, Examples: ['Spec Subj: EE & CS', 'Spec Prob in Arch Design', 'Special Topics I']),
+(SUBJECT_TITLE:VARCHAR2, Examples: ['Spec Subj: EE & CS', 'Spec Prob in Arch Design', 'Special Topics I']),
+(IS_VARIABLE_UNITS:VARCHAR2, Examples: ['Y', 'N']),
+(LECTURE_UNITS:VARCHAR2, Examples: [0, 3, 1]),
+(LAB_UNITS:VARCHAR2, Examples: [0, 12, 4]),
+(PREPARATION_UNITS:VARCHAR2, Examples: [0, 9, 5]),
+(TOTAL_UNITS:VARCHAR2, Examples: [0, 12, 6]),
+(DESIGN_UNITS:VARCHAR2, Examples: [0, 6, 8]),
+(GRADE_TYPE:VARCHAR2, Examples: ['L', 'P']),
+(GRADE_TYPE_DESC:VARCHAR2, Examples: ['Letter graded', 'P/D/F']),
+(GRADE_RULE:VARCHAR2, Examples: ['R', 'J', 'N']),
+(GRADE_RULE_DESC:VARCHAR2, Examples: ['Can be repeated for credit', 'Continuing and Repeatable', 'Not repeatable for credit']),
+(HGN_CODE:VARCHAR2, Examples: ['G', 'H', 'U']),
+(HGN_DESC:VARCHAR2, Examples: ['Undergraduate', 'Graduate', 'High Graduate']),
+(HGN_EXCEPT:VARCHAR2, Examples: ['(H except 18)', 'H-LEVEL Grad Credit (except for Course 18 students)', '(H except XVIII)']),
+(GIR_ATTRIBUTE:VARCHAR2, Examples: ['HD1', 'HE', 'HD5']),
+(GIR_ATTRIBUTE_DESC:VARCHAR2, Examples: ['HASS-D, Category 1', 'HASS Elective', 'HASS-D, Category 5']),
+(COMM_REQ_ATTRIBUTE:VARCHAR2, Examples: ['CIM', 'CIH', 'CIHW']),
+(COMM_REQ_ATTRIBUTE_DESC:VARCHAR2, Examples: ['Communication Intensive Major', 'Communication Intensive HASS', 'Communication Intensive Writing']),
+(TUITION_ATTRIBUTE:NUMBER, Examples: ['RESH', 'NTRN', 'COOP']),
+(TUITION_ATTRIBUTE_DESC:NUMBER, Examples: ['Pre-thesis Research Subject', 'Internship', 'Co-op Subject']),
+(WRITE_REQ_ATTRIBUTE:NUMBER, Examples: ['WRT2', 'WRT1']),
+(WRITE_REQ_ATTRIBUTE_DESC:NUMBER, Examples: ['Writing Requirement, Phase II', 'Writing Requirement, Phase I']),
+(SUPERVISOR_ATTRIBUTE:NUMBER, Examples: ['UROP', 'THG', 'THU']),
+(SUPERVISOR_ATTRIBUTE_DESC:VARCHAR2, Examples: ['UROP subject', 'Grad Thesis', 'Undergrad Thesis']),
+(PREREQUISITES:VARCHAR2, Examples: ['Permission of instructor', '10.213', '12.120 and 12.103, or permission of instructor']),
+(SUBJECT_DESCRIPTION:VARCHAR2, Examples: ['Crystal structures of mantle and core minerals, elastic and thermodynamic properties of materials at high pressure-temperature,', 'Investigates social conflict and distributional disputes in the public sector. While theoretical aspects of conflict are consid', 'Presents a framework for current landscape ecological theory, structured to encourage application in physical planning of lands']),
+(JOINT_SUBJECTS:VARCHAR2, Examples: ['1.285J, 11.482J', '3.57J', '1.232J, 15.054J, 16.71J']),
+(SCHOOL_WIDE_ELECTIVES:VARCHAR2, Examples: ['1.EPE, 3.EPE, 6.EPE, 10.EPE, 16.EPE, 22.EPE', '1.EPW, 3.EPW, 6.EPW, 10.EPW, 16.EPW, 20.EPW, 22.EPW', '1.EPE, 2.EPE, 3.EPE, 6.EPE, 10.EPE, 16.EPE, 22.EPE']),
+(MEETS_WITH_SUBJECTS:VARCHAR2, Examples: ['2.729J, EC.729J', 'EC.718J, WGS.277J', '21A.136J, 21G.026J']),
+(EQUIVALENT_SUBJECTS:VARCHAR2, Examples: ['15.511, 15.515', '15.024', '15.414']),
+(IS_OFFERED_THIS_YEAR:VARCHAR2, Examples: ['Y', 'N']),
+(IS_OFFERED_FALL_TERM:VARCHAR2, Examples: ['Y', 'N']),
+(IS_OFFERED_IAP:VARCHAR2, Examples: ['Y', 'N']),
+(IS_OFFERED_SPRING_TERM:VARCHAR2, Examples: ['Y', 'N']),
+(IS_OFFERED_SUMMER_TERM:VARCHAR2, Examples: ['N', 'Y']),
+(FALL_INSTRUCTORS:VARCHAR2, Examples: ['Staff', 'Z. O. Summers', 'L. W. Shaw']),
+(SPRING_INSTRUCTORS:VARCHAR2, Examples: ['Staff', 'Z. O. Summers', 'L. W. Shaw']),
+(STATUS_CHANGE:VARCHAR2, Examples: ['(2016: New number: 21G.110)', '(2016: New number: 21G.113)', '(2016: New number: 21G.142)']),
+(LAST_ACTIVITY_DATE:VARCHAR2, Examples: ['02-SEP-01', '12-JAN-06', '16-MAY-05']),
+(WAREHOUSE_LOAD_DATE:VARCHAR2, Examples: ['19-DEC-24']),
+(MASTER_SUBJECT_ID:VARCHAR2, Examples: ['1.00', '1.000', '1.005']),
+(HASS_ATTRIBUTE:VARCHAR2, Examples: ['HS', 'HA', 'HH']),
+(HASS_ATTRIBUTE_DESC:VARCHAR2, Examples: ['HASS Social Sciences', 'HASS Arts', 'HASS Humanities']),
+(TERM_DURATION:VARCHAR2, Examples: ['Full Term Subject', 'Second Half Term Subject', 'First Half Term Subject']),
+(GLOBAL_REGIONS:VARCHAR2, Examples: ['Global (all regions)', 'Asia', 'United States of America']),
+(GLOBAL_COUNTRIES:VARCHAR2, Examples: ['China', 'Brazil|Uruguay|Vietnam|Russia|Australia', 'United States of America']),
+(ON_LINE_PAGE_NUMBER:VARCHAR2, Examples: ['http://student.mit.edu/catalog/m6a.html', 'http://student.mit.edu/catalog/m2c.html', 'http://student.mit.edu/catalog/m3b.html'])
+]
+# Table: COURSE_CATALOG_SUBJECT_OFFERED
+[
+(ACADEMIC_YEAR:VARCHAR2, Examples: ['2016', '2013', '2008']),
+(TERM_CODE:VARCHAR2, Examples: ['2002FA', '2002JA', '2002SP']),
+(SUBJECT_ID:VARCHAR2, Examples: ['1.00', '1.000', '1.001']),
+(SUBJECT_CODE:VARCHAR2, Examples: ['1', '10', '11']),
+(SUBJECT_NUMBER:VARCHAR2, Examples: ['003', '981', '07']),
+(SOURCE_SUBJECT_ID:VARCHAR2, Examples: ['6.003', '6.981', '5.07']),
+(PRINT_SUBJECT_ID:VARCHAR2, Examples: ['6.003', '6.981', '5.07']),
+(IS_PRINTED_IN_BULLETIN:VARCHAR2, Examples: ['Y', 'N', 'S']),
+(DEPARTMENT_CODE:VARCHAR2, Examples: ['1', '10', '11']),
+(DEPARTMENT_NAME:VARCHAR2, Examples: ['Electrical Eng & Computer Sci', 'Chemistry', 'Edgerton Center']),
+(EFFECTIVE_TERM_CODE:VARCHAR2, Examples: ['1989FA', '1990FA', '1991FA']),
+(SUBJECT_SHORT_TITLE:VARCHAR2, Examples: ['Signals and Systems', 'Teaching Elec Engr & Comp Sci', 'Biological Chemistry']),
+(SUBJECT_TITLE:VARCHAR2, Examples: ['Signals and Systems', 'Teaching Electrical Engineering and Computer Science', 'Biological Chemistry I']),
+(IS_VARIABLE_UNITS:VARCHAR2, Examples: ['N', 'Y']),
+(LECTURE_UNITS:NUMBER, Examples: [5, 0, 4]),
+(LAB_UNITS:NUMBER, Examples: [0, 8, 1]),
+(PREPARATION_UNITS:NUMBER, Examples: [7, 0, 8]),
+(TOTAL_UNITS:NUMBER, Examples: [12, 0, 6]),
+(DESIGN_UNITS:NUMBER, Examples: [4, 0, 3]),
+(GRADE_TYPE:VARCHAR2, Examples: ['L', 'P']),
+(GRADE_TYPE_DESC:VARCHAR2, Examples: ['Letter graded', 'P/D/F']),
+(GRADE_RULE:VARCHAR2, Examples: ['N', 'R', 'J']),
+(GRADE_RULE_DESC:VARCHAR2, Examples: ['Not repeatable for credit', 'Can be repeated for credit', 'Continuing and Repeatable']),
+(HGN_CODE:VARCHAR2, Examples: ['G', 'H', 'U']),
+(HGN_DESC:VARCHAR2, Examples: ['Undergraduate', 'Graduate', 'High Graduate']),
+(HGN_EXCEPT:VARCHAR2, Examples: ['(H except 18)', '(H except 2, 6, 8, 12, 13, 16, 18, 22)', '(H except XVIII)']),
+(GIR_ATTRIBUTE:VARCHAR2, Examples: ['REST', 'HE', 'HD1']),
+(GIR_ATTRIBUTE_DESC:VARCHAR2, Examples: ['Rest Elec in Sci & Tech', 'HASS Elective', 'HASS-D, Category 1']),
+(COMM_REQ_ATTRIBUTE:VARCHAR2, Examples: ['CIM', 'CIH', 'CIHW']),
+(COMM_REQ_ATTRIBUTE_DESC:VARCHAR2, Examples: ['Communication Intensive Major', 'Communication Intensive HASS', 'Communication Intensive Writing']),
+(TUITION_ATTRIBUTE:VARCHAR2, Examples: ['NTRN', 'RESH', 'COOP']),
+(TUITION_ATTRIBUTE_DESC:VARCHAR2, Examples: ['Internship', 'Pre-thesis Research Subject', 'Co-op Subject']),
+(WRITE_REQ_ATTRIBUTE:VARCHAR2, Examples: ['WRT1', 'WRT2']),
+(WRITE_REQ_ATTRIBUTE_DESC:VARCHAR2, Examples: ['Writing Requirement, Phase I', 'Writing Requirement, Phase II']),
+(SUPERVISOR_ATTRIBUTE:VARCHAR2, Examples: ['THG', 'UROP', 'INDP']),
+(SUPERVISOR_ATTRIBUTE_DESC:VARCHAR2, Examples: ['Grad Thesis', 'UROP subject', 'Independent Study']),
+(PREREQUISITES:VARCHAR2, Examples: ['GIR:PHY2, 18.03', '5.12', '1.260, 15.760, or 15.761']),
+(SUBJECT_DESCRIPTION:VARCHAR2, Examples: ['Presents the fundamentals of signal and system analysis. Topics include discrete-time and continuous-time signals, Fourier seri', 'For Teaching Assistants in Electrical Engineering and Computer Science, in cases where teaching assignment is approved for acad', 'Chemical and physical properties of the cell and its building blocks. Structures of proteins and principles of catalysis. The c']),
+(JOINT_SUBJECTS:VARCHAR2, Examples: ['1.274J, ESD.268J', '17.007J, WGS.301J', '21M.608J']),
+(SCHOOL_WIDE_ELECTIVES:VARCHAR2, Examples: ['1.155, 2.943, 3.577, 6.938, 10.816, 13.621, 16.862, 22.82, ESD.72', '1.021, 3.021, 10.333', '1.EPE, 2.EPE, 3.EPE, 6.EPE, 10.EPE, 22.EPE']),
+(MEETS_WITH_SUBJECTS:VARCHAR2, Examples: ['17.006J, 24.637J', '11.474', '10.27, 10.29']),
+(EQUIVALENT_SUBJECTS:VARCHAR2, Examples: ['7.05', '8.05', '21F.871']),
+(IS_OFFERED_THIS_YEAR:VARCHAR2, Examples: ['Y', 'N']),
+(IS_OFFERED_FALL_TERM:VARCHAR2, Examples: ['Y', 'N']),
+(IS_OFFERED_IAP:VARCHAR2, Examples: ['N', 'Y']),
+(IS_OFFERED_SPRING_TERM:VARCHAR2, Examples: ['Y', 'N']),
+(IS_OFFERED_SUMMER_TERM:VARCHAR2, Examples: ['N', 'Y']),
+(FALL_INSTRUCTORS:VARCHAR2, Examples: ['E. M. Harper, M. F. Hebert, A. C. Espinoza', 'H. W. Thompson, S. Richardson', 'M. K. Newman, F. L. Doherty']),
+(SPRING_INSTRUCTORS:VARCHAR2, Examples: ['E. M. Harper, M. F. Hebert, A. C. Espinoza', 'H. W. Thompson, S. Richardson', 'M. K. Newman, F. L. Doherty']),
+(STATUS_CHANGE:VARCHAR2, Examples: ['New subject', 'New joint child (2005: Switch from joint child to subject)', 'Old number: 15.995']),
+(LAST_ACTIVITY_DATE:DATE, Examples: ['12-MAR-15', '28-DEC-11', '14-MAR-08']),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24']),
+(MASTER_SUBJECT_ID:VARCHAR2, Examples: ['1.00', '1.000', '1.007']),
+(HASS_ATTRIBUTE:VARCHAR2, Examples: ['HA', 'HA,HH', 'HE']),
+(HASS_ATTRIBUTE_DESC:VARCHAR2, Examples: ['HASS Humanities', 'HASS Arts', 'HASS Social Sciences']),
+(TERM_DURATION:VARCHAR2, Examples: ['Full Term Subject', 'First Half Term Subject', 'Partial Term Subject']),
+(GLOBAL_REGIONS:VARCHAR2, Examples: ['Global (all regions)', 'Europe', 'Middle East']),
+(GLOBAL_COUNTRIES:VARCHAR2, Examples: ['United States of America|India|South Africa', 'Spain', 'Japan']),
+(ON_LINE_PAGE_NUMBER:VARCHAR2, Examples: ['http://student.mit.edu/catalog/m6a.html', 'http://student.mit.edu/catalog/m6c.html', 'http://student.mit.edu/catalog/mECa.html']),
+(SECTION_ID:VARCHAR2, Examples: ['000', 'B01', 'B02']),
+(IS_MASTER_SECTION:VARCHAR2, Examples: ['N', 'Y']),
+(IS_LECTURE_SECTION:VARCHAR2, Examples: ['N', 'Y']),
+(IS_LAB_SECTION:VARCHAR2, Examples: ['N', 'Y']),
+(IS_RECITATION_SECTION:VARCHAR2, Examples: ['Y', 'N']),
+(IS_DESIGN_SECTION:VARCHAR2, Examples: ['N', 'Y']),
+(RESPONSIBLE_FACULTY_NAME:VARCHAR2, Examples: ['Garcia, Elsa', 'Wilkinson, Eugene', 'Mooney, Willie']),
+(RESPONSIBLE_FACULTY_MIT_ID:VARCHAR2, Examples: ['900013216', '900026651', '900043308']),
+(MEET_TIME:VARCHAR2, Examples: ['WF11', 'R12', 'MW8.30-10 (BEGINS MARCH 31)']),
+(MEET_PLACE:VARCHAR2, Examples: ['*TO BE ARRANGED', '1-001E', '1-037E'])
+]
+# Table: FCLT_BUILDING
+[
+(FCLT_BUILDING_KEY:VARCHAR2, Examples: ['1', '10', '11']),
+(BUILDING_NUMBER:VARCHAR2, Examples: ['2', '39', '41']),
+(PARENT_BUILDING_NUMBER:VARCHAR2, Examples: ['62', '64', 'W85DE']),
+(PARENT_BUILDING_NAME:VARCHAR2, Examples: ['ALUMNI HOUSES: MUNROE HAYDEN WOOD', 'EAST CAMPUS: WALCOTT BEMIS GOODALE', 'WESTGATE (DE)']),
+(PARENT_BUILDING_NAME_LONG:VARCHAR2, Examples: ['Alumni Houses: Munroe Hayden Wood', 'Alumni Houses: Walcott Bemis Goodale', 'Westgate DE']),
+(BUILDING_NAME_LONG:VARCHAR2, Examples: ['THE SIMONS BUILDING', 'Stanley Gordon Brown Building', 'Building 41']),
+(EXT_GROSS_AREA:NUMBER, Examples: [133168.0, 76639.9, 26148.2]),
+(ASSIGNABLE_AREA:NUMBER, Examples: [73695.2, 39391.1, 20058.6]),
+(NON_ASSIGNABLE_AREA:NUMBER, Examples: [43048.0, 30704.7, 4407.76]),
+(SITE:VARCHAR2, Examples: ['MIT', 'BATES', 'HAY']),
+(CAMPUS_SECTOR:VARCHAR2, Examples: ['MAIN GROUP', 'EAST', 'NORTHEAST']),
+(ACCESS_LEVEL_CODE:NUMBER, Examples: [0, 1, 2]),
+(ACCESS_LEVEL_NAME:VARCHAR2, Examples: ['2', '0', '1']),
+(BUILDING_TYPE:VARCHAR2, Examples: ['ACADEMIC', 'SERVICE', 'RESIDENT']),
+(OWNERSHIP_TYPE:VARCHAR2, Examples: ['OWNED', 'LEASED']),
+(BUILDING_USE:VARCHAR2, Examples: ['AER', 'OTH', 'DHOA']),
+(OCCUPANCY_CLASS:VARCHAR2, Examples: ['UGBA3', 'UGB', '(NULL)']),
+(BUILDING_HEIGHT:VARCHAR2, Examples: ['82.6', '91.1', '61.2']),
+(COST_CENTER_CODE:VARCHAR2, Examples: ['1342002', '1345000', '1345300']),
+(COST_COLLECTOR_KEY:VARCHAR2, Examples: ['1342002', '1345000', '1345300']),
+(LATITUDE_WGS:NUMBER, Examples: [42.3588, 42.3609, 42.3608]),
+(LONGITUDE_WGS:NUMBER, Examples: [-71.0902, -71.0927, -71.0942]),
+(EASTING_X_SPCS:NUMBER, Examples: [766931.0, 766239.0, 765853.0]),
+(NORTHING_Y_SPCS:NUMBER, Examples: [2956050.0, 2956790.0, 2956750.0]),
+(BUILDING_SORT:VARCHAR2, Examples: ['02', '39', '41']),
+(BUILDING_NAMED_FOR:VARCHAR2, Examples: ['James H. and Marilyn Simons', 'GORDON STANLEY BROWN', '-']),
+(BUILDING_NAME:VARCHAR2, Examples: ['THE SIMONS BUILDING', 'BROWN BUILDING', 'BUILDING 41']),
+(DATE_BUILT:VARCHAR2, Examples: ['07/01/1913', '08/01/1966', '12/31/1915']),
+(DATE_ACQUIRED:VARCHAR2, Examples: ['10/01/1958', '02/13/2024', '07/01/2016']),
+(DATE_OCCUPIED:VARCHAR2, Examples: ['12/31/1916', '12/31/1968', '12/31/1917']),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24']),
+(NUM_OF_ROOMS:NUMBER, Examples: [383, 250, 106])
+]
+# Table: FCLT_ROOMS
+[
+(FCLT_ROOM_KEY:VARCHAR2, Examples: ['1-001C', '1-001E', '1-007B']),
+(BUILDING_ROOM:VARCHAR2, Examples: ['1-001C', '1-001E', '1-007B']),
+(FCLT_BUILDING_KEY:VARCHAR2, Examples: ['1', '10', '11']),
+(FLOOR:VARCHAR2, Examples: ['15', '2', '1']),
+(FCLT_FLOOR_KEY:VARCHAR2, Examples: ['1-0', '1-1', '1-2']),
+(ROOM:VARCHAR2, Examples: ['1573D', '293', '137']),
+(SPACE_ID:VARCHAR2, Examples: ['E94-15-1573D', '39-2-293', '9-1-137']),
+(FCLT_MAJOR_USE_KEY:VARCHAR2, Examples: ['101', '102', '103']),
+(MAJOR_USE_DESC:VARCHAR2, Examples: ['OFFICES', 'LABS', 'MECHANIC']),
+(FCLT_USE_KEY:VARCHAR2, Examples: ['158', '145', '154']),
+(USE_DESC:VARCHAR2),
+(FCLT_MINOR_USE_KEY:VARCHAR2),
+(MINOR_USE_DESC:VARCHAR2),
+(FCLT_ORGANIZATION_KEY:VARCHAR2, Examples: ['101', '102', '103']),
+(ORGANIZATION_NAME:VARCHAR2, Examples: ['S MGMT', 'MTL', 'DOF']),
+(FCLT_MINOR_ORGANIZATION_KEY:VARCHAR2),
+(MINOR_ORGANIZATION:VARCHAR2),
+(AREA:NUMBER, Examples: [61.77, 186.69, 359.03]),
+(ROOM_FULL_NAME:VARCHAR2, Examples: ['DE ROTHSCHILD ROOM', 'NORTH LOBDELL BALCONY', 'WOMENS TEAM ROOM']),
+(DEPT_CODE:VARCHAR2, Examples: ['93700', '93400', '93300']),
+(ACCESS_LEVEL:VARCHAR2, Examples: ['2', '0', '1']),
+(LATITUDE_WGS:NUMBER),
+(LONGITUDE_WGS:NUMBER),
+(NORTHING_SPCS:NUMBER),
+(EASTING_SPCS:NUMBER),
+(WAREHOUSE_LOAD_DATE:DATE, Examples: ['19-DEC-24'])
+]
+
+### Question ###
+For each building key, what is the building name and the number of courses offered by the Center for International Studies?
+
+(Hints: Schema Mapping Hints:
+- 'building key' is related to FCLT_BUILDING.FCLT_BUILDING_KEY
+- 'building name' is related to FCLT_BUILDING.BUILDING_NAME
+- 'courses offered by the Center for International Studies' is related to CIS_COURSE_CATALOG.SUBJECT_ID
+
+Join Information: (CIS_COURSE_CATALOG.SUBJECT_ID = COURSE_CATALOG_SUBJECT_OFFERED.SUBJECT_ID), (COURSE_CATALOG_SUBJECT_OFFERED.MEET_PLACE = FCLT_ROOMS.FCLT_ROOM_KEY), (FCLT_ROOMS.FCLT_BUILDING_KEY = FCLT_BUILDING.FCLT_BUILDING_KEY))
+
+### Generated SQL Query ###
+Generated SQL:
+
+
+***** RESPONSE *****
+ChatCompletion(id='chatcmpl-CvbKB3Osr3AIvgu8PpkztwbB5dl8S', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='```sql\nSELECT \n    fb.FCLT_BUILDING_KEY AS building_key, \n    fb.BUILDING_NAME AS building_name, \n    COUNT(DISTINCT cco.SUBJECT_ID) AS num_courses\nFROM \n    CIS_COURSE_CATALOG ccc\nJOIN \n    COURSE_CATALOG_SUBJECT_OFFERED cco ON ccc.SUBJECT_ID = cco.SUBJECT_ID\nJOIN \n    FCLT_ROOMS fr ON cco.MEET_PLACE = fr.FCLT_ROOM_KEY\nJOIN \n    FCLT_BUILDING fb ON fr.FCLT_BUILDING_KEY = fb.FCLT_BUILDING_KEY\nWHERE \n    fb.FCLT_BUILDING_KEY IS NOT NULL\nGROUP BY \n    fb.FCLT_BUILDING_KEY, \n    fb.BUILDING_NAME;\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None))], created=1767844207, model='gpt-4o-2024-08-06', object='chat.completion', service_tier='default', system_fingerprint='fp_deacdd5f6f', usage=CompletionUsage(completion_tokens=167, prompt_tokens=5192, total_tokens=5359, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)))
+
+***** TOKEN INFO *****
+CompletionUsage(completion_tokens=167, prompt_tokens=5192, total_tokens=5359, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0))
+
+***** FINAL SQL QUERY *****
+SELECT 
+    fb.FCLT_BUILDING_KEY AS building_key, 
+    fb.BUILDING_NAME AS building_name, 
+    COUNT(DISTINCT cco.SUBJECT_ID) AS num_courses
+FROM 
+    CIS_COURSE_CATALOG ccc
+JOIN 
+    COURSE_CATALOG_SUBJECT_OFFERED cco ON ccc.SUBJECT_ID = cco.SUBJECT_ID
+JOIN 
+    FCLT_ROOMS fr ON cco.MEET_PLACE = fr.FCLT_ROOM_KEY
+JOIN 
+    FCLT_BUILDING fb ON fr.FCLT_BUILDING_KEY = fb.FCLT_BUILDING_KEY
+WHERE 
+    fb.FCLT_BUILDING_KEY IS NOT NULL
+GROUP BY 
+    fb.FCLT_BUILDING_KEY, 
+    fb.BUILDING_NAME;
+
+***** TOKEN MONITORING *****
+TOKEN PER ITERATION    : 5192, 167
+TOTAL                  : 18344, 17392, 952
+AVG                    : 3057.33, 2898.67, 158.67
+******************************************************************************************************************************************************
+******************************************************************************************************************************************************
+
