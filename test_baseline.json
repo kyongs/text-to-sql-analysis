@@ -1,0 +1,95 @@
+{
+  "config": "configs/beaver_dw_openai.yaml",
+  "num_runs": 1,
+  "timestamp": "2026-01-12T17:49:46.502233",
+  "analysis": {
+    "summary": {
+      "total_questions": 3,
+      "syntax_errors": 0,
+      "empty_results": 1,
+      "inconsistent": 0,
+      "all_success": 2
+    },
+    "problem_cases": {
+      "syntax_errors": [],
+      "empty_results": [
+        {
+          "sql_idx": 0,
+          "question": "What is the current building key, building street address, city, state, and postal code of the history department?",
+          "runs": [
+            {
+              "run_id": 0,
+              "predicted_sql": "SELECT \n    b.BUILDING_KEY, \n    b.BUILDING_STREET_ADDRESS, \n    a.CITY, \n    a.STATE, \n    a.POSTAL_CODE\nFROM \n    FCLT_ROOMS r\nJOIN \n    BUILDINGS b ON r.FCLT_BUILDING_KEY = b.BUILDING_KEY\nJOIN \n    FCLT_BUILDING_ADDRESS a ON r.FCLT_BUILDING_KEY = a.FCLT_BUILDING_KEY\nWHERE \n    r.ORGANIZATION_NAME = 'History Department';",
+              "success": true,
+              "row_count": 0,
+              "error": null,
+              "error_type": "empty_result"
+            }
+          ]
+        }
+      ],
+      "inconsistent": [],
+      "all_success": [
+        {
+          "sql_idx": 1,
+          "question": "Show the unique activity titles, locations, term start date, and supervisor name for all independent activities, sorted by the ascending order of start date.",
+          "runs": [
+            {
+              "run_id": 0,
+              "predicted_sql": "SELECT DISTINCT \n    d.ACTIVITY_TITLE, \n    p.PERSON_LOCATION, \n    t.TERM_START_DATE, \n    p.PERSON_NAME AS SUPERVISOR_NAME\nFROM \n    IAP_SUBJECT_DETAIL d\nJOIN \n    ACADEMIC_TERMS_ALL t ON d.TERM_CODE = t.TERM_CODE\nJOIN \n    IAP_SUBJECT_PERSON p ON d.IAP_SUBJECT_PERSON_KEY = p.IAP_SUBJECT_PERSON_KEY\nORDER BY \n    t.TERM_START_DATE ASC;",
+              "success": true,
+              "row_count": 525,
+              "error": null,
+              "error_type": null
+            }
+          ]
+        },
+        {
+          "sql_idx": 2,
+          "question": "List the unique course instructor names, course titles, and the amount of material for each course instructor key and the key of subject offered.",
+          "runs": [
+            {
+              "run_id": 0,
+              "predicted_sql": "SELECT \n    lci.INSTRUCTOR_NAME, \n    lci.COURSE_NAME, \n    COUNT(lrmd.LIBRARY_RESERVE_CATALOG_KEY) AS MATERIAL_COUNT, \n    lrmd.LIBRARY_COURSE_INSTRUCTOR_KEY, \n    lrmd.LIBRARY_SUBJECT_OFFERED_KEY\nFROM \n    LIBRARY_COURSE_INSTRUCTOR lci\nJOIN \n    LIBRARY_RESERVE_MATRL_DETAIL lrmd ON lci.LIBRARY_COURSE_INSTRUCTOR_KEY = lrmd.LIBRARY_COURSE_INSTRUCTOR_KEY\nGROUP BY \n    lci.INSTRUCTOR_NAME, \n    lci.COURSE_NAME, \n    lrmd.LIBRARY_COURSE_INSTRUCTOR_KEY, \n    lrmd.LIBRARY_SUBJECT_OFFERED_KEY;",
+              "success": true,
+              "row_count": 18689,
+              "error": null,
+              "error_type": null
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "all_runs": [
+    [
+      {
+        "sql_idx": 0,
+        "question": "What is the current building key, building street address, city, state, and postal code of the history department?",
+        "predicted_sql": "SELECT \n    b.BUILDING_KEY, \n    b.BUILDING_STREET_ADDRESS, \n    a.CITY, \n    a.STATE, \n    a.POSTAL_CODE\nFROM \n    FCLT_ROOMS r\nJOIN \n    BUILDINGS b ON r.FCLT_BUILDING_KEY = b.BUILDING_KEY\nJOIN \n    FCLT_BUILDING_ADDRESS a ON r.FCLT_BUILDING_KEY = a.FCLT_BUILDING_KEY\nWHERE \n    r.ORGANIZATION_NAME = 'History Department';",
+        "success": true,
+        "row_count": 0,
+        "error": null,
+        "error_type": "empty_result"
+      },
+      {
+        "sql_idx": 1,
+        "question": "Show the unique activity titles, locations, term start date, and supervisor name for all independent activities, sorted by the ascending order of start date.",
+        "predicted_sql": "SELECT DISTINCT \n    d.ACTIVITY_TITLE, \n    p.PERSON_LOCATION, \n    t.TERM_START_DATE, \n    p.PERSON_NAME AS SUPERVISOR_NAME\nFROM \n    IAP_SUBJECT_DETAIL d\nJOIN \n    ACADEMIC_TERMS_ALL t ON d.TERM_CODE = t.TERM_CODE\nJOIN \n    IAP_SUBJECT_PERSON p ON d.IAP_SUBJECT_PERSON_KEY = p.IAP_SUBJECT_PERSON_KEY\nORDER BY \n    t.TERM_START_DATE ASC;",
+        "success": true,
+        "row_count": 525,
+        "error": null,
+        "error_type": null
+      },
+      {
+        "sql_idx": 2,
+        "question": "List the unique course instructor names, course titles, and the amount of material for each course instructor key and the key of subject offered.",
+        "predicted_sql": "SELECT \n    lci.INSTRUCTOR_NAME, \n    lci.COURSE_NAME, \n    COUNT(lrmd.LIBRARY_RESERVE_CATALOG_KEY) AS MATERIAL_COUNT, \n    lrmd.LIBRARY_COURSE_INSTRUCTOR_KEY, \n    lrmd.LIBRARY_SUBJECT_OFFERED_KEY\nFROM \n    LIBRARY_COURSE_INSTRUCTOR lci\nJOIN \n    LIBRARY_RESERVE_MATRL_DETAIL lrmd ON lci.LIBRARY_COURSE_INSTRUCTOR_KEY = lrmd.LIBRARY_COURSE_INSTRUCTOR_KEY\nGROUP BY \n    lci.INSTRUCTOR_NAME, \n    lci.COURSE_NAME, \n    lrmd.LIBRARY_COURSE_INSTRUCTOR_KEY, \n    lrmd.LIBRARY_SUBJECT_OFFERED_KEY;",
+        "success": true,
+        "row_count": 18689,
+        "error": null,
+        "error_type": null
+      }
+    ]
+  ]
+}

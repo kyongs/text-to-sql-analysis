@@ -97,7 +97,7 @@ def process_item(item, model, db_type: str, analyze_sql: bool = False, conn_info
     # 모델 호출 (OpenAIModel은 tool flag 있으면 자동으로 tool calling 사용)
     tool_call_log = None
     if type(model).__name__ == 'OpenAIModel':
-        model_response = model.generate(prompt, db_id=db_id)
+        model_response = model.generate(prompt, db_id=db_id, question=question)
         if model_response and hasattr(model_response, 'tool_call_log'):
             tool_call_log = model_response.tool_call_log
     else:
@@ -162,7 +162,23 @@ def main():
                        help="Enable find_join_path tool")
     parser.add_argument("--lookup_val", action='store_true',
                        help="Enable lookup_column_values tool for checking actual column values")
-    
+    parser.add_argument("--agg_advisor", action='store_true',
+                       help="Enable check_aggregation_pattern tool for GROUP BY vs Window Function")
+    parser.add_argument("--distinct_advisor", action='store_true',
+                       help="Enable check_distinct_need tool for DISTINCT usage decisions")
+    parser.add_argument("--distinct_compare", action='store_true',
+                       help="Enable compare_distinct_results tool to compare WITH/WITHOUT DISTINCT")
+    parser.add_argument("--constraint_check", action='store_true',
+                       help="Enable check_schema_constraints tool for schema/type/value validation")
+
+    # Refine agent flags
+    parser.add_argument("--refine_syntax", action='store_true',
+                       help="Enable syntax_fixer refine agent - auto-fix SQL errors")
+    parser.add_argument("--refine_empty", action='store_true',
+                       help="Enable empty_result_handler refine agent - analyze 0-row results")
+    parser.add_argument("--refine_max_iter", type=int, default=1,
+                       help="Max refine iterations (default: 1)")
+
     args = parser.parse_args()
 
     with open(args.config, 'r', encoding='utf-8') as f:
@@ -204,7 +220,18 @@ def main():
     config['enabled_tools'] = {
         'join_inspector': args.join_inspector,
         'join_path_finder': args.join_path_finder,
-        'lookup_column_values': args.lookup_val
+        'lookup_column_values': args.lookup_val,
+        'aggregation_advisor': args.agg_advisor,
+        'distinct_advisor': args.distinct_advisor,
+        'distinct_comparator': args.distinct_compare,
+        'constraint_checker': args.constraint_check
+    }
+
+    # Pass refine agent flags to config
+    config['refine_agents'] = {
+        'syntax_fixer': args.refine_syntax,
+        'empty_handler': args.refine_empty,
+        'max_iterations': args.refine_max_iter
     }
 
     model = MODELS[config['model']['provider']](config)
@@ -258,7 +285,7 @@ def main():
         print(f"Generating SQL Queries in parallel with {args.max_workers} workers...")
         
         # Tool 사용 여부 결정
-        any_tool_enabled = args.join_inspector or args.join_path_finder or args.lookup_val
+        any_tool_enabled = args.join_inspector or args.join_path_finder or args.lookup_val or args.agg_advisor or args.distinct_advisor or args.distinct_compare or args.constraint_check
         use_tools = (config['model']['provider'] == 'openai' and any_tool_enabled)
         enabled_tool_names = []
         if use_tools:
@@ -273,6 +300,18 @@ def main():
             if enabled_tools_dict.get('lookup_column_values'):
                 enabled_list.append("lookup_column_values (Check actual column values)")
                 enabled_tool_names.append('lookup_column_values')
+            if enabled_tools_dict.get('aggregation_advisor'):
+                enabled_list.append("check_aggregation_pattern (GROUP BY vs Window Function)")
+                enabled_tool_names.append('aggregation_advisor')
+            if enabled_tools_dict.get('distinct_advisor'):
+                enabled_list.append("check_distinct_need (DISTINCT usage decisions)")
+                enabled_tool_names.append('distinct_advisor')
+            if enabled_tools_dict.get('distinct_comparator'):
+                enabled_list.append("compare_distinct_results (Compare WITH/WITHOUT DISTINCT)")
+                enabled_tool_names.append('distinct_comparator')
+            if enabled_tools_dict.get('constraint_checker'):
+                enabled_list.append("check_schema_constraints (Schema/type/value validation)")
+                enabled_tool_names.append('constraint_checker')
 
             if enabled_list:
                 print(f"Tool calling enabled - {len(enabled_list)} tool(s):")
@@ -281,6 +320,19 @@ def main():
             else:
                 print(f"openai_with_tools model loaded but no tools enabled")
                 print(f"   Use --join_inspector, --join_path_finder, --lookup_val to enable tools")
+
+        # Refine agent 활성화 표시
+        refine_agents_enabled = []
+        if args.refine_syntax:
+            refine_agents_enabled.append("syntax_fixer (auto-fix SQL errors)")
+        if args.refine_empty:
+            refine_agents_enabled.append("empty_result_handler (analyze 0-row results)")
+
+        if refine_agents_enabled:
+            print(f"\nRefine agents enabled - {len(refine_agents_enabled)} agent(s):")
+            for i, agent in enumerate(refine_agents_enabled, 1):
+                print(f"   {i}. {agent}")
+            print(f"   Max refine iterations: {args.refine_max_iter}")
 
         futures = {executor.submit(process_item, item, model, db_type, args.analyze_sql, conn_info, use_tools, enabled_tool_names): item for item in dataset}
         for future in tqdm(concurrent.futures.as_completed(futures), total=len(dataset), desc="Overall Progress"):
