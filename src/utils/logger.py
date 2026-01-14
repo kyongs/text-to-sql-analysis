@@ -55,7 +55,19 @@ class TxtLogger:
                 elif log_type == "final_response":
                     tool_log_str += f"\n[Iteration {iteration}] ✅ Final SQL Response:\n"
                     tool_log_str += f"  {log_entry['content']}\n"
-            
+
+                elif log_type == "refine_trigger":
+                    tool_log_str += f"\n[Refine {iteration}] 🔄 Refine Agent Triggered:\n"
+                    tool_log_str += f"  Reason: {log_entry.get('reason', 'unknown')}\n"
+                    analysis = log_entry.get('analysis', '')
+                    if analysis:
+                        tool_log_str += f"  Analysis:\n"
+                        # 분석 내용 들여쓰기
+                        for line in analysis.split('\n')[:30]:  # 처음 30줄만
+                            tool_log_str += f"    {line}\n"
+                        if len(analysis.split('\n')) > 30:
+                            tool_log_str += "    ... (truncated)\n"
+
             tool_log_str += "\n"
         
         response_str = f"***** RESPONSE *****\n{model_response}\n\n"

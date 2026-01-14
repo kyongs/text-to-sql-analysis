@@ -3,7 +3,8 @@
     "allow": [
       "Bash(python:*)",
       "Bash(grep:*)",
-      "Bash(sort:*)"
+      "Bash(sort:*)",
+      "Bash(set:*)"
     ]
   }
 }

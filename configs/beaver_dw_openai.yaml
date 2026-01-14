@@ -1,6 +1,6 @@
 # configs/beaver_dw_config.yaml
 
-experiment_name: "4o_lookup_insp_full"
+experiment_name: "4o_refine1"
 output_dir: "./outputs"
 mode: "gold_schema"    # baseline, gold_schema
 
