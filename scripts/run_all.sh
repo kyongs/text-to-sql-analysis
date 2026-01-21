@@ -17,6 +17,15 @@ CONFIG_FILE=$1
 shift 1
 EXPERIMENT_ARGS="$@"
 
+# Check if --error_analysis flag is present in experiment args
+ERROR_ANALYSIS_FLAG=""
+for arg in $EXPERIMENT_ARGS; do
+    if [ "$arg" = "--error_analysis" ]; then
+        ERROR_ANALYSIS_FLAG="--error_analysis"
+        break
+    fi
+done
+
 cd "$(dirname "$0")/.."
 
 # Extract experiment_name from config file
@@ -52,7 +61,7 @@ fi
 # Step 2: Run evaluation
 echo ""
 echo "📊 STEP 2/2: Running evaluation..."
-bash scripts/run_evaluation.sh "$PREDICTION_FILE" "$CONFIG_FILE"
+bash scripts/run_evaluation.sh "$PREDICTION_FILE" "$CONFIG_FILE" $ERROR_ANALYSIS_FLAG
 
 if [ $? -ne 0 ]; then
     echo "❌ Evaluation failed!"

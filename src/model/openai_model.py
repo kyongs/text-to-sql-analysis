@@ -44,6 +44,12 @@ class OpenAIModel:
         self.enable_empty_handler = refine_agents.get('empty_handler', False)
         self.max_refine_iterations = refine_agents.get('max_iterations', 1)
 
+        # Note-taking 활성화 여부 (실제 인스턴스는 generate()에서 스레드 로컬로 생성)
+        self.enable_note_taking = config.get('note_taking', False)
+
+        # LLM Feedback 활성화 여부 (note_taking과 함께 사용)
+        self.enable_llm_feedback = config.get('llm_feedback', False)
+
         # Tool 정의 (활성화된 tool만)
         self.tools = self._initialize_tools()
         self.use_tools = len(self.tools) > 0
@@ -317,20 +323,33 @@ class OpenAIModel:
         else:
             return f"Unknown tool: {tool_name}"
 
-    def generate(self, prompt: str, db_id: str = "dw", max_iterations: int = 10, question: str = None):
+    def generate(self, prompt: str, db_id: str = "dw", max_iterations: int = 10, question: str = None, item: Dict[str, Any] = None):
         """
         OpenAI API를 호출하고 필요시 tool calling 수행
         Refine agent가 활성화된 경우 SQL 실행 후 자동 수정 루프 실행
+        Note-taking이 활성화된 경우 iter별 NOTE 관리
 
         Args:
             prompt: 사용자 프롬프트
             db_id: 데이터베이스 ID
             max_iterations: 최대 tool call 반복 횟수
             question: 원본 질문 (refine agent에서 사용)
+            item: 데이터셋 아이템 (note_taking에서 hints 비교용)
 
         Returns:
             response 객체 (tool 사용 시 tool_call_log 포함)
         """
+        # Note-taking 초기화 (각 호출마다 새로운 NoteTaker 생성 - 멀티스레드 안전)
+        local_note_taker = None
+        if self.enable_note_taking and item:
+            import sys
+            from pathlib import Path
+            src_dir = Path(__file__).parent.parent
+            if str(src_dir) not in sys.path:
+                sys.path.insert(0, str(src_dir))
+            from note_taker import ParsingNoteTaker
+            local_note_taker = ParsingNoteTaker(item)
+
         # Tool이 있으면 상세 시스템 메시지 (활성화된 tool에 따라 동적 생성)
         if self.use_tools:
             system_parts = ["You are a MySQL SQL expert. Your job is to write a MySQL SQL query to answer the user's question.\n"]
@@ -449,45 +468,139 @@ class OpenAIModel:
                         "content": final_content
                     })
 
-                    # Refine agent가 활성화되어 있으면 SQL 실행 및 검증
-                    if self.enable_syntax_fixer or self.enable_empty_handler:
-                        sql = self._extract_sql_from_response(final_content)
+                    # SQL 추출
+                    sql = self._extract_sql_from_response(final_content)
 
-                        if sql:
-                            # Refine loop
-                            for refine_iter in range(self.max_refine_iterations):
-                                exec_result = self._execute_sql(sql, db_id)
+                    # Note-taking이 활성화되어 있으면 iter별 NOTE 루프 사용
+                    if self.enable_note_taking and local_note_taker and sql:
+                        # iter별 NOTE 루프
+                        note_iter = 1
+                        max_note_iterations = self.max_refine_iterations + 1  # refine 횟수 + 1
 
-                                # 성공 (row_count > 0) 이면 종료
-                                if exec_result["success"] and exec_result["row_count"] > 0:
-                                    tool_call_log.append({
-                                        "iteration": refine_iter + 1,
-                                        "type": "refine_trigger",
-                                        "reason": "success",
-                                        "analysis": f"SQL 실행 성공: {exec_result['row_count']}행 반환"
-                                    })
-                                    break
+                        for note_iter in range(1, max_note_iterations + 1):
+                            # SQL 실행 (refine agent 활성화 여부와 관계없이)
+                            exec_result = self._execute_sql(sql, db_id)
 
-                                # Refine agent 실행
-                                refine_feedback = self._run_refine_agent(sql, exec_result, db_id, question)
+                            # LLM Feedback 요청 (활성화된 경우)
+                            llm_feedback = None
+                            if self.enable_llm_feedback and question and item:
+                                current_note_for_feedback = local_note_taker.get_current_note() if local_note_taker.iter_notes else None
+                                llm_feedback = self._get_llm_feedback(sql, question, item, current_note_for_feedback)
 
-                                if not refine_feedback:
-                                    # Refine agent가 피드백을 생성하지 않으면 종료
-                                    break
+                            # NOTE에 iter 기록 추가 (llm_feedback 포함)
+                            local_note_taker.add_iter_note(note_iter, sql, exec_result, llm_feedback)
 
-                                # 피드백 로깅
+                            # 로깅
+                            tool_call_log.append({
+                                "iteration": f"note_iter_{note_iter}",
+                                "type": "note_taking_iter",
+                                "sql": sql,
+                                "exec_result": {
+                                    "success": exec_result["success"],
+                                    "row_count": exec_result["row_count"],
+                                    "error_type": exec_result.get("error_type")
+                                },
+                                "schema_check": local_note_taker.iter_notes[-1]["schema_check"],
+                                "refine_feedback": local_note_taker.iter_notes[-1]["refine_feedback"],
+                                "llm_feedback": llm_feedback
+                            })
+
+                            # 성공이고 문제없으면 종료 (LLM Feedback도 없어야 함)
+                            has_llm_issues = llm_feedback is not None
+                            if exec_result["success"] and exec_result["row_count"] > 0 and not local_note_taker.has_issues() and not has_llm_issues:
+                                break
+
+                            # 마지막 iter면 종료
+                            if note_iter >= max_note_iterations:
+                                break
+
+                            # 문제가 있으면 NOTE와 함께 refine 요청
+                            issues_summary = local_note_taker.get_issues_summary()
+                            current_note = local_note_taker.get_current_note()
+
+                            # LLM Feedback이 있으면 issues에 추가
+                            if llm_feedback:
+                                if issues_summary:
+                                    issues_summary += f"\n\n[LLM Review]\n{llm_feedback}"
+                                else:
+                                    issues_summary = f"[LLM Review]\n{llm_feedback}"
+
+                            # Refine prompt 생성 (NOTE 포함)
+                            note_refine_prompt = f"""{current_note}
+
+위 NOTE를 참고하여 SQL을 수정해주세요.
+특히 다음 사항을 확인해주세요:
+{issues_summary if issues_summary else "- 특별한 문제 없음"}
+
+현재 SQL:
+```sql
+{sql}
+```
+
+수정된 SQL을 제공해주세요."""
+
+                            messages.append(response_message)
+                            messages.append({
+                                "role": "user",
+                                "content": note_refine_prompt
+                            })
+
+                            # 재생성
+                            if self.use_tools:
+                                response = self.client.chat.completions.create(
+                                    model=self.model_config['name'],
+                                    messages=messages,
+                                    tools=self.tools,
+                                    tool_choice="auto",
+                                    temperature=0
+                                )
+                            else:
+                                response = self.client.chat.completions.create(
+                                    model=self.model_config['name'],
+                                    messages=messages,
+                                    temperature=0
+                                )
+
+                            response_message = response.choices[0].message
+                            new_sql = self._extract_sql_from_response(response_message.content)
+
+                            if new_sql:
+                                sql = new_sql
+                            else:
+                                break
+
+                        # 최종 NOTE 로깅
+                        tool_call_log.append({
+                            "iteration": "note_taking_final",
+                            "type": "note_taking_final",
+                            "final_note": local_note_taker.get_final_note()
+                        })
+
+                    # Note-taking이 비활성화된 경우 기존 Refine agent 로직
+                    elif sql and (self.enable_syntax_fixer or self.enable_empty_handler):
+                        # Refine loop
+                        for refine_iter in range(self.max_refine_iterations):
+                            exec_result = self._execute_sql(sql, db_id)
+
+                            # 성공 (row_count > 0) 이면 종료
+                            if exec_result["success"] and exec_result["row_count"] > 0:
                                 tool_call_log.append({
                                     "iteration": refine_iter + 1,
                                     "type": "refine_trigger",
-                                    "reason": exec_result["error_type"],
-                                    "analysis": refine_feedback
+                                    "reason": "success",
+                                    "analysis": f"SQL 실행 성공: {exec_result['row_count']}행 반환"
                                 })
+                                break
 
-                                # LLM에게 피드백과 함께 재생성 요청
-                                messages.append(response_message)
-                                messages.append({
-                                    "role": "user",
-                                    "content": f"""Your SQL query had an issue. Please fix it based on the analysis below.
+                            # Refine agent 실행
+                            refine_feedback = self._run_refine_agent(sql, exec_result, db_id, question)
+
+                            if not refine_feedback:
+                                # Refine agent가 피드백을 생성하지 않으면 종료
+                                break
+
+                            # Refine prompt 생성
+                            refine_prompt = f"""Your SQL query had an issue. Please fix it based on the analysis below.
 
 {refine_feedback}
 
@@ -497,37 +610,53 @@ Original SQL:
 ```
 
 Please provide a corrected SQL query."""
+
+                            # 피드백 로깅 (refine_prompt 포함)
+                            tool_call_log.append({
+                                "iteration": refine_iter + 1,
+                                "type": "refine_trigger",
+                                "reason": exec_result["error_type"],
+                                "analysis": refine_feedback,
+                                "refine_prompt": refine_prompt,
+                                "original_sql": sql
+                            })
+
+                            # LLM에게 피드백과 함께 재생성 요청
+                            messages.append(response_message)
+                            messages.append({
+                                "role": "user",
+                                "content": refine_prompt
+                            })
+
+                            # 재생성
+                            if self.use_tools:
+                                response = self.client.chat.completions.create(
+                                    model=self.model_config['name'],
+                                    messages=messages,
+                                    tools=self.tools,
+                                    tool_choice="auto",
+                                    temperature=0
+                                )
+                            else:
+                                response = self.client.chat.completions.create(
+                                    model=self.model_config['name'],
+                                    messages=messages,
+                                    temperature=0
+                                )
+
+                            response_message = response.choices[0].message
+
+                            # 새 응답에서 SQL 추출
+                            new_sql = self._extract_sql_from_response(response_message.content)
+                            if new_sql:
+                                sql = new_sql
+                                tool_call_log.append({
+                                    "iteration": refine_iter + 1,
+                                    "type": "final_response",
+                                    "content": response_message.content
                                 })
-
-                                # 재생성
-                                if self.use_tools:
-                                    response = self.client.chat.completions.create(
-                                        model=self.model_config['name'],
-                                        messages=messages,
-                                        tools=self.tools,
-                                        tool_choice="auto",
-                                        temperature=0
-                                    )
-                                else:
-                                    response = self.client.chat.completions.create(
-                                        model=self.model_config['name'],
-                                        messages=messages,
-                                        temperature=0
-                                    )
-
-                                response_message = response.choices[0].message
-
-                                # 새 응답에서 SQL 추출
-                                new_sql = self._extract_sql_from_response(response_message.content)
-                                if new_sql:
-                                    sql = new_sql
-                                    tool_call_log.append({
-                                        "iteration": refine_iter + 1,
-                                        "type": "final_response",
-                                        "content": response_message.content
-                                    })
-                                else:
-                                    break
+                            else:
+                                break
 
                     break
 
@@ -552,6 +681,10 @@ Please provide a corrected SQL query."""
                         function_args,
                         db_id
                     )
+
+                    # lookup_column_values 결과를 NoteTaker에 저장
+                    if function_name == "lookup_column_values" and local_note_taker:
+                        self._parse_and_store_lookup_result(function_args, function_response, local_note_taker)
 
                     # Tool 응답 로깅
                     tool_call_log.append({
@@ -625,6 +758,22 @@ Please provide a corrected SQL query."""
                 formatted += f"  Analysis:\n"
                 analysis = log_entry.get('analysis', '')
                 formatted += "  " + analysis.replace("\n", "\n  ") + "\n"
+
+            elif log_type == "note_taking_iter":
+                formatted += f"\n[Note {iteration}] 📝 Note-Taking Iteration:\n"
+                formatted += f"  SQL: {log_entry.get('sql', '')[:100]}...\n"
+                exec_result = log_entry.get('exec_result', {})
+                formatted += f"  Exec Result: success={exec_result.get('success')}, rows={exec_result.get('row_count')}\n"
+                formatted += f"  Schema Check:\n"
+                schema_check = log_entry.get('schema_check', '')
+                formatted += "    " + schema_check.replace("\n", "\n    ") + "\n"
+                if log_entry.get('refine_feedback'):
+                    formatted += f"  Refine Feedback: {log_entry.get('refine_feedback')}\n"
+
+            elif log_type == "note_taking_final":
+                formatted += f"\n[Note Final] 📋 Final Note:\n"
+                final_note = log_entry.get('final_note', '')
+                formatted += "  " + final_note.replace("\n", "\n  ") + "\n"
 
         formatted += "=" * 80 + "\n"
         return formatted
@@ -721,6 +870,35 @@ Please provide a corrected SQL query."""
 
         return result
 
+    def _parse_and_store_lookup_result(self, function_args: Dict, function_response: str, note_taker):
+        """
+        lookup_column_values 결과를 파싱하여 NoteTaker에 저장
+
+        Args:
+            function_args: tool call 인자 (table, column, search_term)
+            function_response: tool 응답 문자열
+            note_taker: ParsingNoteTaker 인스턴스
+        """
+        table = function_args.get('table', '')
+        column = function_args.get('column', '')
+        search_term = function_args.get('search_term', '')
+
+        # 응답 파싱
+        found = False
+        similar_values = []
+
+        if '✅ FOUND' in function_response:
+            found = True
+        elif '❌ NOT FOUND' in function_response:
+            found = False
+            # 유사값 추출: "→ 'value'" 형태 파싱
+            import re
+            # → 'value' (count rows) 패턴 매칭
+            matches = re.findall(r"→ '([^']+)'", function_response)
+            similar_values = matches[:5]
+
+        note_taker.add_lookup_result(table, column, search_term, found, similar_values)
+
     def _run_refine_agent(self, sql: str, exec_result: Dict, db_id: str, question: str = None) -> Optional[str]:
         """
         Refine agent 실행 및 피드백 생성
@@ -741,3 +919,102 @@ Please provide a corrected SQL query."""
             return format_empty_result_advice(analysis)
 
         return None
+
+    def _get_llm_feedback(self, sql: str, question: str, item: Dict[str, Any], current_note: str = None) -> Optional[str]:
+        """
+        LLM에게 SQL에 대한 비판적 검토 요청
+
+        Args:
+            sql: 생성된 SQL
+            question: 원본 NLQ
+            item: 데이터셋 아이템 (mapping, join_keys 등 hints 포함)
+            current_note: 현재까지의 NOTE (optional)
+
+        Returns:
+            LLM의 비판적 검토 피드백
+        """
+        if not sql or not question or not item:
+            return None
+
+        # Hints 정보 추출
+        mapping = item.get('mapping', {})
+        join_keys = item.get('join_keys', [])
+        evidence = item.get('evidence', '')
+
+        # Hints를 읽기 쉬운 형식으로 변환
+        hints_text = "Hints:\n"
+        if evidence:
+            hints_text += f"  [Evidence] {evidence}\n"
+        if mapping:
+            hints_text += "  [Mapping - 사용해야 하는 컬럼들]\n"
+            for keyword, columns in mapping.items():
+                hints_text += f"    '{keyword}' → {', '.join(columns)}\n"
+        if join_keys:
+            hints_text += "  [Join Keys - 사용해야 하는 조인 조건]\n"
+            for pair in join_keys:
+                if len(pair) == 2:
+                    hints_text += f"    {pair[0]} = {pair[1]}\n"
+
+        # 비판적 검토 프롬프트
+        review_prompt = f"""다음 SQL을 비판적으로 검토해주세요.
+
+Question: {question}
+
+{hints_text}
+
+Generated SQL:
+```sql
+{sql}
+```
+"""
+        if current_note:
+            review_prompt += f"""
+현재 NOTE:
+{current_note}
+"""
+
+        review_prompt += """
+검토 항목 (확실한 문제만 지적):
+1. Hints의 컬럼/조인이 SQL에서 누락되었는가? (NOTE의 Schema Check에서 ☐ 표시된 항목)
+2. Question의 의도와 SQL의 결과가 일치하는가? (예: "list all"인데 LIMIT이 있거나, 집계가 필요한데 없는 경우)
+3. 불필요한 DISTINCT나 GROUP BY가 있는가?
+
+주의사항:
+- WHERE 절 조건의 값(예: 'STREET', 'Active')은 컬럼명이나 Question에서 유추 가능하면 정상임. 단순히 Hints에 없다고 문제 삼지 말 것.
+- 구체적인 값의 정확성(예: 'Computer Science' vs 'CS')은 판단하지 말 것 - 이는 검증 불가.
+- 확실하지 않으면 OK로 응답.
+
+확실한 문제가 있으면 간결하게 지적하고, 문제가 없거나 불확실하면 "OK"라고만 응답.
+응답은 한국어로, 2문장 이내로."""
+
+        try:
+            # GPT-5.1+ uses max_completion_tokens, older models use max_tokens
+            model_name = self.model_config['name'].lower()
+            api_params = {
+                "model": self.model_config['name'],
+                "messages": [
+                    {"role": "system", "content": "당신은 SQL 검토 전문가입니다. 주어진 SQL이 Question과 Hints에 부합하는지 비판적으로 검토합니다."},
+                    {"role": "user", "content": review_prompt}
+                ],
+                "temperature": 0
+            }
+
+            # GPT-5, o1, o3 등 최신 모델은 max_completion_tokens 사용
+            if any(x in model_name for x in ['gpt-5', 'o1', 'o3']):
+                api_params["max_completion_tokens"] = 300
+            else:
+                api_params["max_tokens"] = 300
+
+            response = self.client.chat.completions.create(**api_params)
+
+            feedback = response.choices[0].message.content.strip()
+
+            # "OK"만 반환하면 None으로 처리 (문제 없음)
+            if feedback.upper() == "OK" or feedback == "문제없음" or feedback == "문제 없음":
+                return None
+
+            return feedback
+
+        except Exception as e:
+            print(f"LLM feedback 요청 중 오류: {e}")
+            return None
