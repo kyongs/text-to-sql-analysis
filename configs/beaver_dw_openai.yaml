@@ -1,6 +1,6 @@
 # configs/beaver_dw_config.yaml
 
-experiment_name: "4o_refine1"
+experiment_name: "mini_note_take_try2"
 output_dir: "./outputs"
 mode: "gold_schema"    # baseline, gold_schema
 
@@ -20,7 +20,7 @@ db_connection:
 
 model:
   provider: "openai"
-  name: "gpt-4o"
+  name: "gpt-4o-mini"
   
 # model:
 #   provider: "openai"

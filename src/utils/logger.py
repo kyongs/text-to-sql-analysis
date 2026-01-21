@@ -22,10 +22,21 @@ class TxtLogger:
         """
         Formats a single result into a text block and appends it to the log file.
         """
+        # 문항 정보 추출
+        original_index = result_data.get('original_index', '?')
+        question = result_data.get('question', 'N/A')
+        db_id = result_data.get('db_id', 'N/A')
+
         prompt = result_data.get('prompt', 'N/A')
         model_response = result_data.get('model_response')
         predicted_sql = result_data.get('predicted_sql', 'N/A')
         tool_call_log = result_data.get('tool_call_log')
+
+        # 문항 헤더 추가
+        header_str = f"{'='*150}\n"
+        header_str += f"[Question #{original_index}] {question}\n"
+        header_str += f"DB: {db_id}\n"
+        header_str += f"{'='*150}\n\n"
 
         final_prompt_str = f"***** FINAL PROMPT *****\n{prompt}\n\n"
         
@@ -68,6 +79,27 @@ class TxtLogger:
                         if len(analysis.split('\n')) > 30:
                             tool_log_str += "    ... (truncated)\n"
 
+                elif log_type == "note_taking_iter":
+                    tool_log_str += f"\n[Note {iteration}] 📝 Note-Taking Iteration:\n"
+                    sql_preview = log_entry.get('sql', '')[:100]
+                    tool_log_str += f"  SQL: {sql_preview}...\n"
+                    exec_result = log_entry.get('exec_result', {})
+                    tool_log_str += f"  Exec Result: success={exec_result.get('success')}, rows={exec_result.get('row_count')}\n"
+                    schema_check = log_entry.get('schema_check', '')
+                    tool_log_str += f"  Schema Check:\n"
+                    for line in schema_check.split('\n')[:10]:
+                        tool_log_str += f"    {line}\n"
+                    if log_entry.get('refine_feedback'):
+                        tool_log_str += f"  Refine Feedback: {log_entry.get('refine_feedback')}\n"
+
+                elif log_type == "note_taking_final":
+                    tool_log_str += f"\n[Note Final] 📋 Final Note:\n"
+                    final_note = log_entry.get('final_note', '')
+                    for line in final_note.split('\n')[:50]:
+                        tool_log_str += f"  {line}\n"
+                    if len(final_note.split('\n')) > 50:
+                        tool_log_str += "  ... (truncated)\n"
+
             tool_log_str += "\n"
         
         response_str = f"***** RESPONSE *****\n{model_response}\n\n"
@@ -96,6 +128,7 @@ class TxtLogger:
                 )
 
         log_entry = (
+            header_str +
             final_prompt_str +
             tool_log_str +
             response_str +

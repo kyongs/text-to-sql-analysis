@@ -97,7 +97,7 @@ def process_item(item, model, db_type: str, analyze_sql: bool = False, conn_info
     # 모델 호출 (OpenAIModel은 tool flag 있으면 자동으로 tool calling 사용)
     tool_call_log = None
     if type(model).__name__ == 'OpenAIModel':
-        model_response = model.generate(prompt, db_id=db_id, question=question)
+        model_response = model.generate(prompt, db_id=db_id, question=question, item=item)
         if model_response and hasattr(model_response, 'tool_call_log'):
             tool_call_log = model_response.tool_call_log
     else:
@@ -179,6 +179,18 @@ def main():
     parser.add_argument("--refine_max_iter", type=int, default=1,
                        help="Max refine iterations (default: 1)")
 
+    # Note-taking flag
+    parser.add_argument("--note_taking", action='store_true',
+                       help="Enable note-taking: check hints vs SQL and trigger refine if missing")
+
+    # LLM Feedback flag
+    parser.add_argument("--llm_feedback", action='store_true',
+                       help="Enable LLM critical review: LLM checks SQL against hints for hallucination (requires --note_taking)")
+
+    # Error analysis flag
+    parser.add_argument("--error_analysis", action='store_true',
+                       help="Save detailed error analysis file with iteration-by-iteration prompts and SQLs")
+
     args = parser.parse_args()
 
     with open(args.config, 'r', encoding='utf-8') as f:
@@ -234,6 +246,15 @@ def main():
         'max_iterations': args.refine_max_iter
     }
 
+    # Pass note-taking flag to config
+    config['note_taking'] = args.note_taking
+
+    # Pass LLM feedback flag to config (requires note_taking)
+    config['llm_feedback'] = args.llm_feedback
+    if args.llm_feedback and not args.note_taking:
+        print("Warning: --llm_feedback requires --note_taking. Enabling --note_taking automatically.")
+        config['note_taking'] = True
+
     model = MODELS[config['model']['provider']](config)
     if experiment_mode == 'view':
         dataset = data_loader.load_data(load_views=True)
@@ -248,14 +269,21 @@ def main():
         if not os.path.exists(test_set_path):
             test_set_path = os.path.join("test_sets", args.test_set)
 
-        # txt 파일에서 문항 인덱스 로드
+        # txt 파일에서 문항 인덱스 로드 (한 줄에 하나 또는 쉼표 구분 지원)
         try:
             with open(test_set_path, 'r', encoding='utf-8') as f:
                 test_indices = set()
                 for line in f:
                     line = line.strip()
                     if line and not line.startswith('#'):  # 빈 줄, 주석 무시
-                        test_indices.add(int(line))
+                        # 쉼표 구분 지원
+                        if ',' in line:
+                            for idx in line.split(','):
+                                idx = idx.strip()
+                                if idx:
+                                    test_indices.add(int(idx))
+                        else:
+                            test_indices.add(int(line))
 
             # 인덱스로 dataset 필터링 (원본 인덱스 저장)
             original_len = len(dataset)
@@ -276,6 +304,11 @@ def main():
     elif args.test_n is not None:
         dataset = dataset[:args.test_n]
         print(f"Test mode: Running only first {args.test_n} questions")
+
+    # 모든 아이템에 original_index 설정 (test_set 모드가 아닌 경우에도)
+    for i, item in enumerate(dataset):
+        if 'original_index' not in item:
+            item['original_index'] = i
 
     log_file_path = os.path.join(log_dir, "run_log.txt") 
     logger = TxtLogger(log_file_path, len(dataset)) # log file 정렬되지는 않고 그냥 무작위로 적힘
@@ -334,6 +367,13 @@ def main():
                 print(f"   {i}. {agent}")
             print(f"   Max refine iterations: {args.refine_max_iter}")
 
+        # Note-taking / LLM Feedback 활성화 표시
+        if config.get('note_taking'):
+            print(f"\nNote-taking enabled: checking hints vs SQL")
+            print(f"   Max iterations: {args.refine_max_iter + 1}")
+            if config.get('llm_feedback'):
+                print(f"   LLM Feedback enabled: critical review for hallucination detection")
+
         futures = {executor.submit(process_item, item, model, db_type, args.analyze_sql, conn_info, use_tools, enabled_tool_names): item for item in dataset}
         for future in tqdm(concurrent.futures.as_completed(futures), total=len(dataset), desc="Overall Progress"):
             try:
@@ -379,6 +419,86 @@ def main():
                     f.write(r['sql_analysis'])
                     f.write("\n\n")
             print(f"SQL Analysis reports saved to: {analysis_file}")
+
+    # Save detailed error analysis if enabled (JSON format)
+    # Structure: { "iter_1": [{idx, sql, result, res, refine_feedback}, ...], "iter_2": [...], ... }
+    # result: "error" (syntax), "empty" (0 rows), "executed" (ran but unknown correctness), "correct"/"incorrect" (after eval)
+    # res: 1 (correct), 0 (incorrect), "" (not evaluated yet)
+    # refine_feedback: feedback about THIS iteration's SQL result (why it failed)
+    if args.error_analysis:
+        import re
+        error_analysis_file = os.path.join(output_dir, "error_analysis.json")
+
+        # iter별로 데이터 수집
+        iter_data = {}  # { "iter_1": [], "iter_2": [], ... }
+
+        for r in all_results:
+            idx = r.get('original_index', -1)
+            tool_call_log = r.get('tool_call_log', [])
+
+            # tool_call_log에서 SQL, result, refine_feedback 추출
+            # Structure: final_response -> refine_trigger (with reason) -> final_response -> ...
+            iter_entries = []  # [{sql, result, refine_feedback}, ...]
+
+            for log_entry in tool_call_log:
+                log_type = log_entry.get('type')
+
+                if log_type == 'final_response':
+                    content = log_entry.get('content', '')
+                    # SQL 추출
+                    sql_match = re.search(r'```sql\s*(.*?)\s*```', content, re.DOTALL | re.IGNORECASE)
+                    if sql_match:
+                        sql = sql_match.group(1).strip()
+                    else:
+                        sql = content.strip()
+
+                    # 이 iteration의 entry 추가
+                    iter_entries.append({
+                        "sql": sql,
+                        "result": "",  # will be filled by next refine_trigger
+                        "refine_feedback": ""  # will be filled by next refine_trigger
+                    })
+
+                elif log_type == 'refine_trigger':
+                    reason = log_entry.get('reason', 'unknown')
+
+                    # 직전 iteration의 result와 feedback 업데이트
+                    if iter_entries:
+                        if reason == 'success':
+                            iter_entries[-1]["result"] = "executed"
+                            iter_entries[-1]["refine_feedback"] = ""  # 성공이면 feedback 없음
+                        elif reason == 'syntax_error':
+                            iter_entries[-1]["result"] = "error"
+                            iter_entries[-1]["refine_feedback"] = log_entry.get('analysis', '')
+                        elif reason == 'empty_result':
+                            iter_entries[-1]["result"] = "empty"
+                            iter_entries[-1]["refine_feedback"] = log_entry.get('analysis', '')
+                        else:
+                            iter_entries[-1]["result"] = reason
+                            iter_entries[-1]["refine_feedback"] = log_entry.get('analysis', '')
+
+            # 마지막 iteration이 refine_trigger 없이 끝났으면 "executed"로 설정
+            if iter_entries and iter_entries[-1]["result"] == "":
+                iter_entries[-1]["result"] = "executed"
+
+            # iter별로 데이터 추가
+            for iter_num, entry in enumerate(iter_entries, 1):
+                iter_key = f"iter_{iter_num}"
+                if iter_key not in iter_data:
+                    iter_data[iter_key] = []
+
+                iter_data[iter_key].append({
+                    "idx": idx,
+                    "sql": entry["sql"],
+                    "result": entry["result"],  # "error", "empty", "executed"
+                    "res": "",  # evaluation에서 채움 (1 or 0)
+                    "refine_feedback": entry["refine_feedback"]  # 이 SQL의 실행 결과에 대한 피드백
+                })
+
+        with open(error_analysis_file, 'w', encoding='utf-8') as f:
+            json.dump(iter_data, f, indent=2, ensure_ascii=False)
+
+        print(f"Error analysis saved to: {error_analysis_file}")
 
 
 
