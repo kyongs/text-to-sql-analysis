@@ -20,6 +20,7 @@ class ParsingNoteTaker:
         self.hints_parsed = self.parse_hints(item) if item else None
         self.iter_notes = []  # iter별 NOTE 저장: [{iter, sql, schema_check, refine_feedback}, ...]
         self.lookup_results = []  # lookup_val 결과 저장: [{table, column, search_term, found, similar_values}, ...]
+        self.join_analysis_results = []  # join_inspector 결과 저장: [{table1, table2, cardinality, warning}, ...]
 
     def set_item(self, item: Dict[str, Any]):
         """데이터셋 아이템 설정"""
@@ -27,6 +28,7 @@ class ParsingNoteTaker:
         self.hints_parsed = self.parse_hints(item)
         self.iter_notes = []
         self.lookup_results = []
+        self.join_analysis_results = []
 
     def add_lookup_result(self, table: str, column: str, search_term: str, found: bool, similar_values: List[str] = None):
         """
@@ -45,6 +47,30 @@ class ParsingNoteTaker:
             'search_term': search_term,
             'found': found,
             'similar_values': similar_values or []
+        })
+
+    def add_join_analysis_result(self, table1: str, table2: str, join_key1: str, join_key2: str,
+                                  cardinality: str, join_result_count: int, warning: str = None):
+        """
+        inspect_join_relationship 결과 추가
+
+        Args:
+            table1: 첫 번째 테이블명
+            table2: 두 번째 테이블명
+            join_key1: table1의 조인 키
+            join_key2: table2의 조인 키
+            cardinality: 관계 유형 (1:1, 1:N, N:1, M:N)
+            join_result_count: JOIN 결과 행 수
+            warning: 경고 메시지 (fan-out 위험 등)
+        """
+        self.join_analysis_results.append({
+            'table1': table1,
+            'table2': table2,
+            'join_key1': join_key1,
+            'join_key2': join_key2,
+            'cardinality': cardinality,
+            'join_result_count': join_result_count,
+            'warning': warning
         })
 
     def parse_hints(self, item: Dict[str, Any]) -> Dict[str, Any]:
@@ -282,7 +308,8 @@ class ParsingNoteTaker:
             short_error = error_message[:100] + "..." if len(error_message) > 100 else error_message
             return f"Refine: ❌ {error_type} - {short_error}"
 
-    def add_iter_note(self, iter_num: int, sql: str, exec_result: Dict[str, Any] = None, llm_feedback: str = None):
+    def add_iter_note(self, iter_num: int, sql: str, exec_result: Dict[str, Any] = None,
+                      llm_feedback: str = None, question: str = None, use_rule_review: bool = False):
         """
         iter별 NOTE 추가
 
@@ -291,16 +318,20 @@ class ParsingNoteTaker:
             sql: 생성된 SQL
             exec_result: SQL 실행 결과 (optional, --refine 시)
             llm_feedback: LLM 비판적 검토 결과 (optional, --llm_feedback 시)
+            question: 원본 질문 (rule-based review용)
+            use_rule_review: rule-based review 사용 여부
         """
         schema_check = self.generate_schema_check(sql)
         refine_feedback = self.generate_refine_feedback(exec_result) if exec_result else None
+        rule_review = self.generate_rule_based_review(sql, question) if use_rule_review and question else None
 
         self.iter_notes.append({
             'iter': iter_num,
             'sql': sql,
             'schema_check': schema_check,
             'refine_feedback': refine_feedback,
-            'llm_feedback': llm_feedback
+            'llm_feedback': llm_feedback,
+            'rule_review': rule_review
         })
 
     def update_llm_feedback(self, llm_feedback: str):
@@ -320,7 +351,7 @@ class ParsingNoteTaker:
         Returns:
             NOTE 문자열
         """
-        if not self.iter_notes and not self.lookup_results:
+        if not self.iter_notes and not self.lookup_results and not self.join_analysis_results:
             return ""
 
         lines = ["=== NOTE ==="]
@@ -335,6 +366,21 @@ class ParsingNoteTaker:
                     similar = ', '.join(lr['similar_values'][:3]) if lr['similar_values'] else '없음'
                     lines.append(f"  ✗ {lr['table']}.{lr['column']} = '{lr['search_term']}' - 존재안함 (유사값: {similar})")
 
+        # JOIN 분석 결과 추가
+        if self.join_analysis_results:
+            lines.append("\n[JOIN Analysis Results]")
+            for jr in self.join_analysis_results:
+                cardinality = jr['cardinality']
+                join_desc = f"{jr['table1']}.{jr['join_key1']} = {jr['table2']}.{jr['join_key2']}"
+                if cardinality == "M:N":
+                    lines.append(f"  ⚠️ {join_desc} → {cardinality} (fan-out 위험!)")
+                elif cardinality in ["1:N", "N:1"]:
+                    lines.append(f"  ℹ️ {join_desc} → {cardinality} ({jr['join_result_count']}행)")
+                else:
+                    lines.append(f"  ✓ {join_desc} → {cardinality} ({jr['join_result_count']}행)")
+                if jr.get('warning'):
+                    lines.append(f"     {jr['warning']}")
+
         # iter별 NOTE
         for note in self.iter_notes:
             lines.append(f"\n[iter {note['iter']}]")
@@ -344,6 +390,8 @@ class ParsingNoteTaker:
             lines.append(note['schema_check'])
             if note['refine_feedback']:
                 lines.append(note['refine_feedback'])
+            if note.get('rule_review'):
+                lines.append(note['rule_review'])
             if note.get('llm_feedback'):
                 lines.append(f"LLM Review: {note['llm_feedback']}")
 
@@ -356,7 +404,7 @@ class ParsingNoteTaker:
         Returns:
             최종 NOTE 문자열
         """
-        if not self.iter_notes and not self.lookup_results:
+        if not self.iter_notes and not self.lookup_results and not self.join_analysis_results:
             return ""
 
         lines = ["=== FINAL NOTE ==="]
@@ -372,6 +420,16 @@ class ParsingNoteTaker:
                     lines.append(f"  ✗ {lr['table']}.{lr['column']} = '{lr['search_term']}' - 존재안함")
                     lines.append(f"    유사값: {similar}")
 
+        # JOIN 분석 결과 추가
+        if self.join_analysis_results:
+            lines.append("\n[JOIN Analysis Results]")
+            for jr in self.join_analysis_results:
+                cardinality = jr['cardinality']
+                join_desc = f"{jr['table1']}.{jr['join_key1']} = {jr['table2']}.{jr['join_key2']}"
+                lines.append(f"  {join_desc} → {cardinality} ({jr['join_result_count']}행)")
+                if jr.get('warning'):
+                    lines.append(f"    ⚠️ {jr['warning']}")
+
         # iter별 NOTE
         for note in self.iter_notes:
             lines.append(f"\n[iter {note['iter']}]")
@@ -379,10 +437,78 @@ class ParsingNoteTaker:
             lines.append(note['schema_check'])
             if note['refine_feedback']:
                 lines.append(note['refine_feedback'])
+            if note.get('rule_review'):
+                lines.append(note['rule_review'])
             if note.get('llm_feedback'):
                 lines.append(f"LLM Review:\n{note['llm_feedback']}")
 
         return "\n".join(lines)
+
+    def generate_rule_based_review(self, sql: str, question: str) -> str:
+        """
+        Rule-based review 수행
+        - Aggregation check: 질문이 집계를 요구하면 COUNT/SUM 등이 있어야 함
+        - DISTINCT check: 불필요한 DISTINCT 사용 확인
+
+        Args:
+            sql: 생성된 SQL
+            question: 원본 질문
+
+        Returns:
+            Rule-based review 결과 문자열
+        """
+        if not sql or not question:
+            return ""
+
+        sql_upper = sql.upper()
+        question_lower = question.lower()
+        issues = []
+
+        # 1. Aggregation Check
+        # 질문에 집계 관련 키워드가 있으면 SQL에도 집계 함수가 있어야 함
+        agg_keywords_kr = ['몇 개', '몇개', '몇 명', '몇명', '총', '합계', '평균', '최대', '최소', '개수']
+        agg_keywords_en = ['how many', 'count', 'total', 'sum', 'average', 'avg', 'maximum', 'minimum', 'number of']
+
+        has_agg_keyword = any(kw in question_lower for kw in agg_keywords_kr + agg_keywords_en)
+        has_agg_function = any(fn in sql_upper for fn in ['COUNT(', 'SUM(', 'AVG(', 'MAX(', 'MIN('])
+
+        if has_agg_keyword and not has_agg_function:
+            # 어떤 키워드가 매칭됐는지 찾기
+            matched_kw = [kw for kw in agg_keywords_kr + agg_keywords_en if kw in question_lower]
+            issues.append(f"☐ Aggregation: 질문에 '{matched_kw[0]}' 키워드가 있으나 집계함수(COUNT/SUM/AVG 등) 없음")
+        elif has_agg_keyword and has_agg_function:
+            issues.append("☑ Aggregation: 집계 키워드와 집계함수 일치")
+
+        # 2. DISTINCT Check
+        has_distinct = 'DISTINCT' in sql_upper
+        has_join = 'JOIN' in sql_upper
+        has_group_by = 'GROUP BY' in sql_upper
+
+        if has_distinct:
+            if not has_join and not has_group_by:
+                # JOIN도 없고 GROUP BY도 없는데 DISTINCT 사용 → 불필요할 가능성
+                issues.append("☐ DISTINCT: JOIN/GROUP BY 없이 DISTINCT 사용됨 (불필요할 수 있음)")
+            else:
+                issues.append("☑ DISTINCT: JOIN/GROUP BY와 함께 사용됨")
+
+        # 3. GROUP BY without aggregation check
+        if has_group_by and not has_agg_function:
+            issues.append("☐ GROUP BY: GROUP BY는 있으나 집계함수 없음 (의도 확인 필요)")
+
+        if not issues:
+            return ""
+
+        return "Rule-Based Review:\n" + "\n".join(f"  {issue}" for issue in issues)
+
+    def has_rule_issues(self, sql: str, question: str) -> bool:
+        """
+        Rule-based review에서 문제가 있는지 확인
+
+        Returns:
+            문제가 있으면 True
+        """
+        review = self.generate_rule_based_review(sql, question)
+        return '☐' in review
 
     def has_issues(self) -> bool:
         """
@@ -404,6 +530,9 @@ class ParsingNoteTaker:
         if last_note['refine_feedback']:
             if '❌' in last_note['refine_feedback'] or '⚠️' in last_note['refine_feedback']:
                 return True
+
+        # Note: rule_review는 정보 제공용으로만 사용하고 refine 트리거에서 제외
+        # (false positive가 많아 성능 저하 유발)
 
         return False
 

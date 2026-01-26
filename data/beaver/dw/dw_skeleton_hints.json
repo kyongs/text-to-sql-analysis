@@ -1,0 +1,1938 @@
+[
+  {
+    "index": 0,
+    "hints": {
+      "group_by": false,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- DISTINCT 사용"
+  },
+  {
+    "index": 1,
+    "hints": {
+      "group_by": false,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- DISTINCT 사용"
+  },
+  {
+    "index": 2,
+    "hints": {
+      "group_by": false,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- Window Function (OVER) 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 3,
+    "hints": {
+      "group_by": false,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 4,
+    "hints": {
+      "group_by": false,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- DISTINCT 사용"
+  },
+  {
+    "index": 5,
+    "hints": {
+      "group_by": false,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- DISTINCT 사용"
+  },
+  {
+    "index": 6,
+    "hints": {
+      "group_by": false,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- Window Function (OVER) 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 7,
+    "hints": {
+      "group_by": false,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- Window Function (OVER) 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 8,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 9,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 10,
+    "hints": {
+      "group_by": false,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 11,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 12,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 13,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 14,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 15,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 16,
+    "hints": {
+      "group_by": false,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- CASE WHEN 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 17,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 18,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 19,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 20,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 21,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 22,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 23,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 24,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 25,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 26,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 27,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 28,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 29,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 30,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 31,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 32,
+    "hints": {
+      "group_by": false,
+      "window_function": true,
+      "cte": true,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- Window Function (OVER) 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 33,
+    "hints": {
+      "group_by": false,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": false,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- CASE WHEN 사용"
+  },
+  {
+    "index": 34,
+    "hints": {
+      "group_by": false,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용"
+  },
+  {
+    "index": 35,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 36,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 37,
+    "hints": {
+      "group_by": false,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 38,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 39,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용"
+  },
+  {
+    "index": 40,
+    "hints": {
+      "group_by": false,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 41,
+    "hints": {
+      "group_by": false,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 42,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용"
+  },
+  {
+    "index": 43,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": false,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용"
+  },
+  {
+    "index": 44,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 45,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 46,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 47,
+    "hints": {
+      "group_by": false,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 48,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": true,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Subquery 사용\n- HAVING 사용"
+  },
+  {
+    "index": 49,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 50,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 51,
+    "hints": {
+      "group_by": false,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- DISTINCT 사용"
+  },
+  {
+    "index": 52,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": true,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- HAVING 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 53,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용"
+  },
+  {
+    "index": 54,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 55,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- CASE WHEN 사용\n- Subquery 사용"
+  },
+  {
+    "index": 56,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": true,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 57,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 58,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용"
+  },
+  {
+    "index": 59,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 60,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 61,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": true,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CTE (WITH ... AS) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 62,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": false,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용"
+  },
+  {
+    "index": 63,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": true,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 64,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": true,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- HAVING 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 65,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": true,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 66,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 67,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 68,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 69,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 70,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 71,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": true,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- UNION 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 72,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": true,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- UNION 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 73,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": true,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- UNION 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 74,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 75,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": true,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- UNION 사용\n- CASE WHEN 사용\n- Subquery 사용"
+  },
+  {
+    "index": 76,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 77,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": true,
+      "union": true,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CTE (WITH ... AS) 사용\n- UNION 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 78,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 79,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": true,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- UNION 사용\n- Subquery 사용"
+  },
+  {
+    "index": 80,
+    "hints": {
+      "group_by": false,
+      "window_function": false,
+      "cte": false,
+      "union": true,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- UNION 사용\n- Subquery 사용"
+  },
+  {
+    "index": 81,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": false,
+      "union": true,
+      "case_when": true,
+      "subquery": true,
+      "having": true,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- UNION 사용\n- CASE WHEN 사용\n- Subquery 사용\n- HAVING 사용"
+  },
+  {
+    "index": 82,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 83,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": true,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- UNION 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 84,
+    "hints": {
+      "group_by": false,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- CASE WHEN 사용\n- Subquery 사용"
+  },
+  {
+    "index": 85,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용"
+  },
+  {
+    "index": 86,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용"
+  },
+  {
+    "index": 87,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 88,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": true,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- UNION 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 89,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 90,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": true,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": true,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- UNION 사용\n- Subquery 사용\n- DISTINCT 사용\n- ORDER BY + LIMIT (Top-N 패턴)"
+  },
+  {
+    "index": 91,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": true,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- UNION 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 92,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 93,
+    "hints": {
+      "group_by": false,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 94,
+    "hints": {
+      "group_by": false,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- Window Function (OVER) 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 95,
+    "hints": {
+      "group_by": false,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- Window Function (OVER) 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 96,
+    "hints": {
+      "group_by": false,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- Window Function (OVER) 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 97,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용"
+  },
+  {
+    "index": 98,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용"
+  },
+  {
+    "index": 99,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 100,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 101,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": true,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- HAVING 사용"
+  },
+  {
+    "index": 102,
+    "hints": {
+      "group_by": true,
+      "window_function": true,
+      "cte": false,
+      "union": true,
+      "case_when": true,
+      "subquery": true,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- UNION 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 103,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": false,
+      "case_when": true,
+      "subquery": true,
+      "having": true,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- HAVING 사용"
+  },
+  {
+    "index": 104,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용"
+  },
+  {
+    "index": 105,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": false,
+      "top_n": true,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Subquery 사용\n- ORDER BY + LIMIT (Top-N 패턴)"
+  },
+  {
+    "index": 106,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용"
+  },
+  {
+    "index": 107,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용"
+  },
+  {
+    "index": 108,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용"
+  },
+  {
+    "index": 109,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 110,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 111,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 112,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 113,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용"
+  },
+  {
+    "index": 114,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 115,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 116,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": true,
+      "union": false,
+      "case_when": false,
+      "subquery": true,
+      "having": false,
+      "distinct": false,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용"
+  },
+  {
+    "index": 117,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 118,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 119,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": true,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용\n- DISTINCT 사용"
+  },
+  {
+    "index": 120,
+    "hints": {
+      "group_by": true,
+      "window_function": false,
+      "cte": false,
+      "union": false,
+      "case_when": false,
+      "subquery": false,
+      "having": false,
+      "distinct": true,
+      "top_n": false,
+      "set_operation": false
+    },
+    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
+  }
+]

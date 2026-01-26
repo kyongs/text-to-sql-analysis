@@ -91,6 +91,13 @@ class TxtLogger:
                         tool_log_str += f"    {line}\n"
                     if log_entry.get('refine_feedback'):
                         tool_log_str += f"  Refine Feedback: {log_entry.get('refine_feedback')}\n"
+                    if log_entry.get('rule_review'):
+                        tool_log_str += f"  Rule Review:\n"
+                        rule_review = log_entry.get('rule_review', '')
+                        for line in rule_review.split('\n')[:10]:
+                            tool_log_str += f"    {line}\n"
+                    if log_entry.get('llm_feedback'):
+                        tool_log_str += f"  LLM Feedback: {log_entry.get('llm_feedback')}\n"
 
                 elif log_type == "note_taking_final":
                     tool_log_str += f"\n[Note Final] 📋 Final Note:\n"
