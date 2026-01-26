@@ -50,6 +50,12 @@ class OpenAIModel:
         # LLM Feedback 활성화 여부 (note_taking과 함께 사용)
         self.enable_llm_feedback = config.get('llm_feedback', False)
 
+        # Rule-based Review 활성화 여부 (note_taking과 함께 사용)
+        self.enable_rule_review = config.get('rule_review', False)
+
+        # Fresh refine 활성화 여부 (note_taking과 함께 사용)
+        self.enable_fresh_refine = config.get('fresh_refine', False)
+
         # Tool 정의 (활성화된 tool만)
         self.tools = self._initialize_tools()
         self.use_tools = len(self.tools) > 0
@@ -482,15 +488,24 @@ class OpenAIModel:
                             exec_result = self._execute_sql(sql, db_id)
 
                             # LLM Feedback 요청 (활성화된 경우)
-                            llm_feedback = None
+                            # 반환값: (피드백, 확신도) 또는 None
+                            llm_feedback_result = None
+                            llm_feedback_text = None
+                            llm_confidence = 0
                             if self.enable_llm_feedback and question and item:
                                 current_note_for_feedback = local_note_taker.get_current_note() if local_note_taker.iter_notes else None
-                                llm_feedback = self._get_llm_feedback(sql, question, item, current_note_for_feedback)
+                                llm_feedback_result = self._get_llm_feedback(sql, question, item, current_note_for_feedback)
+                                if llm_feedback_result:
+                                    llm_feedback_text, llm_confidence = llm_feedback_result
 
-                            # NOTE에 iter 기록 추가 (llm_feedback 포함)
-                            local_note_taker.add_iter_note(note_iter, sql, exec_result, llm_feedback)
+                            # NOTE에 iter 기록 추가 (llm_feedback은 텍스트만 저장)
+                            local_note_taker.add_iter_note(
+                                note_iter, sql, exec_result,
+                                f"[확신도: {llm_confidence}] {llm_feedback_text}" if llm_feedback_text else None,
+                                question=question, use_rule_review=self.enable_rule_review
+                            )
 
-                            # 로깅
+                            # 로깅 (확신도 포함)
                             tool_call_log.append({
                                 "iteration": f"note_iter_{note_iter}",
                                 "type": "note_taking_iter",
@@ -502,11 +517,14 @@ class OpenAIModel:
                                 },
                                 "schema_check": local_note_taker.iter_notes[-1]["schema_check"],
                                 "refine_feedback": local_note_taker.iter_notes[-1]["refine_feedback"],
-                                "llm_feedback": llm_feedback
+                                "rule_review": local_note_taker.iter_notes[-1].get("rule_review"),
+                                "llm_feedback": llm_feedback_text,
+                                "llm_confidence": llm_confidence
                             })
 
-                            # 성공이고 문제없으면 종료 (LLM Feedback도 없어야 함)
-                            has_llm_issues = llm_feedback is not None
+                            # 성공이고 문제없으면 종료
+                            # LLM Feedback은 확신도 4 이상일 때만 refine 트리거
+                            has_llm_issues = llm_confidence >= 4
                             if exec_result["success"] and exec_result["row_count"] > 0 and not local_note_taker.has_issues() and not has_llm_issues:
                                 break
 
@@ -518,12 +536,12 @@ class OpenAIModel:
                             issues_summary = local_note_taker.get_issues_summary()
                             current_note = local_note_taker.get_current_note()
 
-                            # LLM Feedback이 있으면 issues에 추가
-                            if llm_feedback:
+                            # LLM Feedback이 있고 확신도 4 이상이면 issues에 추가
+                            if llm_feedback_text and llm_confidence >= 4:
                                 if issues_summary:
-                                    issues_summary += f"\n\n[LLM Review]\n{llm_feedback}"
+                                    issues_summary += f"\n\n[LLM Review (확신도: {llm_confidence})]\n{llm_feedback_text}"
                                 else:
-                                    issues_summary = f"[LLM Review]\n{llm_feedback}"
+                                    issues_summary = f"[LLM Review (확신도: {llm_confidence})]\n{llm_feedback_text}"
 
                             # Refine prompt 생성 (NOTE 포함)
                             note_refine_prompt = f"""{current_note}
@@ -539,11 +557,28 @@ class OpenAIModel:
 
 수정된 SQL을 제공해주세요."""
 
-                            messages.append(response_message)
-                            messages.append({
-                                "role": "user",
-                                "content": note_refine_prompt
-                            })
+                            # Fresh refine: 메시지 초기화하고 원본 prompt + NOTE만 사용
+                            if self.enable_fresh_refine:
+                                fresh_refine_prompt = f"""{prompt}
+
+{current_note}
+
+위 NOTE를 참고하여 SQL을 작성해주세요.
+특히 다음 사항을 확인해주세요:
+{issues_summary if issues_summary else "- 특별한 문제 없음"}
+
+수정된 SQL을 제공해주세요."""
+                                messages = [
+                                    {"role": "system", "content": system_message},
+                                    {"role": "user", "content": fresh_refine_prompt}
+                                ]
+                            else:
+                                # 기존 방식: 메시지 누적
+                                messages.append(response_message)
+                                messages.append({
+                                    "role": "user",
+                                    "content": note_refine_prompt
+                                })
 
                             # 재생성
                             if self.use_tools:
@@ -686,6 +721,10 @@ Please provide a corrected SQL query."""
                     if function_name == "lookup_column_values" and local_note_taker:
                         self._parse_and_store_lookup_result(function_args, function_response, local_note_taker)
 
+                    # inspect_join_relationship 결과를 NoteTaker에 저장
+                    if function_name == "inspect_join_relationship" and local_note_taker:
+                        self._parse_and_store_join_result(function_args, function_response, local_note_taker)
+
                     # Tool 응답 로깅
                     tool_call_log.append({
                         "iteration": iteration + 1,
@@ -769,6 +808,10 @@ Please provide a corrected SQL query."""
                 formatted += "    " + schema_check.replace("\n", "\n    ") + "\n"
                 if log_entry.get('refine_feedback'):
                     formatted += f"  Refine Feedback: {log_entry.get('refine_feedback')}\n"
+                if log_entry.get('rule_review'):
+                    formatted += f"  Rule Review:\n"
+                    rule_review = log_entry.get('rule_review', '')
+                    formatted += "    " + rule_review.replace("\n", "\n    ") + "\n"
 
             elif log_type == "note_taking_final":
                 formatted += f"\n[Note Final] 📋 Final Note:\n"
@@ -899,6 +942,49 @@ Please provide a corrected SQL query."""
 
         note_taker.add_lookup_result(table, column, search_term, found, similar_values)
 
+    def _parse_and_store_join_result(self, function_args: Dict, function_response: str, note_taker):
+        """
+        inspect_join_relationship 결과를 파싱하여 NoteTaker에 저장
+
+        Args:
+            function_args: tool call 인자 (table1, table2, join_key1, join_key2)
+            function_response: tool 응답 문자열
+            note_taker: ParsingNoteTaker 인스턴스
+        """
+        table1 = function_args.get('table1', '')
+        table2 = function_args.get('table2', '')
+        join_key1 = function_args.get('join_key1', '')
+        join_key2 = function_args.get('join_key2', '')
+
+        # 응답 파싱
+        cardinality = "UNKNOWN"
+        join_result_count = 0
+        warning = None
+
+        # Cardinality 추출: "Cardinality: X:X"
+        import re
+        card_match = re.search(r'Cardinality:\s*(\S+)', function_response)
+        if card_match:
+            cardinality = card_match.group(1)
+
+        # JOIN result count 추출: "JOIN produces X rows"
+        count_match = re.search(r'JOIN produces\s+([\d,]+)\s*rows', function_response)
+        if count_match:
+            join_result_count = int(count_match.group(1).replace(',', ''))
+
+        # Warning 추출: "⚠️ WARNING:" 또는 "⚠️ BE CAREFUL"
+        if '⚠️' in function_response:
+            warning_match = re.search(r'⚠️[^:]*:\s*(.+?)(?:\n|$)', function_response)
+            if warning_match:
+                warning = warning_match.group(1).strip()
+            elif 'M:N' in cardinality:
+                warning = "M:N relationship - data multiplication risk"
+
+        note_taker.add_join_analysis_result(
+            table1, table2, join_key1, join_key2,
+            cardinality, join_result_count, warning
+        )
+
     def _run_refine_agent(self, sql: str, exec_result: Dict, db_id: str, question: str = None) -> Optional[str]:
         """
         Refine agent 실행 및 피드백 생성
@@ -920,7 +1006,7 @@ Please provide a corrected SQL query."""
 
         return None
 
-    def _get_llm_feedback(self, sql: str, question: str, item: Dict[str, Any], current_note: str = None) -> Optional[str]:
+    def _get_llm_feedback(self, sql: str, question: str, item: Dict[str, Any], current_note: str = None) -> Optional[Tuple[str, int]]:
         """
         LLM에게 SQL에 대한 비판적 검토 요청
 
@@ -931,7 +1017,7 @@ Please provide a corrected SQL query."""
             current_note: 현재까지의 NOTE (optional)
 
         Returns:
-            LLM의 비판적 검토 피드백
+            (피드백 문자열, 확신도 1-5) 또는 None (문제 없음)
         """
         if not sql or not question or not item:
             return None
@@ -955,65 +1041,82 @@ Please provide a corrected SQL query."""
                 if len(pair) == 2:
                     hints_text += f"    {pair[0]} = {pair[1]}\n"
 
-        # 비판적 검토 프롬프트
-        review_prompt = f"""다음 SQL을 비판적으로 검토해주세요.
+        # 비판적 검토 프롬프트 (매우 보수적으로 - 명백한 오류만)
+        review_prompt = f"""다음 SQL이 Question의 의도와 일치하는지 검토해주세요.
 
 Question: {question}
-
-{hints_text}
 
 Generated SQL:
 ```sql
 {sql}
 ```
+
+**검토 항목 (명백한 구조적 오류만):**
+1. Question이 "가장 많은/최대/highest/most"를 요구하는데 ORDER BY DESC가 없거나 ASC인가?
+2. Question이 "가장 적은/최소/lowest/least"를 요구하는데 ORDER BY ASC가 없거나 DESC인가?
+3. Question이 "상위 N개/top N"을 요구하는데 LIMIT N이 없는가?
+
+**절대 지적하지 말 것 (이미 별도 검증됨):**
+- WHERE 절의 값 (예: 'History', 'Active', 'STREET') - lookup_val로 이미 검증됨
+- 컬럼/테이블 누락 - Schema Check로 이미 검증됨
+- JOIN 조건 - hints에서 제공됨
+- 비즈니스 로직 해석 (예: "독립 활동"이 무엇인지)
+
+**판단 기준:**
+- SQL의 WHERE 값이 Question과 다르게 보여도 OK (lookup_val이 찾은 실제 DB 값일 수 있음)
+- Question에 없는 조건이 WHERE에 있어도 OK (hints에서 온 것일 수 있음)
+- 조금이라도 불확실하면 반드시 OK로 응답
+
+응답 형식:
+[확신도: N] 피드백
+
+- 확신도 1-3: 문제없거나 불확실 → OK
+- 확신도 4: 거의 확실히 틀림 (ORDER BY 방향 반대 등)
+- 확신도 5: 100% 확실히 틀림
+
+예시:
+- "[확신도: 1] OK"
+- "[확신도: 5] Question은 'highest'를 요구하는데 ORDER BY ASC임"
 """
-        if current_note:
-            review_prompt += f"""
-현재 NOTE:
-{current_note}
-"""
-
-        review_prompt += """
-검토 항목 (확실한 문제만 지적):
-1. Hints의 컬럼/조인이 SQL에서 누락되었는가? (NOTE의 Schema Check에서 ☐ 표시된 항목)
-2. Question의 의도와 SQL의 결과가 일치하는가? (예: "list all"인데 LIMIT이 있거나, 집계가 필요한데 없는 경우)
-3. 불필요한 DISTINCT나 GROUP BY가 있는가?
-
-주의사항:
-- WHERE 절 조건의 값(예: 'STREET', 'Active')은 컬럼명이나 Question에서 유추 가능하면 정상임. 단순히 Hints에 없다고 문제 삼지 말 것.
-- 구체적인 값의 정확성(예: 'Computer Science' vs 'CS')은 판단하지 말 것 - 이는 검증 불가.
-- 확실하지 않으면 OK로 응답.
-
-확실한 문제가 있으면 간결하게 지적하고, 문제가 없거나 불확실하면 "OK"라고만 응답.
-응답은 한국어로, 2문장 이내로."""
 
         try:
-            # GPT-5.1+ uses max_completion_tokens, older models use max_tokens
             model_name = self.model_config['name'].lower()
             api_params = {
                 "model": self.model_config['name'],
                 "messages": [
-                    {"role": "system", "content": "당신은 SQL 검토 전문가입니다. 주어진 SQL이 Question과 Hints에 부합하는지 비판적으로 검토합니다."},
+                    {"role": "system", "content": "당신은 매우 보수적인 SQL 검토자입니다. ORDER BY 방향 오류 같은 명백한 구조적 오류만 지적합니다. WHERE 값이나 비즈니스 로직은 절대 판단하지 않습니다. 조금이라도 불확실하면 OK로 응답합니다."},
                     {"role": "user", "content": review_prompt}
                 ],
                 "temperature": 0
             }
 
-            # GPT-5, o1, o3 등 최신 모델은 max_completion_tokens 사용
             if any(x in model_name for x in ['gpt-5', 'o1', 'o3']):
-                api_params["max_completion_tokens"] = 300
+                api_params["max_completion_tokens"] = 200
             else:
-                api_params["max_tokens"] = 300
+                api_params["max_tokens"] = 200
 
             response = self.client.chat.completions.create(**api_params)
 
             feedback = response.choices[0].message.content.strip()
 
-            # "OK"만 반환하면 None으로 처리 (문제 없음)
-            if feedback.upper() == "OK" or feedback == "문제없음" or feedback == "문제 없음":
-                return None
-
-            return feedback
+            # 확신도 파싱
+            import re
+            confidence_match = re.search(r'\[확신도:\s*(\d)\]', feedback)
+            if confidence_match:
+                confidence = int(confidence_match.group(1))
+                # 확신도 1-2는 문제없음으로 처리
+                if confidence <= 2:
+                    return None
+                # 피드백 텍스트에서 확신도 태그 제거
+                feedback_text = re.sub(r'\[확신도:\s*\d\]\s*', '', feedback).strip()
+                if feedback_text.upper() == "OK":
+                    return None
+                return (feedback_text, confidence)
+            else:
+                # 파싱 실패 시 기존 방식으로 폴백
+                if feedback.upper() == "OK" or "문제없" in feedback:
+                    return None
+                return (feedback, 3)  # 기본 확신도 3
 
         except Exception as e:
             print(f"LLM feedback 요청 중 오류: {e}")

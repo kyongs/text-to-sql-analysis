@@ -65,7 +65,7 @@ def check_and_run_preprocessing(config: dict):
         print(f"Found preprocessed schema file.")
 
 
-def process_item(item, model, db_type: str, analyze_sql: bool = False, conn_info: dict = None, use_tools: bool = False, enabled_tools: list = None):
+def process_item(item, model, db_type: str, analyze_sql: bool = False, conn_info: dict = None, use_tools: bool = False, enabled_tools: list = None, skeleton_hint: str = None):
     """Process a single item and return all relevant data for logging and evaluation."""
     db_id = item['db_id']
     question = item['question']
@@ -90,6 +90,10 @@ def process_item(item, model, db_type: str, analyze_sql: bool = False, conn_info
     if join_keys:
         join_str = ", ".join([f"({pair[0]} = {pair[1]})" for pair in join_keys])
         all_hints.append(f"Join Information: {join_str}")
+
+    # skeleton hint (experimental)
+    if skeleton_hint:
+        all_hints.append(skeleton_hint)
 
     final_hints = "\n\n".join(all_hints)
     prompt = build_prompt(schema=schema, question=question, db_name=db_id, db_type=db_type, hints=final_hints, use_tools=use_tools, enabled_tools=enabled_tools)
@@ -187,9 +191,21 @@ def main():
     parser.add_argument("--llm_feedback", action='store_true',
                        help="Enable LLM critical review: LLM checks SQL against hints for hallucination (requires --note_taking)")
 
+    # Rule-based Review flag
+    parser.add_argument("--rule_review", action='store_true',
+                       help="Enable rule-based review: checks aggregation keywords vs functions, DISTINCT usage (requires --note_taking)")
+
+    # Fresh refine flag
+    parser.add_argument("--fresh_refine", action='store_true',
+                       help="Reset messages on each refine iteration - use only NLQ + schema + NOTE (requires --note_taking)")
+
     # Error analysis flag
     parser.add_argument("--error_analysis", action='store_true',
                        help="Save detailed error analysis file with iteration-by-iteration prompts and SQLs")
+
+    # Skeleton hint flag (experimental - uses gold SQL structure)
+    parser.add_argument("--skeleton_hint", action='store_true',
+                       help="[EXPERIMENTAL] Add SQL structure hints from gold SQL (GROUP BY, CASE WHEN, etc.)")
 
     args = parser.parse_args()
 
@@ -255,12 +271,42 @@ def main():
         print("Warning: --llm_feedback requires --note_taking. Enabling --note_taking automatically.")
         config['note_taking'] = True
 
+    # Pass rule-based review flag to config (requires note_taking)
+    config['rule_review'] = args.rule_review
+    if args.rule_review and not args.note_taking:
+        print("Warning: --rule_review requires --note_taking. Enabling --note_taking automatically.")
+        config['note_taking'] = True
+
+    # Pass fresh_refine flag to config (requires note_taking)
+    config['fresh_refine'] = args.fresh_refine
+    if args.fresh_refine and not args.note_taking:
+        print("Warning: --fresh_refine requires --note_taking. Enabling --note_taking automatically.")
+        config['note_taking'] = True
+
+    # Pass skeleton_hint flag to config
+    config['skeleton_hint'] = args.skeleton_hint
+
     model = MODELS[config['model']['provider']](config)
     if experiment_mode == 'view':
         dataset = data_loader.load_data(load_views=True)
     else:
         dataset = data_loader.load_data(load_views=False)
     if not dataset: return
+
+    # Skeleton hint 로드 (--skeleton_hint 활성화 시)
+    skeleton_hints_map = {}
+    if args.skeleton_hint:
+        dataset_path = config['dataset'].get('path', '')
+        skeleton_hints_path = os.path.join(dataset_path, 'dw_skeleton_hints.json')
+        if os.path.exists(skeleton_hints_path):
+            with open(skeleton_hints_path, 'r', encoding='utf-8') as f:
+                skeleton_hints_data = json.load(f)
+            for item in skeleton_hints_data:
+                skeleton_hints_map[item['index']] = item['formatted']
+            print(f"✅ Skeleton hints loaded from {skeleton_hints_path}")
+        else:
+            print(f"⚠️ Skeleton hints file not found: {skeleton_hints_path}")
+            print(f"   Run: python scripts/generate_skeleton_hints.py {dataset_path}/dw.json")
     
     # 테스트 모드: --test_set 또는 --test_n 옵션 처리
     if args.test_set is not None:
@@ -367,22 +413,28 @@ def main():
                 print(f"   {i}. {agent}")
             print(f"   Max refine iterations: {args.refine_max_iter}")
 
-        # Note-taking / LLM Feedback 활성화 표시
+        # Note-taking / LLM Feedback / Rule Review 활성화 표시
         if config.get('note_taking'):
             print(f"\nNote-taking enabled: checking hints vs SQL")
             print(f"   Max iterations: {args.refine_max_iter + 1}")
             if config.get('llm_feedback'):
                 print(f"   LLM Feedback enabled: critical review for hallucination detection")
+            if config.get('rule_review'):
+                print(f"   Rule Review enabled: aggregation check, DISTINCT check")
 
-        futures = {executor.submit(process_item, item, model, db_type, args.analyze_sql, conn_info, use_tools, enabled_tool_names): item for item in dataset}
+        # Skeleton hint 활성화 표시
+        if args.skeleton_hint and skeleton_hints_map:
+            print(f"\n[EXPERIMENTAL] Skeleton hints enabled: SQL structure hints from gold SQL")
+
+        futures = {executor.submit(process_item, item, model, db_type, args.analyze_sql, conn_info, use_tools, enabled_tool_names, skeleton_hints_map.get(item.get('original_index', i), '')): (i, item) for i, item in enumerate(dataset)}
         for future in tqdm(concurrent.futures.as_completed(futures), total=len(dataset), desc="Overall Progress"):
             try:
                 result = future.result()
                 all_results.append(result)
-                logger.format_and_log(result) 
+                logger.format_and_log(result)
             except Exception as e:
                 # 예외 발생 시에도 에러 결과로 저장
-                item = futures[future]
+                _, item = futures[future]
                 error_result = {
                     "db_id": item.get('db_id', 'unknown'),
                     "question": item.get('question', 'unknown'),
