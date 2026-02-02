@@ -11,3 +11,4 @@ mysql-connector-python
 sqlparse
 pymysql
 func_timeout
+google-generativeai
