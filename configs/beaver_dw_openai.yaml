@@ -20,7 +20,7 @@ db_connection:
 
 model:
   provider: "openai"
-  name: "gpt-4o-mini"
+  name: "gpt-4o"
   
 # model:
 #   provider: "openai"
@@ -31,4 +31,4 @@ evaluation:
   ground_truth_dir: "./data/beaver/dw/"
   
   num_cpus: 8
-  meta_time_out: 30.0
+  meta_time_out: 90.0

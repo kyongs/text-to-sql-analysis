@@ -1,0 +1,237 @@
+{
+  "version": "1.0",
+  "description": "Semantic layer for beaver DW dataset - additional schema hints and disambiguation rules",
+
+  "schema_additions": [
+    {
+      "phrase": "assignable building area",
+      "column": "FAC_BUILDING.ASSIGNABLE_AREA",
+      "note": "Building-level assignable area (separate from floor-level)"
+    },
+    {
+      "phrase": "building assignable area",
+      "column": "FAC_BUILDING.ASSIGNABLE_AREA",
+      "note": "Building-level assignable area (separate from floor-level)"
+    }
+  ],
+
+  "disambiguation": [
+    {
+      "id": "area_floor_and_building",
+      "pattern": "(percentage|ratio).*(floor.*area|floor).*(and|,).*(building)",
+      "hint_for_extraction": "When percentage/ratio is calculated over BOTH 'floor area' AND 'building', these are TWO separate calculations requiring TWO separate columns (one for floor percentage, one for building percentage)",
+      "hint_for_main": "Area percentages exist at both levels: percentage over floor area (PERC_OF_FLOOR) and percentage over building area (PERC_OF_BUILDING)",
+      "example": "percentage of the room area over the floor area and building = 2 columns"
+    },
+    {
+      "id": "area_percentage_calculation",
+      "pattern": "(percentage|ratio|proportion).*(area|floor|building|room)",
+      "hint_for_extraction": "Area percentage/ratio calculations compare a room's area to the total assignable area of its floor or building. The result is a ratio (0 to 1), NOT a percentage (0 to 100).",
+      "hint_for_main": "CRITICAL: Area percentage calculations: (1) Use ASSIGNABLE_AREA (NOT EXT_GROSS_AREA) as the denominator — both FAC_FLOOR.ASSIGNABLE_AREA and FAC_BUILDING.ASSIGNABLE_AREA exist. (2) Result should be a RATIO (0~1), do NOT multiply by 100. Example: fr.AREA / ff.ASSIGNABLE_AREA (not fr.AREA * 100 / ff.ASSIGNABLE_AREA). (3) ALWAYS protect against division by zero with CASE WHEN: CASE WHEN ff.ASSIGNABLE_AREA = 0 THEN 0 ELSE fr.AREA / ff.ASSIGNABLE_AREA END.",
+      "example": "room area percentage over floor → CASE WHEN ff.ASSIGNABLE_AREA = 0 THEN 0 ELSE fr.AREA / ff.ASSIGNABLE_AREA END"
+    },
+    {
+      "id": "course_level_u_and_g",
+      "pattern": "(for each|per|by) course level",
+      "hint_for_extraction": "When 'for each course level' or 'per course level' is mentioned, course level has exactly 2 values: U (Undergraduate) and G (Graduate). This requires TWO separate columns, one for each level (e.g., Total_U_Courses and Total_G_Courses)",
+      "hint_for_main": "Course level (COURSE_LEVEL) has 2 distinct values: 'U' (Undergraduate) and 'G' (Graduate). When aggregating by course level, create separate columns for each.",
+      "example": "total number of courses for each course level = 2 columns (U_Courses, G_Courses)"
+    },
+    {
+      "id": "address_purpose_street",
+      "pattern": "(street address|address|city|state|postal code|zip)",
+      "hint_for_extraction": "When address fields (street address, city, state, postal code) are requested, note that address tables store multiple address types per building.",
+      "hint_for_main": "CRITICAL: FCLT_BUILDING_ADDRESS and FAC_BUILDING_ADDRESS store multiple address rows per building with ADDRESS_PURPOSE in ('STREET', 'E911_1', 'MAIL'). When retrieving street addresses, you MUST add WHERE ADDRESS_PURPOSE = 'STREET' to avoid duplicate/incorrect address rows.",
+      "example": "building street address, city, state → needs ADDRESS_PURPOSE = 'STREET' filter"
+    },
+    {
+      "id": "name_format_last_first",
+      "pattern": "(professor|prof\\.|instructor|employee|person).*('s|name)",
+      "hint_for_extraction": "Person names in this database are stored in 'Last, First' format (e.g., 'Haynes, Summer'), NOT 'First Last'. Strip titles like 'Professor' before searching.",
+      "hint_for_main": "CRITICAL: Names in EMPLOYEE_DIRECTORY.FULL_NAME and similar columns are stored as 'Last, First' format. Example: 'Professor Summer Haynes' → search for 'Haynes, Summer'. Always strip titles (Professor, Dr., etc.) and flip to Last-First order.",
+      "example": "Professor Summer Haynes → FULL_NAME = 'Haynes, Summer'"
+    },
+    {
+      "id": "cis_table_is_filter",
+      "pattern": "(center for international studies|CIS)",
+      "hint_for_extraction": "The 'Center for International Studies' is represented by the CIS_COURSE_CATALOG table. Joining to this table IS the filter — do NOT add an additional WHERE clause for department name.",
+      "hint_for_main": "CRITICAL: CIS_COURSE_CATALOG table already represents 'Center for International Studies' courses. The table name IS the filter — do NOT add WHERE DEPARTMENT_NAME LIKE '%Center for International Studies%'. Simply JOIN to CIS_COURSE_CATALOG.",
+      "example": "courses by CIS → JOIN CIS_COURSE_CATALOG (no WHERE clause needed)"
+    },
+    {
+      "id": "independent_activity_leader",
+      "pattern": "(all independent activities|for all independent activities|independent study|independent activities sorted|independent activities,)",
+      "hint_for_extraction": "'Independent activities' (NOT 'independent activity periods') means activities led by an 'Activity leader'. The phrase 'independent activity periods' or 'IAP' refers to the IAP PROGRAM itself, which does NOT need a PERSON_ROLE filter.",
+      "hint_for_main": "CRITICAL: 'Independent activities' are identified by IAP_SUBJECT_PERSON.PERSON_ROLE = 'Activity leader', NOT by ENROLLMENT_TYPE. WARNING: 'independent activity periods' or 'IAP' is the PROGRAM NAME — do NOT add PERSON_ROLE filter for IAP program-level queries. Only add PERSON_ROLE = 'Activity leader' when the NLQ says 'independent activities' as a type of activity.",
+      "example": "all independent activities → WHERE PERSON_ROLE = 'Activity leader'; BUT 'independent activity periods sponsor' → NO PERSON_ROLE filter"
+    },
+    {
+      "id": "building_street_address_column",
+      "pattern": "(building street address|street address)",
+      "hint_for_extraction": "'building street address' is a single pre-formatted column, NOT a concatenation of multiple address parts.",
+      "hint_for_main": "CRITICAL: 'building street address' = BUILDINGS.BUILDING_STREET_ADDRESS (single column). Do NOT concatenate STREET_NUMBER + STREET_NAME + STREET_SUFFIX from address tables. JOIN to BUILDINGS table and use BUILDINGS.BUILDING_STREET_ADDRESS directly.",
+      "example": "building street address → BUILDINGS.BUILDING_STREET_ADDRESS (not CONCAT)"
+    },
+    {
+      "id": "department_filter_via_dlc",
+      "pattern": "(history department|math department|physics department|biology department|chemistry department|of the history|of the math|of the physics|of the biology|of the chemistry)",
+      "hint_for_extraction": "Department names in this database are stored in MASTER_DEPT_HIERARCHY.DLC_NAME as short names (e.g., 'History', 'Mathematics'), NOT full names like 'History Department'.",
+      "hint_for_main": "CRITICAL: To filter by a SPECIFIC department, use MASTER_DEPT_HIERARCHY.DLC_NAME with the short form (e.g., 'History' not 'History Department'). Join path: FCLT_ROOMS → FCLT_ORG_DLC_KEY (via FCLT_ORGANIZATION_KEY) → MASTER_DEPT_HIERARCHY (via DLC_KEY). Do NOT skip the FCLT_ORG_DLC_KEY bridge table. WARNING: 'for each department' or 'per department' means GROUP BY — do NOT add a WHERE filter for a specific department name unless the NLQ explicitly names one.",
+      "example": "history department → MASTER_DEPT_HIERARCHY.DLC_NAME = 'History' (via FCLT_ORG_DLC_KEY bridge)"
+    },
+    {
+      "id": "mysql_date_parsing",
+      "pattern": "(built|constructed|year built|date built|before \\d{4}|after \\d{4})",
+      "hint_for_extraction": "Date fields like DATE_BUILT are stored as strings in 'MM/DD/YYYY' format.",
+      "hint_for_main": "CRITICAL: DATE_BUILT is stored as string in 'MM/DD/YYYY' format. To extract year, use: EXTRACT(YEAR FROM STR_TO_DATE(DATE_BUILT, '%m/%d/%Y')). Do NOT use TO_NUMBER, SUBSTR, or other non-MySQL functions.",
+      "example": "buildings constructed before 1950 → EXTRACT(YEAR FROM STR_TO_DATE(DATE_BUILT, '%m/%d/%Y')) < 1950"
+    },
+    {
+      "id": "fclt_building_join_key",
+      "pattern": "(building name|building key|building height|building.*name)",
+      "hint_for_extraction": "Building information comes from FCLT_BUILDING table, linked to FCLT_ROOMS via FCLT_BUILDING_KEY.",
+      "hint_for_main": "CRITICAL JOIN RULE: To join FCLT_BUILDING to FCLT_ROOMS, use: FCLT_BUILDING.FCLT_BUILDING_KEY = FCLT_ROOMS.FCLT_BUILDING_KEY. Do NOT join on BUILDING_NAME = BUILDING_ROOM (these are completely different fields). Similarly for FCLT_BUILDING_HIST: use FCLT_BUILDING_HIST.FCLT_BUILDING_KEY = FCLT_ROOMS.FCLT_BUILDING_KEY.",
+      "example": "building name → JOIN FCLT_BUILDING ON FCLT_BUILDING.FCLT_BUILDING_KEY = FCLT_ROOMS.FCLT_BUILDING_KEY"
+    },
+    {
+      "id": "fclt_building_hist_dedup",
+      "pattern": "(constructed|year built|date built|building.*hist|before \\d{4}|after \\d{4})",
+      "hint_for_extraction": "FCLT_BUILDING_HIST is a historical table with multiple rows per building (one per fiscal period). Must deduplicate.",
+      "hint_for_main": "CRITICAL: FCLT_BUILDING_HIST has multiple rows per building (one per FISCAL_PERIOD). When using this table, first deduplicate by selecting DISTINCT FCLT_BUILDING_KEY, BUILDING_NAME_LONG, DATE_BUILT in a subquery. Then join the deduplicated result to FCLT_ROOMS via FCLT_BUILDING_KEY.",
+      "example": "buildings before 1950 → subquery: SELECT DISTINCT FCLT_BUILDING_KEY, BUILDING_NAME_LONG, EXTRACT(YEAR FROM STR_TO_DATE(DATE_BUILT, '%m/%d/%Y')) AS year_built FROM FCLT_BUILDING_HIST"
+    },
+    {
+      "id": "count_distinct_through_joins",
+      "pattern": "(number of|count|how many|total).*(student|employee|course|subject|material|person|instructor|room|address|session|member|subscriber|list)",
+      "hint_for_extraction": "When counting entities (students, employees, courses, etc.), duplicates may exist due to JOINs through bridge tables.",
+      "hint_for_main": "CRITICAL: When counting entities through JOINs, ALWAYS use COUNT(DISTINCT column) to avoid overcounting. Examples: COUNT(DISTINCT MIT_ID) for employees, COUNT(DISTINCT FULL_NAME) for students, COUNT(DISTINCT SUBJECT_ID) for courses.",
+      "example": "number of employees → COUNT(DISTINCT MIT_ID), number of courses → COUNT(DISTINCT SUBJECT_ID)"
+    },
+    {
+      "id": "window_not_in_where",
+      "pattern": "(more than \\d+|greater than \\d+|at least \\d+|fewer than \\d+).*(employee|student|course|building)",
+      "hint_for_extraction": "When filtering on an aggregate result (e.g., 'more than 100 employees'), this requires either HAVING clause or a subquery wrapper.",
+      "hint_for_main": "CRITICAL: To filter on an aggregate result, use GROUP BY + HAVING: SELECT col, COUNT(DISTINCT x) AS cnt FROM ... GROUP BY col HAVING COUNT(DISTINCT x) > N. Alternative: wrap in subquery: SELECT * FROM (SELECT ... GROUP BY ...) sub WHERE sub.cnt > N. Do NOT put window functions in WHERE clause.",
+      "example": "buildings with more than 100 employees → GROUP BY + HAVING COUNT(DISTINCT MIT_ID) > 100"
+    },
+    {
+      "id": "student_building_join",
+      "pattern": "(accomodat|accommodat|student).*(building|most)",
+      "hint_for_extraction": "When counting students per building, students are linked to buildings through room assignments.",
+      "hint_for_main": "CRITICAL JOIN PATH for students to buildings: MIT_STUDENT_DIRECTORY.OFFICE_LOCATION = FCLT_ROOMS.BUILDING_ROOM, then FCLT_ROOMS.FCLT_BUILDING_KEY = FCLT_BUILDING.FCLT_BUILDING_KEY. Do NOT join FCLT_BUILDING.BUILDING_NAME = FCLT_ROOMS.BUILDING_ROOM (these are completely different fields). GROUP BY FCLT_BUILDING_KEY for counting students per building.",
+      "example": "building with most students → MIT_STUDENT_DIRECTORY JOIN FCLT_ROOMS ON OFFICE_LOCATION=BUILDING_ROOM JOIN FCLT_BUILDING ON FCLT_BUILDING_KEY"
+    },
+    {
+      "id": "employee_building_join",
+      "pattern": "(employee).*(building|constructed|built)",
+      "hint_for_extraction": "When counting employees per building, employees are linked to buildings through room assignments.",
+      "hint_for_main": "CRITICAL JOIN PATH for employees to buildings: EMPLOYEE_DIRECTORY.OFFICE_LOCATION = FCLT_ROOMS.BUILDING_ROOM, then FCLT_ROOMS.FCLT_BUILDING_KEY = FCLT_BUILDING_HIST.FCLT_BUILDING_KEY. When using EMPLOYEE_DIRECTORY through JOINs, deduplicate employees first: (SELECT DISTINCT MIT_ID, OFFICE_LOCATION FROM EMPLOYEE_DIRECTORY) to avoid overcounting.",
+      "example": "buildings with >100 employees → deduplicate EMPLOYEE_DIRECTORY, JOIN via OFFICE_LOCATION=BUILDING_ROOM"
+    },
+    {
+      "id": "session_time_duration",
+      "pattern": "(shortest|longest|duration|session.*time|start.*time|end.*time|session length)",
+      "hint_for_extraction": "Session duration requires calculating time difference between start and end times stored as strings.",
+      "hint_for_main": "CRITICAL: SESSION_START_TIME and SESSION_END_TIME in IAP_SUBJECT_SESSION are stored as strings in 'hhmm(AM/PM)' format (e.g., '0900AM', '1230PM'). To calculate session duration in minutes: TIMESTAMPDIFF(MINUTE, STR_TO_DATE(SESSION_START_TIME, '%h%i%p'), CASE WHEN STR_TO_DATE(SESSION_START_TIME, '%h%i%p') > STR_TO_DATE(SESSION_END_TIME, '%h%i%p') THEN STR_TO_DATE('1200PM', '%h%i%p') ELSE STR_TO_DATE(SESSION_END_TIME, '%h%i%p') END). Use MIN/MAX of this expression for shortest/longest sessions.",
+      "example": "shortest and longest sessions → MIN/MAX of TIMESTAMPDIFF(MINUTE, STR_TO_DATE(start, '%h%i%p'), ...)"
+    },
+    {
+      "id": "has_session_info_counting",
+      "pattern": "(sessions? with info|sessions? without info|has.*info|info.*session)",
+      "hint_for_extraction": "Counting sessions with/without info requires conditional aggregation on a flag column.",
+      "hint_for_main": "CRITICAL: To count sessions with/without info, use CASE WHEN in SUM: SUM(CASE WHEN HAS_SESSION_INFO = 'Y' THEN 1 ELSE 0 END) for sessions with info, SUM(CASE WHEN HAS_SESSION_INFO = 'N' THEN 1 ELSE 0 END) for sessions without info. The column is IAP_SUBJECT_SESSION.HAS_SESSION_INFO.",
+      "example": "sessions with info → SUM(CASE WHEN HAS_SESSION_INFO = 'Y' THEN 1 ELSE 0 END)"
+    },
+    {
+      "id": "most_common_value",
+      "pattern": "(most common|most frequent|predominant|dominant)",
+      "hint_for_extraction": "Finding the 'most common' value within groups requires conditional comparison of counts.",
+      "hint_for_main": "CRITICAL: To find the 'most common' value from a set of known categories (e.g., course level U vs G), use CASE WHEN with SUM comparison: CASE WHEN SUM(CASE WHEN col = 'A' THEN 1 ELSE 0 END) >= SUM(CASE WHEN col = 'B' THEN 1 ELSE 0 END) THEN 'A' ELSE 'B' END. This avoids complex subqueries.",
+      "example": "most common course level → CASE WHEN SUM(CASE WHEN COURSE_LEVEL='U' THEN 1 ELSE 0 END) >= SUM(...='G'...) THEN 'U' ELSE 'G' END"
+    },
+    {
+      "id": "degree_granting_courses",
+      "pattern": "(degree.granting|is_degree_granting)",
+      "hint_for_extraction": "Counting degree-granting courses requires conditional aggregation on a Y/N flag.",
+      "hint_for_main": "CRITICAL: To count degree-granting courses, use: SUM(CASE WHEN IS_DEGREE_GRANTING = 'Y' THEN 1 ELSE 0 END). Do NOT filter with WHERE IS_DEGREE_GRANTING='Y' as that would exclude non-degree-granting rows from other counts.",
+      "example": "total degree-granting courses → SUM(CASE WHEN IS_DEGREE_GRANTING = 'Y' THEN 1 ELSE 0 END)"
+    },
+    {
+      "id": "sis_table_is_filter",
+      "pattern": "(SIS course|SIS subject|SIS department)",
+      "hint_for_extraction": "'SIS courses' or 'SIS subjects' refer to data in the SIS_* tables (SIS_COURSE_DESCRIPTION, SIS_SUBJECT_CODE, SIS_DEPARTMENT). Using these tables IS the filter.",
+      "hint_for_main": "CRITICAL: 'SIS courses' or 'SIS subjects' = use the SIS_* tables (SIS_COURSE_DESCRIPTION, SIS_SUBJECT_CODE, SIS_DEPARTMENT, SIS_ADMIN_DEPARTMENT). The table name IS the filter — do NOT add WHERE COURSE_DESCRIPTION LIKE '%SIS%' or any text-based SIS filter. Simply JOIN to the SIS_* tables.",
+      "example": "SIS courses → JOIN SIS_COURSE_DESCRIPTION (no WHERE clause for 'SIS' needed)"
+    },
+    {
+      "id": "tip_table_is_filter",
+      "pattern": "(TIP subject|TIP material|TIP course)",
+      "hint_for_extraction": "'TIP subjects' or 'TIP materials' refer to data in the TIP_* tables. Using these tables IS the filter.",
+      "hint_for_main": "CRITICAL: 'TIP subjects' or 'TIP materials' = use the TIP_* tables (TIP_SUBJECT_OFFERED, TIP_DETAIL, TIP_MATERIAL). The table name IS the filter — do NOT add extra WHERE clauses to filter for 'TIP'. Simply use the TIP_* tables.",
+      "example": "TIP subjects → JOIN TIP_SUBJECT_OFFERED (no extra WHERE needed)"
+    },
+    {
+      "id": "current_term_filter",
+      "pattern": "(in the current.*term|offered in.*current|for the current.*term|current academic term(?!.*or not))",
+      "hint_for_extraction": "When filtering FOR the 'current term' (not just displaying whether current), requires a flag filter. WARNING: 'whether the term is current or not' means DISPLAY the IS_CURRENT_TERM column, NOT filter by it.",
+      "hint_for_main": "CRITICAL: 'in the current academic term' or 'for the current term' → JOIN to ACADEMIC_TERMS and use WHERE IS_CURRENT_TERM = 'Y'. BUT 'whether the term is current or not' → SELECT IS_CURRENT_TERM as an OUTPUT column, do NOT use it as a WHERE filter.",
+      "example": "courses in the current term → WHERE IS_CURRENT_TERM = 'Y'; whether current or not → SELECT IS_CURRENT_TERM (no filter)"
+    },
+    {
+      "id": "floor_mixed_type",
+      "pattern": "(largest floor|highest floor|max floor|most floor|tallest floor|smallest floor|lowest floor|min floor|floor level|floor number)",
+      "hint_for_extraction": "FAC_FLOOR has TWO floor columns with different characteristics. Choose the right one based on context.",
+      "hint_for_main": "CRITICAL: FAC_FLOOR has TWO floor columns:\n(1) FLOOR: Raw floor code with MIXED types — numeric ('1','2','10') AND non-numeric ('D10','G10','B','M','PH'). When using FLOOR for numeric comparison (e.g., 'largest floor number'), use CASE WHEN inside MIN/MAX: MAX(CASE WHEN FLOOR REGEXP '^[0-9]+$' THEN CAST(FLOOR AS UNSIGNED) ELSE NULL END). NEVER use REGEXP as a WHERE filter — that would exclude rooms on non-numeric floors from other aggregates like SUM(AREA) or COUNT(rooms).\n(2) LEVEL_ID: Already normalized to numeric levels (integers). Non-numeric floors map to negative numbers (-1, -2, -3). Use MIN(LEVEL_ID) / MAX(LEVEL_ID) directly — no REGEXP or CAST needed.\nRule: If mapping_hints point to LEVEL_ID, use it directly. If using FLOOR column, use CASE WHEN REGEXP inside the aggregate function, NOT as a WHERE clause.",
+      "example": "largest floor (FLOOR col) → MAX(CASE WHEN FLOOR REGEXP '^[0-9]+$' THEN CAST(FLOOR AS UNSIGNED) END); smallest floor level (LEVEL_ID col) → MIN(LEVEL_ID)"
+    },
+    {
+      "id": "author_semicolon_parsing",
+      "pattern": "(author|writer|written by)",
+      "hint_for_extraction": "Author names in TIP_MATERIAL may contain multiple authors separated by semicolons. Only the first author should be used for grouping.",
+      "hint_for_main": "CRITICAL: TIP_MATERIAL.AUTHOR may contain multiple authors separated by ';' (e.g., 'Smith, John; Doe, Jane'). When grouping by author, extract only the first author: CASE WHEN INSTR(AUTHOR, ';') > 0 THEN SUBSTR(AUTHOR, 1, INSTR(AUTHOR, ';') - 1) ELSE AUTHOR END. Use this expression in a subquery on TIP_MATERIAL.",
+      "example": "group by author → CASE WHEN INSTR(AUTHOR,';')>0 THEN SUBSTR(AUTHOR,1,INSTR(AUTHOR,';')-1) ELSE AUTHOR END"
+    },
+    {
+      "id": "virtual_session_detection",
+      "pattern": "(virtual.*session|virtual.*IAP|online.*session|remote.*session|non.physical.*session)",
+      "hint_for_extraction": "'Virtual sessions' are sessions NOT held in a physical building. This is determined by comparing session location against building numbers.",
+      "hint_for_main": "CRITICAL: 'Virtual sessions' = sessions where SESSION_LOCATION does NOT match any physical BUILDING_NUMBER. To filter for virtual sessions: JOIN BUILDINGS b ON b.BUILDING_NUMBER != iss.SESSION_LOCATION. This cross-join with inequality ensures only non-physical locations are included. For physical sessions: JOIN BUILDINGS b ON b.BUILDING_NUMBER = iss.SESSION_LOCATION.",
+      "example": "virtual IAP sessions → JOIN BUILDINGS ON BUILDING_NUMBER != SESSION_LOCATION"
+    },
+    {
+      "id": "moira_list_counting",
+      "pattern": "(mailing list|email list|moira|subscriber|member).*(count|number|size|how many|total|largest|least|most)",
+      "hint_for_extraction": "When counting mailing list members/subscribers, use COUNT (not COUNT DISTINCT) because member occurrence counts are meaningful — a person can appear in a list multiple times.",
+      "hint_for_main": "CRITICAL: For MOIRA_LIST_DETAIL member counts, use COUNT(MOIRA_LIST_MEMBER) NOT COUNT(DISTINCT MOIRA_LIST_MEMBER). Members can appear multiple times (different roles/subscriptions), and the TOTAL count of entries is what 'list size' or 'number of members' means. COUNT(DISTINCT) would undercount. Example: list with 1000 member entries might have only 800 unique people. 'List size' = 1000 (COUNT), NOT 800 (COUNT DISTINCT).",
+      "example": "mailing list size → COUNT(MOIRA_LIST_MEMBER), lists with >1000 members → HAVING COUNT(MOIRA_LIST_MEMBER) > 1000"
+    },
+    {
+      "id": "rollup_report_pattern",
+      "pattern": "(group\\b.*\\bby\\b|for each group.*(state|list)|group all|group spaces|group courses|group sessions|group buildings|group rooms|group master)",
+      "hint_for_extraction": "When NLQ explicitly says 'Group X by Y' or 'For each group, state/list...', this is a report-style query that typically needs subtotals (ROLLUP) and label formatting (LAG).",
+      "hint_for_main": "REPORT PATTERN: When NLQ says 'Group X by Y' or 'For each group, state...', use GROUP BY ... WITH ROLLUP for subtotals. Pattern: (1) GROUP BY dim1, dim2 WITH ROLLUP for subtotal rows, (2) GROUPING(dim) to detect rollup NULL rows, (3) CASE WHEN GROUPING(dim) = 1 THEN 'Subtotal'/'Grand Total' for labels, (4) LAG(dim) OVER (ORDER BY dim) to suppress repeated group headers: CASE WHEN LAG(dim1) OVER (ORDER BY dim1, dim2) = dim1 THEN NULL ELSE dim1 END.",
+      "example": "Group rooms by assignable and use → GROUP BY assignable, major_use WITH ROLLUP + GROUPING() + LAG()"
+    },
+    {
+      "id": "cte_prefilter_pattern",
+      "pattern": "(mailing list|email list).*(with|having|containing).*(\\d+|more than|fewer|at least|between).*(member|subscriber|people)",
+      "hint_for_extraction": "When filtering mailing lists by member count (e.g., 'lists with more than 1000 members'), pre-compute the count in a CTE before joining to other data.",
+      "hint_for_main": "CRITICAL CTE PATTERN: When filtering lists by member count AND needing additional detail, use a CTE: WITH FilteredLists AS (SELECT MOIRA_LIST_NAME, COUNT(MOIRA_LIST_MEMBER) AS member_count FROM MOIRA_LIST ml JOIN MOIRA_LIST_DETAIL mld ON ml.MOIRA_LIST_KEY = mld.MOIRA_LIST_KEY GROUP BY MOIRA_LIST_NAME HAVING COUNT(MOIRA_LIST_MEMBER) > N) SELECT fl.*, other_detail FROM FilteredLists fl JOIN ...",
+      "example": "lists with >1000 members → CTE with GROUP BY + HAVING COUNT() > 1000, then JOIN to detail"
+    },
+    {
+      "id": "hass_attribute_group",
+      "pattern": "(humanities|arts|social sciences|HASS|hass)",
+      "hint_for_extraction": "'Humanities, arts and social sciences' area is identified by a single-letter code 'H' in CIS_HASS_ATTRIBUTE.CIS_ATTRIBUTE_GROUP.",
+      "hint_for_main": "CRITICAL: 'area of humanities, arts and social sciences' / 'HASS' → CIS_HASS_ATTRIBUTE.CIS_ATTRIBUTE_GROUP = 'H'. The column has only 2 values: 'H' (HASS) and 'G' (GIR). Do NOT use the full text string — use the code 'H'. JOIN: CIS_HASS_ATTRIBUTE.HASS_ATTRIBUTE = COURSE_CATALOG_SUBJECT_OFFERED.HASS_ATTRIBUTE.",
+      "example": "subjects in humanities, arts and social sciences → WHERE CIS_HASS_ATTRIBUTE.CIS_ATTRIBUTE_GROUP = 'H'"
+    },
+    {
+      "id": "aggregate_different_granularity",
+      "pattern": "(total.*per department|total.*per school|count.*per|number.*per).*(and|,).*(code|name|description|title|level)",
+      "hint_for_extraction": "When a total/count is requested 'per X' alongside detail columns that are more granular than X, this requires either a WINDOW function or a subquery to compute the aggregate at the right level.",
+      "hint_for_main": "CRITICAL: When an aggregate like 'total number of courses per department' appears alongside detail columns (subject code, description, etc.) that are MORE GRANULAR than the grouping level, use one of: (1) WINDOW: COUNT(DISTINCT col) OVER(PARTITION BY department) — but MySQL does NOT support COUNT(DISTINCT) in OVER(). (2) SUBQUERY: Compute the aggregate in a subquery grouped by department, then JOIN back to the detail rows. Pattern: SELECT detail.*, agg.total FROM detail_table JOIN (SELECT dept, COUNT(DISTINCT x) AS total FROM ... GROUP BY dept) agg ON detail.dept = agg.dept.",
+      "example": "total courses per dept + subject details → subquery: (SELECT dept, COUNT(DISTINCT course) GROUP BY dept) joined to detail"
+    }
+  ]
+}
