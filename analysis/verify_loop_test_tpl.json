@@ -1,0 +1,55 @@
+{
+  "config": {
+    "model": "gpt-5.2-2025-12-11",
+    "max_iter": 3,
+    "n_items": 1
+  },
+  "summary": {
+    "cumulative": [
+      0,
+      0,
+      0
+    ],
+    "per_iter": [
+      0,
+      0,
+      0
+    ],
+    "total": 1
+  },
+  "items": [
+    {
+      "idx": 21,
+      "gold_nlq": "What is the DLC key, name of the DLC, total number of floors, total square footage, total number of facility organizations, total number of supervisors, total number of supervisees, and total building heights for each DLC?",
+      "gold_sql": "SELECT su.DLC_KEY, fo.DLC_NAME, COUNT(DISTINCT sf.FLOOR) AS Total_Number_Of_Floors, sd.Total_Square_Footage, COUNT(DISTINCT su.FCLT_ORGANIZATION_KEY) AS Total_Number_Facility, COUNT(DISTINCT ssu.MIT_ID) AS Total_Supervisors, SUM(ssu.NUM_OF_SUPERVISEES) AS Total_Supervisees, SUM(fb.BUILDING_HEIGHT) AS Cumulative_Building_Height FROM (SELECT SPACE_DETAIL.*, SUM(ROOM_SQUARE_FOOTAGE) OVER (PARTITION BY BUILDING_COMPONENT) AS Total_Square_Footage FROM SPACE_DETAIL) sd JOIN FCLT_BUILDING fb ON fb.FCLT_BUILDING_KEY = sd.BUILDING_KEY JOIN SPACE_FLOOR sf ON sd.FLOOR_KEY = sf.FLOOR_KEY JOIN SPACE_UNIT su ON sd.SPACE_UNIT_KEY = su.SPACE_UNIT_KEY JOIN SPACE_SUPERVISOR_USAGE ssu ON su.DLC_KEY = ssu.DEPT_NAMES JOIN (SELECT DISTINCT DLC_KEY, DLC_NAME FROM FCLT_ORGANIZATION) fo ON fo.DLC_KEY = su.DLC_KEY GROUP BY su.DLC_KEY, fo.DLC_NAME, sd.Total_Square_Footage;",
+      "success_iter": -1,
+      "iterations": [
+        {
+          "attempt": 1,
+          "nlq": "What is the DLC key, name of the DLC, total number of floors, total square footage, total number of facility organizations, total number of supervisors, total number of supervisees, and total building heights for each DLC?",
+          "generated_sql": "WITH dlc_base AS (\n  SELECT DISTINCT\n    su.DLC_KEY,\n    fo.DLC_NAME\n  FROM SPACE_UNIT su\n  LEFT JOIN FCLT_ORGANIZATION fo\n    ON fo.DLC_KEY = su.DLC_KEY\n),\nspace_agg AS (\n  SELECT\n    su.DLC_KEY,\n    COUNT(DISTINCT sd.FLOOR_KEY) AS total_floors,\n    SUM(sd.ROOM_SQUARE_FOOTAGE) AS total_square_footage,\n    COUNT(DISTINCT su.FCLT_ORGANIZATION_KEY) AS total_facility_organizations,\n    SUM(CASE\n          WHEN fb.BUILDING_HEIGHT IS NULL OR TRIM(fb.BUILDING_HEIGHT) = '' THEN 0\n          ELSE CAST(fb.BUILDING_HEIGHT AS DECIMAL(18,2))\n        END) AS total_building_heights\n  FROM SPACE_UNIT su\n  JOIN SPACE_DETAIL sd\n    ON sd.SPACE_UNIT_KEY = su.SPACE_UNIT_KEY\n  LEFT JOIN FCLT_BUILDING fb\n    ON fb.FCLT_BUILDING_KEY = sd.BUILDING_KEY\n  GROUP BY su.DLC_KEY\n),\nsupervisor_agg AS (\n  SELECT\n    ssu.DEPT_NAMES AS DLC_KEY,\n    COUNT(DISTINCT ssu.MIT_ID) AS total_supervisors,\n    SUM(ssu.NUM_OF_SUPERVISEES) AS total_supervisees\n  FROM SPACE_SUPERVISOR_USAGE ssu\n  GROUP BY ssu.DEPT_NAMES\n)\nSELECT\n  b.DLC_KEY AS dlc_key,\n  b.DLC_NAME AS dlc_name,\n  COALESCE(sa.total_floors, 0) AS total_number_of_floors,\n  COALESCE(sa.total_square_footage, 0) AS total_square_footage,\n  COALESCE(sa.total_facility_organizations, 0) AS total_number_of_facility_organizations,\n  COALESCE(sva.total_supervisors, 0) AS total_number_of_supervisors,\n  COALESCE(sva.total_supervisees, 0) AS total_number_of_supervisees,\n  COALESCE(sa.total_building_heights, 0) AS total_building_heights\nFROM dlc_base b\nLEFT JOIN space_agg sa\n  ON sa.DLC_KEY = b.DLC_KEY\nLEFT JOIN supervisor_agg sva\n  ON sva.DLC_KEY = b.DLC_KEY\nORDER BY b.DLC_KEY;",
+          "match": false,
+          "error": null
+        },
+        {
+          "attempt": 2,
+          "nlq": "For each DLC, list the DLC key and DLC name, along with (a) the count of distinct floor numbers, (b) the total square footage computed as the sum of room square footage within each building component, (c) the count of distinct facility organization keys, (d) the count of distinct supervisors, (e) the total number of supervisees, and (f) the cumulative sum of building heights. Return one row per combination of DLC and that building-component-level total square footage.",
+          "generated_sql": "SELECT\n  su.DLC_KEY,\n  fo.DLC_NAME,\n  COUNT(DISTINCT sf.FLOOR) AS total_floors,\n  sd.total_sqft,\n  COUNT(DISTINCT su.FCLT_ORGANIZATION_KEY) AS total_facility_orgs,\n  COUNT(DISTINCT ssu.MIT_ID) AS total_supervisors,\n  SUM(ssu.NUM_OF_SUPERVISEES) AS total_supervisees,\n  SUM(CAST(fb.BUILDING_HEIGHT AS DECIMAL(10,2))) AS cumulative_building_height\nFROM (\n  SELECT\n    sd.*,\n    SUM(sd.ROOM_SQUARE_FOOTAGE) OVER (PARTITION BY sd.BUILDING_COMPONENT) AS total_sqft\n  FROM SPACE_DETAIL sd\n) sd\nJOIN FCLT_BUILDING fb\n  ON fb.FCLT_BUILDING_KEY = sd.BUILDING_KEY\nJOIN SPACE_FLOOR sf\n  ON sf.FLOOR_KEY = sd.FLOOR_KEY\nJOIN SPACE_UNIT su\n  ON su.SPACE_UNIT_KEY = sd.SPACE_UNIT_KEY\nJOIN SPACE_SUPERVISOR_USAGE ssu\n  ON su.DLC_KEY = ssu.DEPT_NAMES\nJOIN (\n  SELECT DISTINCT\n    DLC_KEY,\n    DLC_NAME\n  FROM FCLT_ORGANIZATION\n) fo\n  ON fo.DLC_KEY = su.DLC_KEY\nGROUP BY\n  su.DLC_KEY,\n  fo.DLC_NAME,\n  sd.total_sqft;",
+          "match": false,
+          "error": null,
+          "template": "SELECT\n  su.DLC_KEY, fo.DLC_NAME,\n  COUNT(DISTINCT sf.FLOOR) AS total_floors,\n  sd.total_sqft,\n  COUNT(DISTINCT su.FCLT_ORGANIZATION_KEY) AS total_facility_orgs,\n  COUNT(DISTINCT ssu.MIT_ID) AS total_supervisors,\n  SUM(ssu.NUM_OF_SUPERVISEES) AS total_supervisees,\n  SUM(fb.BUILDING_HEIGHT) AS cumulative_building_height\nFROM (\n  SELECT sd.*,\n         SUM(sd.ROOM_SQUARE_FOOTAGE) OVER (PARTITION BY sd.BUILDING_COMPONENT) AS total_sqft\n  FROM SPACE_DETAIL sd\n) sd\nJOIN FCLT_BUILDING fb ON fb.FCLT_BUILDING_KEY = sd.BUILDING_KEY\nJOIN SPACE_FLOOR sf ON sf.FLOOR_KEY = sd.FLOOR_KEY\nJOIN SPACE_UNIT su ON su.SPACE_UNIT_KEY = sd.SPACE_UNIT_KEY\nJOIN SPACE_SUPERVISOR_USAGE ssu ON su.DLC_KEY = ssu.DEPT_NAMES\nJOIN (SELECT DISTINCT DLC_KEY, DLC_NAME FROM FCLT_ORGANIZATION) fo ON fo.DLC_KEY = su.DLC_KEY\nGROUP BY su.DLC_KEY, fo.DLC_NAME, sd.total_sqft;"
+        },
+        {
+          "attempt": 3,
+          "nlq": "For each department-level DLC, show the DLC key and the DLC name. Also report: the number of distinct floors associated with its spaces, the building-component total square footage where that square footage is defined as the sum of room square footage across all rooms in the same building component, the number of distinct facility organization keys, the number of distinct supervisors, the total number of supervisees, and the sum of building heights. The output should have one row for each DLC key and DLC name paired with each distinct building-component total square footage value.",
+          "generated_sql": "SELECT\n  su.DLC_KEY,\n  fo.DLC_NAME,\n  COUNT(DISTINCT sf.FLOOR) AS total_floors,\n  sd.total_sqft,\n  COUNT(DISTINCT su.FCLT_ORGANIZATION_KEY) AS total_facility_orgs,\n  COUNT(DISTINCT ssu.MIT_ID) AS total_supervisors,\n  SUM(DISTINCT ssu.NUM_OF_SUPERVISEES) AS total_supervisees,\n  SUM(DISTINCT CAST(fb.BUILDING_HEIGHT AS DECIMAL(10,2))) AS cumulative_building_height\nFROM (\n  SELECT\n    sd.*,\n    SUM(sd.ROOM_SQUARE_FOOTAGE) OVER (PARTITION BY sd.BUILDING_COMPONENT) AS total_sqft\n  FROM SPACE_DETAIL sd\n) sd\nJOIN FCLT_BUILDING fb\n  ON fb.FCLT_BUILDING_KEY = sd.BUILDING_KEY\nJOIN SPACE_FLOOR sf\n  ON sf.FLOOR_KEY = sd.FLOOR_KEY\nJOIN SPACE_UNIT su\n  ON su.SPACE_UNIT_KEY = sd.SPACE_UNIT_KEY\nJOIN SPACE_SUPERVISOR_USAGE ssu\n  ON su.DLC_KEY = ssu.DEPT_NAMES\nJOIN (\n  SELECT DISTINCT\n    DLC_KEY,\n    DLC_NAME\n  FROM FCLT_ORGANIZATION\n) fo\n  ON fo.DLC_KEY = su.DLC_KEY\nGROUP BY\n  su.DLC_KEY,\n  fo.DLC_NAME,\n  sd.total_sqft;",
+          "match": false,
+          "error": null,
+          "template": "SELECT\n  su.DLC_KEY, fo.DLC_NAME,\n  COUNT(DISTINCT sf.FLOOR) AS total_floors,\n  sd.total_sqft,\n  COUNT(DISTINCT su.FCLT_ORGANIZATION_KEY) AS total_facility_orgs,\n  COUNT(DISTINCT ssu.MIT_ID) AS total_supervisors,\n  SUM(ssu.NUM_OF_SUPERVISEES) AS total_supervisees,\n  SUM(fb.BUILDING_HEIGHT) AS cumulative_building_height\nFROM (\n  SELECT sd.*,\n         SUM(sd.ROOM_SQUARE_FOOTAGE) OVER (PARTITION BY sd.BUILDING_COMPONENT) AS total_sqft\n  FROM SPACE_DETAIL sd\n) sd\nJOIN FCLT_BUILDING fb ON fb.FCLT_BUILDING_KEY = sd.BUILDING_KEY\nJOIN SPACE_FLOOR sf ON sf.FLOOR_KEY = sd.FLOOR_KEY\nJOIN SPACE_UNIT su ON su.SPACE_UNIT_KEY = sd.SPACE_UNIT_KEY\nJOIN SPACE_SUPERVISOR_USAGE ssu ON su.DLC_KEY = ssu.DEPT_NAMES\nJOIN (SELECT DISTINCT DLC_KEY, DLC_NAME FROM FCLT_ORGANIZATION) fo ON fo.DLC_KEY = su.DLC_KEY\nGROUP BY su.DLC_KEY, fo.DLC_NAME, sd.total_sqft;"
+        }
+      ],
+      "final_nlq": "For each department-level DLC, show the DLC key and the DLC name. Also report: the number of distinct floors associated with its spaces, the building-component total square footage where that square footage is defined as the sum of room square footage across all rooms in the same building component, the number of distinct facility organization keys, the number of distinct supervisors, the total number of supervisees, and the sum of building heights. The output should have one row for each DLC key and DLC name paired with each distinct building-component total square footage value.",
+      "final_template": "SELECT\n  su.DLC_KEY, fo.DLC_NAME,\n  COUNT(DISTINCT sf.FLOOR) AS total_floors,\n  sd.total_sqft,\n  COUNT(DISTINCT su.FCLT_ORGANIZATION_KEY) AS total_facility_orgs,\n  COUNT(DISTINCT ssu.MIT_ID) AS total_supervisors,\n  SUM(ssu.NUM_OF_SUPERVISEES) AS total_supervisees,\n  SUM(fb.BUILDING_HEIGHT) AS cumulative_building_height\nFROM (\n  SELECT sd.*,\n         SUM(sd.ROOM_SQUARE_FOOTAGE) OVER (PARTITION BY sd.BUILDING_COMPONENT) AS total_sqft\n  FROM SPACE_DETAIL sd\n) sd\nJOIN FCLT_BUILDING fb ON fb.FCLT_BUILDING_KEY = sd.BUILDING_KEY\nJOIN SPACE_FLOOR sf ON sf.FLOOR_KEY = sd.FLOOR_KEY\nJOIN SPACE_UNIT su ON su.SPACE_UNIT_KEY = sd.SPACE_UNIT_KEY\nJOIN SPACE_SUPERVISOR_USAGE ssu ON su.DLC_KEY = ssu.DEPT_NAMES\nJOIN (SELECT DISTINCT DLC_KEY, DLC_NAME FROM FCLT_ORGANIZATION) fo ON fo.DLC_KEY = su.DLC_KEY\nGROUP BY su.DLC_KEY, fo.DLC_NAME, sd.total_sqft;"
+    }
+  ]
+}

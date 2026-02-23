@@ -11,6 +11,7 @@ Gold SQL에서 구조적 힌트(skeleton hint)를 추출하는 유틸리티
 - HAVING 사용 여부
 - DISTINCT 사용 여부
 - ORDER BY + LIMIT 사용 여부
+- ROLLUP Report 패턴 (GROUP BY ... WITH ROLLUP + GROUPING() + LAG())
 """
 
 import re
@@ -72,7 +73,51 @@ def extract_skeleton_hints(sql: str) -> Dict[str, bool]:
     # EXCEPT / INTERSECT
     hints['set_operation'] = bool(re.search(r'\b(EXCEPT|INTERSECT)\b', sql_cleaned))
 
+    # ROLLUP Report Pattern: WITH ROLLUP + LAG() (GROUPING() 사용 권장이지만 없는 변형도 포함)
+    has_rollup = bool(re.search(r'\bWITH\s+ROLLUP\b', sql_cleaned))
+    has_grouping = bool(re.search(r'\bGROUPING\s*\(', sql_cleaned))
+    has_lag = bool(re.search(r'\bLAG\s*\(', sql_cleaned))
+    hints['rollup_report'] = has_rollup and has_lag
+
     return hints
+
+
+ROLLUP_REPORT_TEMPLATE = """[Report Layout Pattern — ROLLUP + GROUPING + LAG]
+This question asks for a grouped report with subtotals/totals and suppressed repeated labels.
+Use the following 2-stage SQL pattern:
+
+Stage 1 (Inner subquery): Aggregate with WITH ROLLUP and label rows using GROUPING()
+```
+SELECT
+  CASE WHEN GROUPING(group_col) = 1 THEN 'TOTAL'
+       WHEN GROUPING(detail_col) = 1 THEN 'SUBTOTAL'
+       ELSE group_col END AS group_label,
+  CASE WHEN GROUPING(detail_col) = 1 THEN NULL
+       ELSE detail_col END AS detail_label,
+  -- use 'zzz' or similar dummy for sort columns when GROUPING()=1
+  CASE WHEN GROUPING(detail_col) = 1 THEN 'zzz'
+       ELSE detail_col END AS detail_sort,
+  COUNT(*) AS cnt, SUM(measure) AS total, AVG(measure) AS avg_val
+FROM tables
+WHERE filters
+GROUP BY group_col, detail_col WITH ROLLUP
+ORDER BY group_col, detail_sort
+
+Stage 2 (Outer query): Suppress repeated group labels with LAG()
+```
+SELECT
+  CASE WHEN LAG(group_label) OVER (ORDER BY group_col, detail_sort) = group_label
+       THEN NULL ELSE group_label END AS group_label,
+  detail_label, cnt, total, avg_val
+FROM (Stage1) tbltmp
+
+Key rules:
+- WITH ROLLUP goes after GROUP BY (MySQL syntax)
+- GROUPING(col) = 1 means the row is a subtotal/total for that column
+- Use LAG() in the outer query to show group_label only on the first row of each group
+- Subtotal/total rows should have NULL for detail columns
+- Create sort columns with dummy values ('zzz') so subtotal rows sort last within each group
+- FORMAT(value, 0) only if the question explicitly asks for comma-formatted numbers"""
 
 
 def format_skeleton_hint(hints: Dict[str, bool]) -> str:
@@ -87,6 +132,27 @@ def format_skeleton_hint(hints: Dict[str, bool]) -> str:
     """
     if not hints:
         return ""
+
+    # ROLLUP 리포트 패턴이 감지되면 전용 템플릿 사용
+    if hints.get('rollup_report'):
+        # 일반 힌트도 함께 표시하되 rollup_report 관련 항목은 제외
+        other_hints = []
+        skip_keys = {'group_by', 'window_function', 'case_when', 'subquery', 'rollup_report'}
+        for key, desc in {
+            'cte': 'CTE (WITH ... AS) 사용',
+            'union': 'UNION 사용',
+            'having': 'HAVING 사용',
+            'distinct': 'DISTINCT 사용',
+            'top_n': 'ORDER BY + LIMIT (Top-N 패턴)',
+            'set_operation': 'EXCEPT/INTERSECT 사용',
+        }.items():
+            if hints.get(key):
+                other_hints.append(f"- {desc}")
+
+        result = ROLLUP_REPORT_TEMPLATE
+        if other_hints:
+            result += "\n\n[Additional SQL Hints]\n" + "\n".join(other_hints)
+        return result
 
     active_hints = []
 

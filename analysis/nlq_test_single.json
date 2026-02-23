@@ -1,0 +1,23 @@
+[
+  {
+    "idx": 27,
+    "gold_sql": "SELECT tm.AUTHOR, sd.SCHOOL_NAME, tms.TIP_MATERIAL_STATUS, SUM(td.RECORD_COUNT) AS Total_Record_Count , COUNT(distinct td.SUBJECT_ID) AS Total_Subject FROM TIP_DETAIL td JOIN (select TIP_MATERIAL_KEY, CASE WHEN INSTR(AUTHOR, ';') > 0 THEN SUBSTR(AUTHOR, 1, INSTR(AUTHOR, ';') - 1) ELSE AUTHOR END AS AUTHOR FROM TIP_MATERIAL) tm ON td.TIP_MATERIAL_KEY = tm.TIP_MATERIAL_KEY JOIN TIP_MATERIAL_STATUS tms ON td.TIP_MATERIAL_STATUS_KEY = tms.TIP_MATERIAL_STATUS_KEY JOIN TIP_SUBJECT_OFFERED tso ON td.TIP_SUBJECT_OFFERED_KEY = tso.TIP_SUBJECT_OFFERED_KEY JOIN STUDENT_DEPARTMENT sd ON tso.OFFER_DEPT_CODE = sd.DEPARTMENT_CODE GROUP BY tm.AUTHOR, tms.TIP_MATERIAL_STATUS, sd.SCHOOL_NAME;",
+    "gold_nlq": "What is the author, school name, material status, total record counts, and total number of types of courses for each author and school?",
+    "llm_nlq": "For each combination of author (using only the first author listed when multiple authors are separated by a semicolon), school name, and material status, what is the total sum of record counts and the total number of distinct courses?",
+    "llm_nlq_rev": "For each combination of author (using only the first author listed when multiple authors are separated by a semicolon), school name, and material status, what is the total sum of record counts and the total number of distinct courses?",
+    "llm_nlq_rev_pass": true,
+    "gold_nlq_rev": "What is the author **(using only the first author name before the first ';' if multiple authors are listed in the AUTHOR field)**, school name, material status, total record counts **(SUM of record counts)**, and total number of types of courses **(COUNT DISTINCT of courses)** for each author and school **and material status**?",
+    "gold_nlq_rev_pass": false,
+    "llm_nlq_rev_cross": "For each combination of author (using only the first author listed when multiple authors are separated by a semicolon), school name, and material status, what is the total sum of record counts and the total number of distinct courses?",
+    "llm_nlq_rev_cross_pass": true,
+    "llm_nlq_humanistic": "Can you show me, by author, school, and material status, the total number of records and how many different courses those records cover?",
+    "llm_nlq_humanistic_pass": false,
+    "gold_rev_llm_nlq_mid_humanistic": "What is the author (just the first name if multiple authors are listed separated by a semicolon), school name, material status, total record counts, and total number of different courses for each author and school?",
+    "gold_rev_llm_nlq_mid_humanistic_pass": false,
+    "gold_nlq_rev_v2": "What is the author (if there are multiple authors separated by a semicolon, use only the first author listed), school name, material status, total record counts, and total number of types of courses for each author, school name, and material status?",
+    "gold_nlq_rev_v2_pass": false,
+    "gold_nlq_verify_loop": "What is the author (using only the first author name when multiple authors are listed, i.e., take the text before the first semicolon), school name, and material status, along with the total record counts and the total number of distinct courses, for each combination of that author, school, and material status?",
+    "gold_nlq_verify_loop_pass": false,
+    "gold_nlq_verify_loop_iter": -1
+  }
+]

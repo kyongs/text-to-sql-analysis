@@ -1,0 +1,46 @@
+[
+  {
+    "idx": 8,
+    "question": "For each building key, what is the building name and the number of courses offered by the Center for International Studies?",
+    "gold_sql": "SELECT fb.BUILDING_NAME, COUNT(DISTINCT ccc.subject_id) FROM cis_course_catalog ccc JOIN COURSE_CATALOG_SUBJECT_OFFERED ccso ON ccc.SUBJECT_ID = ccso.SUBJECT_ID JOIN FCLT_ROOMS fr ON ccso.MEET_PLACE = fr.FCLT_ROOM_KEY JOIN FCLT_BUILDING fb ON fb.FCLT_BUILDING_KEY = fr.FCLT_BUILDING_KEY GROUP BY fb.FCLT_BUILDING_KEY, fb.BUILDING_NAME;",
+    "sql_baseline": "SELECT \n    FCLT_BUILDING.FCLT_BUILDING_KEY AS building_key,\n    FCLT_BUILDING.BUILDING_NAME AS building_name,\n    COUNT(DISTINCT CIS_COURSE_CATALOG.SUBJECT_ID) AS number_of_courses\nFROM \n    CIS_COURSE_CATALOG\nJOIN \n    COURSE_CATALOG_SUBJECT_OFFERED ON CIS_COURSE_CATALOG.SUBJECT_ID = COURSE_CATALOG_SUBJECT_OFFERED.SUBJECT_ID\nJOIN \n    FCLT_ROOMS ON COURSE_CATALOG_SUBJECT_OFFERED.MEET_PLACE = FCLT_ROOMS.FCLT_ROOM_KEY\nJOIN \n    FCLT_BUILDING ON FCLT_ROOMS.FCLT_BUILDING_KEY = FCLT_BUILDING.FCLT_BUILDING_KEY\nWHERE \n    CIS_COURSE_CATALOG.DEPARTMENT_NAME = 'Center for International Studies'\nGROUP BY \n    FCLT_BUILDING.FCLT_BUILDING_KEY, FCLT_BUILDING.BUILDING_NAME;",
+    "sql_agg": "SELECT \n    fb.FCLT_BUILDING_KEY AS building_key,\n    fb.BUILDING_NAME AS building_name,\n    COUNT(DISTINCT ccs.SUBJECT_ID) AS number_of_courses\nFROM \n    CIS_COURSE_CATALOG ccc\nJOIN \n    COURSE_CATALOG_SUBJECT_OFFERED ccs ON ccc.SUBJECT_ID = ccs.SUBJECT_ID\nJOIN \n    FCLT_ROOMS fr ON ccs.MEET_PLACE = fr.FCLT_ROOM_KEY\nJOIN \n    FCLT_BUILDING fb ON fr.FCLT_BUILDING_KEY = fb.FCLT_BUILDING_KEY\nWHERE \n    ccc.DEPARTMENT_NAME = 'Center for International Studies'\nGROUP BY \n    fb.FCLT_BUILDING_KEY, fb.BUILDING_NAME;",
+    "score_baseline": 0,
+    "score_agg": 0,
+    "improved": false,
+    "regressed": false
+  },
+  {
+    "idx": 9,
+    "question": "What is the name of the building that accomodates the most students, and how many students does it accomodate?",
+    "gold_sql": "SELECT DISTINCT building_name, num_students FROM (SELECT fclt_building_key, COUNT(DISTINCT full_name) AS num_students FROM fclt_rooms JOIN mit_student_directory ON office_location = BUILDING_ROOM GROUP BY fclt_building_key) AS a JOIN fclt_building ON a.fclt_building_key = fclt_building.fclt_building_key JOIN (SELECT MAX(num_students) AS max_num_students FROM (SELECT fclt_building_key, COUNT(DISTINCT full_name) AS num_students FROM fclt_rooms JOIN mit_student_directory ON office_location = BUILDING_ROOM GROUP BY fclt_building_key) AS subquery1) AS b ON a.num_students = b.max_num_students;",
+    "sql_baseline": "SELECT b.BUILDING_NAME, COUNT(s.FULL_NAME) AS student_count\nFROM FCLT_BUILDING b\nJOIN FCLT_ROOMS r ON b.FCLT_BUILDING_KEY = r.FCLT_BUILDING_KEY\nJOIN MIT_STUDENT_DIRECTORY s ON r.BUILDING_ROOM = s.OFFICE_LOCATION\nGROUP BY b.BUILDING_NAME\nORDER BY student_count DESC\nLIMIT 1;",
+    "sql_agg": "SELECT b.BUILDING_NAME, COUNT(s.FULL_NAME) AS student_count\nFROM FCLT_BUILDING b\nJOIN FCLT_ROOMS r ON b.FCLT_BUILDING_KEY = r.FCLT_BUILDING_KEY\nJOIN MIT_STUDENT_DIRECTORY s ON r.BUILDING_ROOM = s.OFFICE_LOCATION\nGROUP BY b.BUILDING_NAME\nORDER BY student_count DESC\nLIMIT 1;",
+    "score_baseline": 1,
+    "score_agg": 1,
+    "improved": false,
+    "regressed": false
+  },
+  {
+    "idx": 11,
+    "question": "For each IAP category and academic year, list the category name, academic year, total fee collected, total number of IAP subjects, and the minimum and maximum enrollment.",
+    "gold_sql": "SELECT isc.IAP_CATEGORY_NAME, td.ACADEMIC_YEAR, SUM(isd.FEE) AS Total_Fee, COUNT(distinct isd.ACTIVITY_TITLE) AS Total_Subjects, MIN(isd.MAX_ENROLLMENT) AS Min_Attendance, MAX(isd.MAX_ENROLLMENT) AS Max_Attendance FROM IAP_SUBJECT_DETAIL isd JOIN IAP_SUBJECT_CATEGORY isc ON isd.IAP_SUBJECT_CATEGORY_KEY = isc.IAP_SUBJECT_CATEGORY_KEY JOIN TIME_DAY td ON isd.TERM_CODE = td.ACADEMIC_TERM_CODE GROUP BY isc.IAP_CATEGORY_NAME, td.ACADEMIC_YEAR;",
+    "sql_baseline": "SELECT \n    isc.IAP_CATEGORY_NAME,\n    td.ACADEMIC_YEAR,\n    SUM(isd.FEE) AS total_fee_collected,\n    COUNT(isd.ACTIVITY_TITLE) AS total_number_of_IAP_subjects,\n    MIN(isd.MAX_ENROLLMENT) AS minimum_enrollment,\n    MAX(isd.MAX_ENROLLMENT) AS maximum_enrollment\nFROM \n    IAP_SUBJECT_CATEGORY isc\nJOIN \n    IAP_SUBJECT_DETAIL isd ON isc.IAP_SUBJECT_CATEGORY_KEY = isd.IAP_SUBJECT_CATEGORY_KEY\nJOIN \n    TIME_DAY td ON td.ACADEMIC_TERM_CODE = isd.TERM_CODE\nGROUP BY \n    isc.IAP_CATEGORY_NAME, \n    td.ACADEMIC_YEAR;",
+    "sql_agg": "SELECT \n    isc.IAP_CATEGORY_NAME,\n    td.ACADEMIC_YEAR,\n    SUM(isd.FEE) AS total_fee_collected,\n    COUNT(DISTINCT isd.ACTIVITY_TITLE) AS total_number_of_IAP_subjects,\n    MIN(isd.MAX_ENROLLMENT) AS minimum_enrollment,\n    MAX(isd.MAX_ENROLLMENT) AS maximum_enrollment\nFROM \n    IAP_SUBJECT_CATEGORY isc\nJOIN \n    IAP_SUBJECT_DETAIL isd ON isc.IAP_SUBJECT_CATEGORY_KEY = isd.IAP_SUBJECT_CATEGORY_KEY\nJOIN \n    TIME_DAY td ON td.ACADEMIC_TERM_CODE = isd.TERM_CODE\nGROUP BY \n    isc.IAP_CATEGORY_NAME, td.ACADEMIC_YEAR;",
+    "score_baseline": 0,
+    "score_agg": 1,
+    "improved": true,
+    "regressed": false
+  },
+  {
+    "idx": 12,
+    "question": "For each sponsor of the independent activity periods, list the sponsor name, number of sessions held, the total number of enrollment, the minimum and maximum fee, the number of sessions with info, and the number of sessions without info.",
+    "gold_sql": "SELECT issr.SPONSOR_NAME, COUNT(DISTINCT iss.IAP_SUBJECT_SESSION_KEY) AS Total_Sessions, SUM(isd.MAX_ENROLLMENT), MIN(isd.FEE) AS Min_Fee, MAX(isd.FEE) AS Max_Fee, SUM(CASE WHEN iss.HAS_SESSION_INFO = 'Y' THEN 1 ELSE 0 END) AS Num_Sessions_With_Info, SUM(CASE WHEN iss.HAS_SESSION_INFO = 'N' THEN 1 ELSE 0 END) AS Num_Sessions_Without_Info FROM IAP_SUBJECT_SESSION iss JOIN IAP_SUBJECT_DETAIL isd ON iss.IAP_SUBJECT_SESSION_KEY = isd.IAP_SUBJECT_SESSION_KEY JOIN IAP_SUBJECT_SPONSOR issr ON isd.IAP_SUBJECT_SPONSOR_KEY = issr.IAP_SUBJECT_SPONSOR_KEY GROUP BY issr.SPONSOR_NAME;",
+    "sql_baseline": "SELECT \n    s.SPONSOR_NAME,\n    COUNT(DISTINCT sd.IAP_SUBJECT_SESSION_KEY) AS number_of_sessions,\n    SUM(sd.MAX_ENROLLMENT) AS total_enrollment,\n    MIN(sd.FEE) AS minimum_fee,\n    MAX(sd.FEE) AS maximum_fee,\n    SUM(CASE WHEN ss.HAS_SESSION_INFO = 'Y' THEN 1 ELSE 0 END) AS sessions_with_info,\n    SUM(CASE WHEN ss.HAS_SESSION_INFO = 'N' THEN 1 ELSE 0 END) AS sessions_without_info\nFROM \n    IAP_SUBJECT_SPONSOR s\nJOIN \n    IAP_SUBJECT_DETAIL sd ON s.IAP_SUBJECT_SPONSOR_KEY = sd.IAP_SUBJECT_SPONSOR_KEY\nJOIN \n    IAP_SUBJECT_SESSION ss ON sd.IAP_SUBJECT_SESSION_KEY = ss.IAP_SUBJECT_SESSION_KEY\nGROUP BY \n    s.SPONSOR_NAME;",
+    "sql_agg": "SELECT \n    s.SPONSOR_NAME,\n    COUNT(DISTINCT d.IAP_SUBJECT_SESSION_KEY) AS number_of_sessions,\n    SUM(d.MAX_ENROLLMENT) AS total_enrollment,\n    MIN(d.FEE) AS minimum_fee,\n    MAX(d.FEE) AS maximum_fee,\n    SUM(CASE WHEN ss.HAS_SESSION_INFO = 'Y' THEN 1 ELSE 0 END) AS sessions_with_info,\n    SUM(CASE WHEN ss.HAS_SESSION_INFO = 'N' THEN 1 ELSE 0 END) AS sessions_without_info\nFROM \n    IAP_SUBJECT_SPONSOR s\nJOIN \n    IAP_SUBJECT_DETAIL d ON s.IAP_SUBJECT_SPONSOR_KEY = d.IAP_SUBJECT_SPONSOR_KEY\nJOIN \n    IAP_SUBJECT_SESSION ss ON d.IAP_SUBJECT_SESSION_KEY = ss.IAP_SUBJECT_SESSION_KEY\nGROUP BY \n    s.SPONSOR_NAME;",
+    "score_baseline": 1,
+    "score_agg": 1,
+    "improved": false,
+    "regressed": false
+  }
+]

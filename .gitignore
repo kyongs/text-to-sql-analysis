@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 logs/
 outputs/
+tallow_analysis/
+*.xlsx

@@ -7,6 +7,7 @@ from typing import Dict, Any, List, Optional
 from src.agent.join_inspector import inspect_join_relationship
 from src.agent.join_path_finder import find_join_path
 from src.agent.column_value_lookup import lookup_column_values, format_lookup_result
+from src.agent.ask_granularity import ask_granularity
 
 
 class OpenAIModelWithTools:
@@ -34,7 +35,16 @@ class OpenAIModelWithTools:
         self.enable_join_inspector = enabled_tools.get('join_inspector', False)
         self.enable_join_path_finder = enabled_tools.get('join_path_finder', False)
         self.enable_lookup_column_values = enabled_tools.get('lookup_column_values', False)
-        
+        self.enable_ask_granularity = enabled_tools.get('ask_granularity', False)
+
+        # User Agent 설정 (ask_granularity에서 LLM2가 자동 선택)
+        user_agent_config = config.get('user_agent', {})
+        self.use_user_agent = user_agent_config.get('enabled', False)
+        self.user_agent_model = user_agent_config.get('model', 'gpt-4o-mini')
+
+        # 현재 처리 중인 gold_sql (generate 호출 시 설정)
+        self._current_gold_sql = None
+
         # Tool 정의 (활성화된 tool만)
         self.tools = self._initialize_tools()
     
@@ -122,6 +132,66 @@ class OpenAIModelWithTools:
                 }
             })
 
+        # Add ask_granularity if enabled
+        if self.enable_ask_granularity:
+            tools.append({
+                "type": "function",
+                "function": {
+                    "name": "ask_granularity",
+                    "description": """**PROACTIVELY USE THIS TOOL** whenever you need to write SQL with aggregation (COUNT, SUM, AVG, MAX, MIN, GROUP BY).
+
+**ALWAYS ask the user** about their preferred result format BEFORE writing the SQL. Don't assume - let the user choose.
+
+YOU generate 2-4 concrete options showing:
+1. Different GROUP BY granularities (single column vs multiple columns)
+2. WINDOW FUNCTION option if they might want detail rows WITH aggregates
+3. Each option with clear result preview
+
+**MUST USE when:**
+- Writing COUNT(*), SUM(), AVG() or any aggregate function
+- Question mentions "how many", "total", "count", "average", "per", "for each", "by"
+- Multiple entities mentioned that could be grouping levels
+
+Example: "List instructors and material count"
+→ STOP and ask: GROUP BY instructor only? Or GROUP BY instructor, subject?
+
+Options format:
+[
+  {"id": "A", "sql_pattern": "GROUP BY instructor", "description": "강사당 1행 - 총계만", "result_preview": "| instructor | total |\\n| Kim | 15 |"},
+  {"id": "B", "sql_pattern": "GROUP BY instructor, subject", "description": "강사+과목 조합당 1행", "result_preview": "| instructor | subject | cnt |\\n| Kim | Math | 10 |"},
+  {"id": "C", "sql_pattern": "COUNT(*) OVER (PARTITION BY instructor)", "description": "자료별 1행 + 강사별 합계 컬럼", "result_preview": "| material | instructor | inst_total |\\n| Book1 | Kim | 15 |"}
+]""",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "question": {
+                                "type": "string",
+                                "description": "The original natural language question"
+                            },
+                            "options": {
+                                "type": "array",
+                                "description": "Array of granularity options YOU generated",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {"type": "string", "description": "Option ID: A, B, C, etc."},
+                                        "sql_pattern": {"type": "string", "description": "SQL pattern: GROUP BY x / GROUP BY x,y / SUM() OVER(...) / WITH ROLLUP"},
+                                        "description": {"type": "string", "description": "What this option means in plain language"},
+                                        "result_preview": {"type": "string", "description": "Example result table (use | for columns, \\n for rows)"}
+                                    },
+                                    "required": ["id", "sql_pattern", "description"]
+                                }
+                            },
+                            "reason": {
+                                "type": "string",
+                                "description": "Why clarification is needed (what's ambiguous)"
+                            }
+                        },
+                        "required": ["question", "options"]
+                    }
+                }
+            })
+
         return tools
     
     def _execute_tool_call(self, tool_name: str, arguments: Dict[str, Any], db_id: str) -> str:
@@ -150,21 +220,34 @@ class OpenAIModelWithTools:
                 db_id=db_id
             )
             return format_lookup_result(result)
+        elif tool_name == "ask_granularity":
+            return ask_granularity(
+                question=arguments["question"],
+                options=arguments["options"],
+                reason=arguments.get("reason", ""),
+                gold_sql=self._current_gold_sql,
+                use_user_agent=self.use_user_agent,
+                user_agent_model=self.user_agent_model
+            )
         else:
             return f"Unknown tool: {tool_name}"
     
-    def generate(self, prompt: str, db_id: str = "dw", max_iterations: int = 10):
+    def generate(self, prompt: str, db_id: str = "dw", max_iterations: int = 10, gold_sql: str = None):
         """
         OpenAI API를 호출하고 필요시 tool calling 수행
-        
+
         Args:
             prompt: 사용자 프롬프트
             db_id: 데이터베이스 ID
             max_iterations: 최대 tool call 반복 횟수
-            
+            gold_sql: 정답 SQL (User Agent 모드에서 ask_granularity tool이 사용)
+
         Returns:
             response 객체와 tool call 로그
         """
+        # User Agent 모드에서 사용할 gold_sql 저장
+        self._current_gold_sql = gold_sql
+
         system_message = """You are a MySQL SQL expert. Your job is to write a MySQL SQL query to answer the user's question.
 
 You have access to tools that help you write better SQL:
@@ -177,6 +260,11 @@ You have access to tools that help you write better SQL:
 2. **inspect_join_relationship**: Analyze JOIN relationships between tables
    - Check cardinality (1:1, 1:N, M:N) before writing JOIN queries
    - Identify potential data multiplication issues
+
+3. **ask_granularity**: Clarify aggregation granularity with the user
+   - Use when the question involves COUNT/SUM/AVG and the desired result level is ambiguous
+   - The tool will present options to the user and return their choice
+   - Wait for user selection before writing the final SQL
 
 When writing SQL queries:
 - **Multi-hop JOINs**: If find_join_path shows intermediate tables, you MUST include ALL of them in your query

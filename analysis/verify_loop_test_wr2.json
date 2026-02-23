@@ -1,0 +1,43 @@
+{
+  "config": {
+    "model": "gpt-5.2-2025-12-11",
+    "max_iter": 2,
+    "n_items": 1
+  },
+  "summary": {
+    "cumulative": [
+      0,
+      0
+    ],
+    "per_iter": [
+      0,
+      0
+    ],
+    "total": 1
+  },
+  "items": [
+    {
+      "idx": 27,
+      "gold_nlq": "What is the author, school name, material status, total record counts, and total number of types of courses for each author and school?",
+      "gold_sql": "SELECT tm.AUTHOR, sd.SCHOOL_NAME, tms.TIP_MATERIAL_STATUS, SUM(td.RECORD_COUNT) AS Total_Record_Count , COUNT(distinct td.SUBJECT_ID) AS Total_Subject FROM TIP_DETAIL td JOIN (select TIP_MATERIAL_KEY, CASE WHEN INSTR(AUTHOR, ';') > 0 THEN SUBSTR(AUTHOR, 1, INSTR(AUTHOR, ';') - 1) ELSE AUTHOR END AS AUTHOR FROM TIP_MATERIAL) tm ON td.TIP_MATERIAL_KEY = tm.TIP_MATERIAL_KEY JOIN TIP_MATERIAL_STATUS tms ON td.TIP_MATERIAL_STATUS_KEY = tms.TIP_MATERIAL_STATUS_KEY JOIN TIP_SUBJECT_OFFERED tso ON td.TIP_SUBJECT_OFFERED_KEY = tso.TIP_SUBJECT_OFFERED_KEY JOIN STUDENT_DEPARTMENT sd ON tso.OFFER_DEPT_CODE = sd.DEPARTMENT_CODE GROUP BY tm.AUTHOR, tms.TIP_MATERIAL_STATUS, sd.SCHOOL_NAME;",
+      "success_iter": -1,
+      "iterations": [
+        {
+          "attempt": 1,
+          "nlq": "What is the author, school name, material status, total record counts, and total number of types of courses for each author and school?",
+          "generated_sql": "SELECT\n  tm.AUTHOR AS author,\n  sd.SCHOOL_NAME AS school_name,\n  tms.TIP_MATERIAL_STATUS AS material_status,\n  SUM(td.RECORD_COUNT) AS total_record_counts,\n  COUNT(DISTINCT td.SUBJECT_ID) AS total_course_types\nFROM TIP_DETAIL td\nJOIN TIP_MATERIAL_STATUS tms\n  ON tms.TIP_MATERIAL_STATUS_KEY = td.TIP_MATERIAL_STATUS_KEY\nJOIN TIP_SUBJECT_OFFERED tso\n  ON tso.TIP_SUBJECT_OFFERED_KEY = td.TIP_SUBJECT_OFFERED_KEY\nJOIN STUDENT_DEPARTMENT sd\n  ON sd.DEPARTMENT_CODE = tso.OFFER_DEPT_CODE\nJOIN TIP_MATERIAL tm\n  ON tm.TIP_MATERIAL_KEY = td.TIP_MATERIAL_KEY\nGROUP BY\n  tm.AUTHOR,\n  sd.SCHOOL_NAME,\n  tms.TIP_MATERIAL_STATUS;",
+          "match": false,
+          "error": null
+        },
+        {
+          "attempt": 2,
+          "nlq": "What is the author (using only the first author name when multiple authors are listed, i.e., take the text before the first semicolon), school name, and material status, along with the total record counts and the total number of distinct courses, for each combination of that author, school, and material status?",
+          "generated_sql": "SELECT\n  TRIM(SUBSTRING_INDEX(tm.AUTHOR, ';', 1)) AS author_first,\n  sd.SCHOOL_NAME AS school_name,\n  tms.TIP_MATERIAL_STATUS AS material_status,\n  SUM(td.RECORD_COUNT) AS total_record_count,\n  COUNT(DISTINCT td.SUBJECT_ID) AS distinct_courses\nFROM TIP_DETAIL td\nJOIN TIP_MATERIAL_STATUS tms\n  ON tms.TIP_MATERIAL_STATUS_KEY = td.TIP_MATERIAL_STATUS_KEY\nJOIN TIP_SUBJECT_OFFERED tso\n  ON tso.TIP_SUBJECT_OFFERED_KEY = td.TIP_SUBJECT_OFFERED_KEY\nJOIN STUDENT_DEPARTMENT sd\n  ON sd.DEPARTMENT_CODE = tso.OFFER_DEPT_CODE\nJOIN TIP_MATERIAL tm\n  ON tm.TIP_MATERIAL_KEY = td.TIP_MATERIAL_KEY\nGROUP BY\n  TRIM(SUBSTRING_INDEX(tm.AUTHOR, ';', 1)),\n  sd.SCHOOL_NAME,\n  tms.TIP_MATERIAL_STATUS;",
+          "match": false,
+          "error": null
+        }
+      ],
+      "final_nlq": "What is the author (using only the first author name when multiple authors are listed, i.e., take the text before the first semicolon), school name, and material status, along with the total record counts and the total number of distinct courses, for each combination of that author, school, and material status?"
+    }
+  ]
+}

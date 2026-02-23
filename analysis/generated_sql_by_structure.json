@@ -1,0 +1,155 @@
+{
+  "SIMPLE": {
+    "description": "단순 SELECT 조회 (집계, 서브쿼리, CTE 없음)",
+    "examples": [
+      {
+        "nlq": "What are the names and email addresses of all people listed in the OPA_PERSON_CURRENT table?",
+        "sql": "SELECT FULL_NAME, EMAIL_ADDRESS FROM OPA_PERSON_CURRENT;"
+      },
+      {
+        "nlq": "Which buildings have an assignable area listed in the FAC_BUILDING table?",
+        "sql": "SELECT BUILDING_NUMBER, ASSIGNABLE_AREA FROM FAC_BUILDING WHERE ASSIGNABLE_AREA IS NOT NULL;"
+      },
+      {
+        "nlq": "What are the course names and instructor names for courses listed in the LIBRARY_COURSE_INSTRUCTOR table?",
+        "sql": "SELECT COURSE_NAME, INSTRUCTOR_NAME FROM LIBRARY_COURSE_INSTRUCTOR;"
+      }
+    ]
+  },
+  "AGG_G": {
+    "description": "집계 함수(SUM, COUNT, AVG 등)와 GROUP BY 사용",
+    "examples": [
+      {
+        "nlq": "What is the total assignable area for each building?",
+        "sql": "SELECT BUILDING_NUMBER, SUM(ASSIGNABLE_AREA) AS total_assignable_area FROM FAC_BUILDING GROUP BY BUILDING_NUMBER;"
+      },
+      {
+        "nlq": "How many supervisees does each department have in total?",
+        "sql": "SELECT DEPT_NAMES, SUM(NUM_OF_SUPERVISEES) AS total_supervisees FROM SPACE_SUPERVISOR_USAGE GROUP BY DEPT_NAMES;"
+      },
+      {
+        "nlq": "What is the average external gross area per building?",
+        "sql": "SELECT BUILDING_NUMBER, AVG(EXT_GROSS_AREA) AS avg_ext_gross_area FROM FAC_BUILDING GROUP BY BUILDING_NUMBER;"
+      }
+    ]
+  },
+  "AGG_G_SQ": {
+    "description": "집계 + GROUP BY + 서브쿼리 (SELECT 안에 SELECT)",
+    "examples": [
+      {
+        "nlq": "What is the average square footage per supervisee for each department?",
+        "sql": "SELECT DEPT_NAMES, AVG(SQFT_PER_SUPERVISEE) AS avg_sqft_per_supervisee FROM SPACE_SUPERVISOR_USAGE GROUP BY DEPT_NAMES;"
+      },
+      {
+        "nlq": "How many courses are offered for each academic year?",
+        "sql": "SELECT ACADEMIC_YEAR, COUNT(SUBJECT_ID) AS course_count FROM COURSE_CATALOG_SUBJECT_OFFERED GROUP BY ACADEMIC_YEAR;"
+      },
+      {
+        "nlq": "What is the total number of supervisees and the corresponding research volume for each MIT ID?",
+        "sql": "SELECT MIT_ID, SUM(NUM_OF_SUPERVISEES) AS total_supervisees, SUM(RESEARCH_VOLUME) AS total_research_volume FROM SPACE_SUPERVISOR_USAGE GROUP BY MIT_ID;"
+      }
+    ]
+  },
+  "AGG_G_CTE": {
+    "description": "집계 + GROUP BY + CTE (WITH 절 사용)",
+    "examples": [
+      {
+        "nlq": "What is the total square footage of buildings in each city?",
+        "sql": "WITH CityBuildingSQFT AS (SELECT ADDRESS_CITY_ID, SUM(SQFT) AS Total_SQFT FROM SPACE_SUPERVISOR_USAGE GROUP BY ADDRESS_CITY_ID) SELECT * FROM CityBuildingSQFT;"
+      },
+      {
+        "nlq": "How many supervisees are there on average for each department?",
+        "sql": "WITH AvgSuperviseesPerDept AS (SELECT DEPT_NAMES, AVG(NUM_OF_SUPERVISEES) AS Avg_Supervisees FROM SPACE_SUPERVISOR_USAGE GROUP BY DEPT_NAMES) SELECT * FROM AvgSuperviseesPerDept;"
+      },
+      {
+        "nlq": "What is the total assignable area for each major use category?",
+        "sql": "WITH TotalAssignableArea AS (SELECT MAJOR_USE, SUM(ASSIGNABLE_AREA) AS Total_Assignable_Area FROM FAC_BUILDING GROUP BY MAJOR_USE) SELECT * FROM TotalAssignableArea;"
+      }
+    ]
+  },
+  "AGG_G_CASE": {
+    "description": "집계 + GROUP BY + CASE WHEN 조건문",
+    "examples": [
+      {
+        "nlq": "What is the total square footage and average number of supervisees per department, grouped by whether the square footage per research volume is above or below 500?",
+        "sql": "SELECT DEPT_NAMES, SUM(SQFT) AS total_square_footage, AVG(NUM_OF_SUPERVISEES) AS avg_supervisees, CASE WHEN SQFT_PER_RES_VOL > 500 THEN 'Above 500' ELSE 'Below 500' END AS sqft_per_res_vol_category FROM SPACE_SUPERVISOR_USAGE GROUP BY DEPT_NAMES, CASE WHEN SQFT_PER_RES_VOL > 500 THEN 'Above 500' ELSE 'Below 500' END;"
+      },
+      {
+        "nlq": "How many buildings are there in each city, categorized by whether they have an E911 address?",
+        "sql": "SELECT ADDRESS_CITY_ID, COUNT(DISTINCT FCLT_BUILDING_KEY) AS building_count, CASE WHEN IS_E911_ADDRESS = 'Y' THEN 'Has E911 Address' ELSE 'No E911 Address' END AS e911_category FROM FCLT_BUILDING_ADDRESS_HIST GROUP BY ADDRESS_CITY_ID, CASE WHEN IS_E911_ADDRESS = 'Y' THEN 'Has E911 Address' ELSE 'No E911 Address' END;"
+      },
+      {
+        "nlq": "What is the total research volume and average square footage per supervisee for each MIT ID, grouped by departments with more than 10 supervisees?",
+        "sql": "SELECT MIT_ID, SUM(RESEARCH_VOLUME) AS total_research_volume, AVG(SQFT_PER_SUPERVISEE) AS avg_sqft_per_supervisee, CASE WHEN NUM_OF_SUPERVISEES > 10 THEN 'More than 10 supervisees' ELSE '10 or fewer supervisees' END AS supervisee_category FROM SPACE_SUPERVISOR_USAGE GROUP BY MIT_ID, CASE WHEN NUM_OF_SUPERVISEES > 10 THEN 'More than 10 supervisees' ELSE '10 or fewer supervisees' END;"
+      }
+    ]
+  },
+  "AGG_G_W": {
+    "description": "집계 + GROUP BY + WINDOW 함수 (OVER, PARTITION BY)",
+    "examples": [
+      {
+        "nlq": "What is the average number of supervisees per department, grouped by MIT ID, and what is the rank of each MIT ID based on the number of supervisees within their department?",
+        "sql": "SELECT MIT_ID, DEPT_NAMES, AVG(NUM_OF_SUPERVISEES) AS avg_supervisees, RANK() OVER (PARTITION BY DEPT_NAMES ORDER BY AVG(NUM_OF_SUPERVISEES) DESC) AS rank_within_dept FROM SPACE_SUPERVISOR_USAGE GROUP BY MIT_ID, DEPT_NAMES;"
+      },
+      {
+        "nlq": "How much assignable area does each building have on average, grouped by building number, and what is the rank of each building in terms of assignable area within its fiscal period?",
+        "sql": "SELECT BUILDING_NUMBER, FISCAL_PERIOD, AVG(ASSIGNABLE_AREA) AS avg_assignable_area, RANK() OVER (PARTITION BY FISCAL_PERIOD ORDER BY AVG(ASSIGNABLE_AREA) DESC) AS rank_within_period FROM FCLT_BUILDING_HIST GROUP BY BUILDING_NUMBER, FISCAL_PERIOD;"
+      },
+      {
+        "nlq": "What is the total research volume and the rank of each MIT ID based on research volume within each department?",
+        "sql": "SELECT MIT_ID, DEPT_NAMES, SUM(RESEARCH_VOLUME) AS total_research_volume, RANK() OVER (PARTITION BY DEPT_NAMES ORDER BY SUM(RESEARCH_VOLUME) DESC) AS rank_within_dept FROM SPACE_SUPERVISOR_USAGE GROUP BY MIT_ID, DEPT_NAMES;"
+      }
+    ]
+  },
+  "AGG_G_U": {
+    "description": "집계 + GROUP BY + UNION (결과 합치기)",
+    "examples": [
+      {
+        "nlq": "What is the total assignable area of buildings grouped by city, and how do the results combine from different fiscal periods?",
+        "sql": "SELECT ADDRESS_CITY_ID, SUM(ASSIGNABLE_AREA) AS total_assignable_area FROM FAC_BUILDING_ADDRESS JOIN FAC_BUILDING ON FAC_BUILDING_ADDRESS.BUILDING_KEY = FAC_BUILDING.FAC_BUILDING_KEY GROUP BY ADDRESS_CITY_ID UNION SELECT ADDRESS_CITY_ID, SUM(ASSIGNABLE_AREA) AS total_assignable_area FROM FCLT_BUILDING_HIST JOIN FAC_BUILDING ON FCLT_BUILDING_HIST.FCLT_BUILDING_KEY = FAC_BUILDING.FAC_BUILDING_KEY GROUP BY ADDRESS_CITY_ID;"
+      },
+      {
+        "nlq": "How many supervisees are there per department, and how do the results compare when combined with different department names?",
+        "sql": "SELECT DEPT_NAMES, SUM(NUM_OF_SUPERVISEES) AS total_supervisees FROM SPACE_SUPERVISOR_USAGE GROUP BY DEPT_NAMES UNION SELECT DEPT_NAMES, SUM(NUM_OF_SUPERVISEES) AS total_supervisees FROM DRUPAL_EMPLOYEE_DIRECTORY JOIN SPACE_SUPERVISOR_USAGE ON DRUPAL_EMPLOYEE_DIRECTORY.MIT_ID = SPACE_SUPERVISOR_USAGE.MIT_ID GROUP BY DEPT_NAMES;"
+      },
+      {
+        "nlq": "What is the total research volume per major use, and how do different descriptions affect the combined results?",
+        "sql": "SELECT MAJOR_USE, SUM(RESEARCH_VOLUME) AS total_research_volume FROM FAC_MAJOR_USE JOIN SPACE_SUPERVISOR_USAGE ON FAC_MAJOR_USE.MAJOR_USE_KEY = SPACE_SUPERVISOR_USAGE.MAJOR_USE_KEY GROUP BY MAJOR_USE UNION SELECT DESCRIPTION, SUM(RESEARCH_VOLUME) AS total_research_volume FROM FCLT_MAJOR_USE JOIN SPACE_SUPERVISOR_USAGE ON FCLT_MAJOR_USE.FCLT_MAJOR_USE_KEY = SPACE_SUPERVISOR_USAGE.MAJOR_USE_KEY GROUP BY DESCRIPTION;"
+      }
+    ]
+  },
+  "AGG_G_H": {
+    "description": "집계 + GROUP BY + HAVING (집계 조건)",
+    "examples": [
+      {
+        "nlq": "What is the total square footage used for research in each department, considering only departments that have more than 10 supervisees?",
+        "sql": "SELECT DEPT_NAMES, SUM(SQFT) AS total_sqft FROM SPACE_SUPERVISOR_USAGE GROUP BY DEPT_NAMES HAVING SUM(NUM_OF_SUPERVISEES) > 10"
+      },
+      {
+        "nlq": "How many buildings have an assignable area greater than 5000 square feet?",
+        "sql": "SELECT BUILDING_NUMBER, COUNT(*) AS building_count FROM FAC_BUILDING GROUP BY BUILDING_NUMBER HAVING SUM(ASSIGNABLE_AREA) > 5000"
+      },
+      {
+        "nlq": "For each major use category, what is the total number of rooms where the assignable area is greater than 1000 square feet?",
+        "sql": "SELECT MAJOR_USE, COUNT(FCLT_ROOM_KEY) AS room_count FROM FCLT_ROOMS JOIN FCLT_MAJOR_USE ON FCLT_ROOMS.FCLT_MAJOR_USE_KEY = FCLT_MAJOR_USE.FCLT_MAJOR_USE_KEY GROUP BY MAJOR_USE HAVING SUM(ASSIGNABLE_AREA) > 1000"
+      }
+    ]
+  },
+  "AGG_G_SQ_CASE_W": {
+    "description": "집계 + GROUP BY + 서브쿼리 + CASE + WINDOW (복합)",
+    "examples": [
+      {
+        "nlq": "What is the average square footage per supervisee for each department, and how does each department rank based on this metric?",
+        "sql": "SELECT DEPT_NAMES, AVG(SQFT_PER_SUPERVISEE) AS avg_sqft_per_supervisee, RANK() OVER (ORDER BY AVG(SQFT_PER_SUPERVISEE) DESC) AS department_rank FROM SPACE_SUPERVISOR_USAGE GROUP BY DEPT_NAMES;"
+      },
+      {
+        "nlq": "What is the total assignable area for each building, and how does it compare to the average assignable area across all buildings?",
+        "sql": "SELECT BUILDING_NAME_LONG, SUM(ASSIGNABLE_AREA) AS total_assignable_area, CASE WHEN SUM(ASSIGNABLE_AREA) > avg_area THEN 'Above Average' ELSE 'Below Average' END AS comparison FROM FAC_BUILDING, (SELECT AVG(ASSIGNABLE_AREA) AS avg_area FROM FAC_BUILDING) AS avg_table GROUP BY BUILDING_NAME_LONG;"
+      },
+      {
+        "nlq": "How many instructors are there per department, and what is the rank of each department based on the number of instructors?",
+        "sql": "SELECT DEPARTMENT, COUNT(INSTRUCTOR_NAME) AS instructor_count, DENSE_RANK() OVER (ORDER BY COUNT(INSTRUCTOR_NAME) DESC) AS department_rank FROM LIBRARY_COURSE_INSTRUCTOR GROUP BY DEPARTMENT;"
+      }
+    ]
+  }
+}

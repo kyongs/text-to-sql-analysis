@@ -1,0 +1,498 @@
+﻿idx,attempts,final_match,final_nlq
+0,1,O,"What is the current building key, building street address, city, state, and postal code of the history department?"
+1,2,O,"Show the unique activity titles, locations, term start date, and the leader’s name (the person whose role is “Activity leader”) for all activities, sorted by the term start date in ascending order. Do not limit the results to any specific enrollment type (do not filter to “Other”)."
+2,2,O,"List the unique course instructor names and course titles, and for each instructor–subject pair show the amount of material as a per-row count that is repeated for every record within that same instructor key and subject offered key (not a single aggregated row per pair)."
+3,1,O,"What is the room, floor, building key, building street address, city, state, and postal code of Professor Summer Haynes's office?"
+4,4,O,"List the unique full room names, along with their building names, the building’s single street address as stored in the building record (not split into street-number parts), cities, states, postal codes, and building heights, but only for rooms that have a matching building, a matching building-height record, and a matching building address whose purpose is exactly “STREET”, for subjects offered by the department whose name is exactly “Electrical Eng & Computer Sci”; include rooms even if the full room name is missing (do not filter out blank or unknown room names)."
+5,1,O,"List the unique term code, subject title, room, floor, building key, building street address, city, state, and postal code, formats, and number of enrolled students for all courses with more than 300 attendees."
+6,2,O,"What are the **distinct** subject titles, their material titles, ISBN numbers, and new shelf prices, along with the total cost of new materials summed across all items within the same subject title, sorted only by the individual item’s new shelf price from lowest to highest (no additional sorting)?"
+8,2,O,"For each building name, how many distinct courses offered by the Center for International Studies are held in that building?"
+9,1,O,"What is the name of the building that accomodates the most students, and how many students does it accomodate?"
+10,1,O,List the name and floor of the building with the largest floor number.
+11,2,O,"For each IAP category and academic year, list the category name, academic year, the sum of fee collected, the number of distinct IAP subjects, and the minimum and maximum enrollment, without sorting the results."
+12,2,O,"For each sponsor of the independent activity periods, list the sponsor name, the number of distinct sessions held, the total maximum enrollment summed across all related session details (do not treat missing enrollment as zero), the minimum and maximum fee, and the counts of sessions that have info marked “Y” versus “N” (no particular ordering needed)."
+13,1,O,"What are the individual's email and name, academic year, total number of IAP subjects, the minimum and maximum fees, and the total course enrollment for each individual and academic year?"
+14,2,O,"What is the term code, term description, the total number of **distinct** IAP sessions, the total fee (sum of the fee values), and the minimum and maximum enrollment for each term code, counting only terms that have matching IAP session and term description records?"
+15,3,O,"For each physical IAP session location (building), return the building name, the total number of distinct subjects, the total fee (summing the fees as stored, without replacing missing fees with 0), and the shortest and longest session lengths measured in minutes from the session start time to the session end time, treating any session whose start time is later than its end time as ending at 12:00 PM (noon)."
+16,3,O,"What is the total number of distinct subjects, the total fee, and the shortest and longest session lengths (in minutes, treating any session whose end time is earlier than its start time as ending at 12:00 PM), considering only sessions whose location is different from every building number in the buildings list (i.e., compare each session to all buildings and keep the cases where the building number is not equal to the session’s location, rather than only keeping sessions with no matching building at all)?"
+17,1,O,"What is the school code, school name, full name of the department, course level, total number of courses, and total number of degree-granting courses for each school code, department, and course level?"
+18,5,O,"What are the different schools and departments that offer SIS courses? For each combination of school code, school name, department code, and department name, show (1) the number of distinct phone numbers listed for that department, counting only phone numbers that are actually present (do not treat missing or blank phone numbers as a distinct phone number), and (2) whether undergraduate (“U”) or graduate (“G”) is more common among that department’s courses—if the counts are tied, report “U”."
+19,1,O,"What is the school code, school name, DLC key, the graduate level, total number of SIS subjects, the minimum and maximum course numbers, and the total number of departments offering subjects for each school?"
+20,6,O,"For each building component and name of the building combination, show the building component and the name of the building, and also show a single “total square footage” number that is the sum of square footage across all rooms for that entire building component (across all buildings in that component), computed only from the room square footage values in the space-detail records; this same component-wide total square footage must be repeated for every building name within that component (do not compute a separate square-footage total per building). In addition, for that same building component–building name combination, report: the number of distinct floors, the number of distinct rooms, the number of distinct facility organizations, the number of distinct supervisors, and the total supervisees summed across all matching supervisor-usage records (do not deduplicate supervisee counts). Only include building component–building name combinations that have matching floor information, matching facility organization information, and matching supervisor-usage information for their space-detail records (exclude any that are missing any of these matches). Do not sort or order the results."
+22,1,O,"What is the department name, total number of types of TIP subjects, total number of enrolled students, the minimum and maximum rental new price for each department?"
+23,4,O,"What are the details of courses offered in the current academic term (only terms marked as the current academic term), including the academic year, term code, hgn code, the total number of distinct courses, the average number of units, the department name, and the responsible faculty member’s name and email address—only for courses that have a responsible faculty member listed in the employee directory (exclude courses with no matching faculty name/email), and without adding any extra sorting of the results?"
+24,2,O,"Retrieve information about the IAP subjects, including each subject’s title, category, session title, session start time, session end time, and sponsor name, and also include the total number of **distinct sessions** for each **unique combination of subject title, category, session title, session start time, session end time, and sponsor name** (so the session count is not just per subject title)."
+25,3,O,"Show the department names, the corresponding SIS subject code, subject code descriptions, and graduate level for each course, and also include (as a separate department-level value repeated on every row for that department) the total number of distinct courses offered by that department, where the department-level total is grouped and matched by the department name (not by any department code)."
+26,2,O,"For each academic term, list the term code and term description, and mark the term as current **only if it is in the current calendar year and the “term is current” flag is Yes**; otherwise mark it as not current. Also, for each term, count the **distinct CIS course subjects** offered in that term by matching courses to the term’s academic year and to the term’s season (fall/IAP/spring/summer) based on the term code ending (FA/JA/SP/SU) and the corresponding “is offered in that season” indicator, rather than matching by an effective term code."
+28,1,O,"What is the course number, subject title, material status, the total, min, and max new shelf price, the total, min, and max used shelf price, total number of schools and the total number of materials for each TIP subject and material status?"
+29,2,O,"For each material status, show the material status, the total number of distinct materials, the total number of distinct subjects, the total number of distinct schools, and the most recent publication year (as stored in the publication year field, without converting or cleaning it)."
+30,4,O,"For each academic term, return the term description and whether it is the current term, along with: the total number of distinct TIP subjects offered (count distinct by the TIP subject identifier/number, not by an internal key), the total number of distinct materials (by ISBN), the minimum and maximum enrolled students, the total number of distinct schools offering subjects, and the total number of records. Include all academic terms even if they have no TIP subjects offered, but when computing these totals/min/max, only consider TIP subjects that have matching detail information and, through that detail, matching material and matching material status (so TIP subjects without that complete matching chain should not contribute). Do not list or sort by the term code."
+33,6,O,"Show the details of rooms including the full name of the rooms, the building names, floor numbers, the organizations occupying them, and the name of the departments occupying them, and include exactly two computed ratios (not percentages): (1) the room area divided by the assignable floor area, and (2) the room area divided by the assignable building area taken from the building information (the building’s own assignable area, not any floor area). If the assignable floor area is exactly 0 then the first ratio should be 0, and if the building’s assignable area is exactly 0 then the second ratio should be 0. Do not include the raw room area or the raw assignable areas as separate output fields—only these two ratios. Also, make sure the building’s assignable area comes from the building record (not from the floor record), and do not apply any rounding or type conversions—use the original numeric values as stored."
+35,1,O,"What are the academic year, and instructors names for courses offered in the academic year 2022, along with the total number of types of courses per instructor?"
+37,5,O,"Provide the complete information for students with the first name Kevin, including their full names, email addresses, department names, department phone numbers, and school names. Also include two separate totals for each row, and make sure each total is computed based on the department and school shown in that same row: (1) the total number of distinct students (by email address) whose department is that exact department, and (2) the total number of distinct students (by email address) whose school is that exact school.  
+
+Include a row only when that department has a matching department phone number record (so the phone number is present because the department has a phone-number entry), but do not add any extra filtering that removes rows just because the phone number value itself is blank or missing. Do not exclude students from the totals due to missing email addresses or missing department/school codes—count distinct email addresses as they appear.  
+
+Ensure duplicate rows are removed if the same combination of these fields would otherwise repeat. If a student is associated with more than one department, list a separate row for each department."
+38,3,O,"What are the unique titles of subjects offered in fall terms (identify fall only by the term code ending in “FA”, not by any separate fall-term flag) along with their instructor names and instructor emails, and also include (as a separate value) for each instructor the total count of distinct subjects they are responsible for across all “FA” fall terms—make sure this total is computed using a separate per-instructor aggregation (not a per-row running/window calculation)."
+40,6,O,"Retrieve the titles of subjects offered in a summer term where the academic term code ends with “SU” (for example, “2024SU”), along with their descriptions, responsible faculty names, the responsible faculty member’s email address (only include subjects that have a matching email address for the responsible faculty member), the building name, room name, floor level, the building’s street address (use the building’s street address field, and include the subject only if there is a building address record whose purpose is exactly “STREET”), and the total number of distinct courses in the same department as each subject (counted across all terms, not just summer)."
+41,2,O,"For each academic term, list the term description, the attribute description, the department name, and the school name for offerings in the area of humanities, arts and social studies, and also include the total number of distinct subjects in that same area for the entire term (the term-level total should be the same for all rows within a term, not broken down by attribute, department, or school)."
+42,7,O,"List each building’s name and height, its street address (use only the address whose purpose is exactly “STREET”), city, state, and postal code, along with gross and assignable square footage, the smallest floor level number and the highest floor level number in that building, and the total area of all rooms in that building. Determine the smallest/highest floor level and the total room area by linking building → floors → rooms (a floor belongs to the building; a room belongs to a floor), and treat floor levels as their original values (do not convert or cast floor levels or room areas to decimals). Return one row per building, and include only buildings that have a STREET address, at least one floor, and at least one room on one of those floors."
+43,3,O,"For each CIP category (grouped by its category code), what are the category title, version, department name, and school name, along with three separate totals: the number of undergraduate courses (course level “U”), the number of graduate courses (course level “G”), and the number of degree-granting courses (marked “Y”)? Please do not include the CIP category code itself in the results."
+44,3,O,"For each course name, return only these summary values (do not list the course name itself): the total number of distinct library materials, the earliest and latest publication years exactly as recorded (do not ignore or filter out any non‑4‑digit years and do not convert the year values), and the total number of distinct materials statuses."
+45,4,O,"For each course instructor, report only these four values (do not include the instructor’s name in the output): the count of unique library reserve materials, the minimum and maximum publication years exactly as recorded in the data (do not validate, filter, or convert the year values—treat them as-is), and the total enrolled students summed across all their offerings (do not remove duplicate enrollment values when summing)."
+46,3,O,"For each combination of **library material status** and **term description** (using the term description that matches the term code), show the material status and the term description, and count **distinct courses by course number only** (do not combine the term code or any subject identifier into the course count), along with the distinct number of materials, distinct departments, distinct schools, and distinct instructors. Group the results by **library material status code**, **library material status**, **term code**, and **term description** (but do not display the codes), and include only records whose term code has a matching term description."
+47,1,O,"For building 36, list all space units, their floor and building name, building street address, their space usage, and the number of organizations and space units on the same building and floor."
+48,3,O,"For each list whose name starts with “A” (case insensitive) and that has more than 1000 member entries (count every member entry, not just unique people), provide the list’s name, whether it is a mailing list, whether it is a moira group, whether it is an NFS group, the owner, and the member-entry count **computed per list overall (the same count for the list regardless of owner), not a separate count per owner**."
+49,5,O,"List the list-and-owner pairs that have the largest and the least number of member entries, including each list’s name, the specific owner for that entry, the list’s public status, the list’s hidden status, and the counted number of member entries. Count member entries separately for each owner of a list (so the total is per list-and-owner pair, not per list), and do not remove duplicate member entries when counting. Determine the overall minimum and overall maximum from these per-pair counts computed only from the member-entry records (not from any pre-filtered or de-duplicated set), and include every list-and-owner pair whose count equals that overall minimum or overall maximum. If multiple different list-and-owner pairs share the same list name, still treat them as separate pairs and include them all when they match the overall minimum or maximum. Do not restrict the results to only mailing lists, and do not sort the output."
+50,3,O,"For each email list whose name starts with “C” (case-insensitive), consider only those list members who can be matched (case-insensitive) to the Kerberos username of a responsible faculty member for at least one summer-term course (term code ends with “SU”) in a financial aid year strictly after 2001; then report the list name, the total number of matched list-member entries (count every matched member entry, not just distinct), and the number of distinct matched faculty. Do not include lists or members that have no such matching summer-course faculty."
+51,1,O,"Regarding the mailing list about duo users, provide the number of students in this list, and the number of departments and schools associated with these students."
+53,4,O,"For each course instructor who is a member of the **“keeper-zephyr”** mailing list (matching the mailing-list member identifier to the person’s Kerberos username, case-insensitively), return the mailing list name **“keeper-zephyr”** along with the instructor name, the earliest and latest **publication years exactly as stored** (include all values, even if the year is not a 4-digit number or is 0), and the total number of enrolled students; **do not require the list to be flagged as a Moira mailing list (do not filter on any “is mailing list” indicator).**"
+54,6,O,"For each list whose name starts with the letter R (case-insensitive) and that Professor Ayden Hopkins (full name exactly “Hopkins, Ayden”) is a member of, first identify the qualifying lists by matching (case-insensitive) the professor’s Kerberos username to the list’s member identifier **and use that same membership record to determine the list’s owner** (so the owner returned must be the owner associated with the professor’s membership entry for that list). Then, for each such qualifying list, return the list’s name, description, and that owner, along with (1) the total number of distinct member identifiers in the list and (2) the number of distinct member identifiers in that same list that correspond (by case-insensitive match of member identifier to Kerberos username) to people whose payroll rank is exactly “Faculty Tenured” (treat missing payroll-rank information as not tenured). Include qualifying lists even when the tenured-faculty count is zero, and sort by the total distinct member count from highest to lowest."
+55,2,O,"For the email list named “date-destiny”, return only the list name along with (1) how many students on the list are in the Management department and (2) what percent of all students on the list are in the Management department, rounded to two decimal places; do not list or break down results by department name, and count Management students even if some students have no department recorded."
+56,5,O,"For **every** building that is tied for having the most floors (floors counted as **highest floor level − lowest floor level + 1**, so missing level numbers are still included), list the building name and the names of the mailing lists whose names start with **lowercase “a”** (match exactly “a…”, not “A…”) that employees **whose office is in a room in those buildings** and whose kerberos starts with **“C”** (**case-insensitive**) subscribe to; when counting floors, use the floor levels that are actually associated with rooms in each building, and **do not exclude any floor levels based on whether the level value looks numeric (include all levels, even if they are non-numeric or negative)**."
+57,3,O,"For each Moira list, considering only the subjects taught by faculty whose **responsible faculty last name** (as shown in the subject offerings) begins with “Y”, return the list name, the total number of subjects offered by those faculty (count every subject offering, not just distinct ones), and the number of distinct responsible faculty last names among those subject offerings for that list. Match Moira list membership to faculty by the faculty member’s Kerberos username (case-insensitive), not by a stored MIT ID, and do not restrict the results to only lists that are marked as mailing lists."
+58,1,O,"For students with last names starting with H who are subscribed to mailing list 'beacon-date-date', list the names of the students, the phone numbers of departments they belong to, and the size of the mailing list 'beacon-date-date' that they are subscribed to."
+59,2,O,"Give the number of distinct mailing lists whose names start with the letter “B” and that include members whose organization is exactly “Electrical Engineering-Computer Science”, and also return the name of the “B” list with the highest number of distinct members (count people by distinct MIT ID, not by rows) from that organization and that highest distinct-member count. Do not apply any extra filter such as requiring the list to be marked as a Moira mailing list."
+60,6,O,"For the **'kangaroo-inspire-yearn'** email list, for each **department name** that can be determined for the students on the list, show the **department name**, the **count of distinct students in that department** (count students by their mailing-list member identity, matching case-insensitively), and that department’s **percentage of the total distinct students on the mailing list**, where the **total** is the number of distinct mailing-list members on the list **regardless of whether they can be matched to a person record or a department**. When determining a student’s department, **only include students who can be matched to a student-directory record via a person record (match the student directory’s full name to the person’s full name, and match the person’s Kerberos name to the mailing-list member case-insensitively)**; students who cannot be matched this way should **not** appear in any department group. **Do not create an “Unknown” (or any other) department row; if a matched student’s department name is missing, keep the department name as missing rather than labeling it.** Round the percentage to **2 decimal places**. Do **not** sort or rank the results; return the departments in any order."
+61,1,O,"Among the mailing lists subscribed by people with physical offices in building 24, provide the name of the most subscribed mailing list and the total number of subscribers."
+62,3,O,"For every email list, match each list member to a person using the member’s Kerberos username (case-insensitive), and report the list’s name, the number of matched subscribers who are support staff, the number of matched subscribers who are faculty, and the list’s active status; include only subscribers whose employee type is support staff or faculty (ignore all other employee types), and only include lists that have at least one matched support staff or faculty subscriber (do not include lists with zero such subscribers)."
+63,3,O,"For the **'ocean-apple' mailing list**, determine the **most prominent department among student subscribers** by counting **distinct students (by full name)** in each department, matching mailing-list member identifiers to person identifiers **case-insensitively**. When associating a student with a department, **include students even if their department information is missing or does not match any known department record** (do not drop those students). Return the **department name**, **department phone number**, and the **total number of distinct student subscribers** for the top department; if there is a tie for the highest total, return **all tied departments**."
+66,3,O,"For each subject that is offered this year and has a term code ending in **FA** (Fall) or **SP** (Spring), list the department name, the school name **if available (include the subject even when the school name is missing)**, the subject ID, subject title, course level **if available (include the subject even when the course level is missing)**, total units, the offered term (label it **Fall** when the term code ends in FA and **Spring** when it ends in SP), the term description, and the count of **distinct values** in the Fall instructors field and the count of **distinct values** in the Spring instructors field (treat each instructors field as a single value, not a comma-separated list to be split). Also, sort the results by department name, then subject ID, then subject title, then offered term."
+68,2,O,"Group subjects by cluster type, the department offering the subject, and the school name. For each group, list the cluster type, name of the department, school name, whether the department grants degrees, the number of distinct subjects, total enrollment, and average enrollment. Only include rows where the cluster type is present, the school name is present, and each subject offering has a positive (greater than zero) enrollment (do not include zero-enrollment offerings). Include departments and course descriptions even if some related details are missing, as long as the cluster type, school name, and positive enrollment conditions are met."
+71,3,O,"Consider only materials cataloged on or after 2000. For each material status and department name (if a course has no matching department name, keep it and show the department as blank/null), list the material status, the department name, the number of distinct associated catalog items, and the total number of enrolled students in courses using those materials.  
+
+Then add one subtotal row per material status that **adds up the already-computed department-level counts of distinct catalog items and the already-computed department-level totals of enrolled students** for that status (so the subtotal is the sum of the department rows, not a fresh distinct count across all departments); leave the department name blank/null on these subtotal rows. Also add one grand total row across all statuses with the material status shown as “Grand Total” and the department name left blank/null, where the grand total **adds up the department-level counts and student totals across all statuses**.  
+
+Order the results so department-level rows come first, then the subtotal rows, and the grand total last."
+72,7,O,"For each department in the library system, list the name of the department, the total number of distinct courses counted by course name (not by instructor or any internal identifier), the total number of distinct catalog items linked to those courses (for each department–course-name pair, count distinct catalog items linked to that course name, then sum those per-course counts within the department), and the average number of enrolled students per course computed only from offerings with enrollment greater than 0 **without deduplicating offerings** (for each department–course-name pair, add up the enrolled students across **all** qualifying offerings of that course name, even if multiple offerings have the same enrollment value, then average those per-course totals within the department). Apply the enrollment-greater-than-0 restriction to every part of the calculation, and only include course names that have at least one offering with enrollment greater than 0. Also include a single grand total row across all departments labeled exactly “Grand Total”, where the total courses and total catalog items are summed across departments, and the grand total average enrollment per course is the average of the per-department average-enrollment-per-course values (do not recompute this average directly from all courses). The “Grand Total” row should appear first, followed by departments in alphabetical order, and the output column labels should be “total_courses”, “total_catalog_items”, and “avg_students_per_course” (not “total_distinct_courses”, “total_distinct_catalog_items”, or “avg_enrolled_per_course”)."
+73,2,O,"For each department and school that offers courses with materials, considering **only** courses explicitly marked as **having course materials (not “no course material”)**, list the department name, school name, the number of unique course materials **by material title**, the number of courses **by course title**, the average new and used shelf prices of materials, the total material records, and the number of distinct material statuses **by status name**. Also include a grand total across all schools and departments, with the school and department fields shown as null, and sort the results by school name then department name."
+76,5,O,"For each financial aid year and academic year where the financial aid year is present (exclude only terms where the financial aid year is null), list the total number of distinct fiscal periods and distinct quarters, the earliest start term date and latest end term date across the terms in that year pair, and the number of distinct department-level term parameters. When determining fiscal periods, only count a fiscal period as the same if both the fiscal period and the fiscal year match (do not count fiscal periods using fiscal period alone). When determining quarters, only count a quarter as the same if both the fiscal year and the quarter code match, and make sure the quarter code comes from the quarter records (not from the day/date records). Use only terms that have a matching start term date record, a matching fiscal period record for that same fiscal year, and a matching quarter record for that same fiscal year and quarter code. Sort results by financial aid year from newest to oldest, and within each financial aid year sort academic year from oldest to newest."
+79,2,O,"For each department and each material status, show the department name, the material status, the count of TIP materials for that department/status, the count of library materials for that department/status, and the combined total. Also include rollup totals: one subtotal row per department that sums across all material statuses, and one grand total row across all departments and all statuses. Do not rename the rollup rows (leave the department and status values as they naturally appear in the rollup output), and do not filter out any rollup rows. Count all materials (do not deduplicate by material key)."
+80,1,O,"For each building that is not a subdivision, list the building number, full name, street address, building type, occupancy date, ownership type, and site location. You should also include three rows at the end showing the number of owned, leased, all buildings at MIT that are not subdivisions, in the format of (null, #building Buildings, null, null, null, null, null)."
+81,4,O,"For each owned building that is not a subdivision (its subdivision value is truly missing, i.e., null), list the construction start year, the building number, and the year of initial occupancy. Derive both years from the stored dates by parsing them as month/day/year and then taking the 4‑digit year (not by taking the last 4 characters of the text). If the construction start year is missing, show it as “UNKNOWN”. For the year of initial occupancy, show “UNKNOWN” only when the building number is present; if the building number is missing, leave the year of initial occupancy blank.
+
+Sort the rows by the construction start year as a text value (so “UNKNOWN” sorts with the other values, not forced to the end), then by the building’s sort order, then by building number. In the output, show the construction start year only when it changes from the previous row in that sorted list; if the building number is missing, do not show a construction start year for that row. Also, when the building number is missing, append an asterisk (*) to the construction start year value used for sorting/grouping so those rows are treated as a separate construction-start-year group.
+
+Finally, add one last row after all detail rows that shows the total count of these owned, non-subdivision buildings in the format (null, “<count> Buildings”, null), where the building number cell contains the count followed by the word “Buildings”."
+91,6,O,"For each name of the building type (but display the building type value “RESIDENT” as “RESIDENTIAL”), and considering only buildings that have a street address record whose purpose is exactly “STREET”, use only rows that are linked through rooms to at least one employee office location, and report: (1) the number of distinct buildings, counting each building by its parent building number when it exists, otherwise by its building key (so subdivisions roll up to their parent), (2) the number of distinct employees (distinct employee IDs) with an office located in a room in that building, (3) the number of distinct building street address texts, (4) the number of distinct cities, (5) the number of distinct states, (6) the number of distinct postal codes, and (7) the sum of gross square footage across all included building records (do not de-duplicate square footage) divided by the distinct employee count (null if the employee count is zero). List the building-type rows in alphabetical order by the original building type value (not by the displayed label), and then add one additional grand-total row labeled “TOTAL” after all building-type rows, computed the same way across all building types."
+96,7,O,"For each course offering, list the course name and the name of the building where it meets, and also show the running total number of course offerings within the same academic year up to and including that offering when ordered by the course start date from earliest to latest; if multiple offerings share the same course start date within an academic year, they must all show the same running total that includes all offerings on that date (so the running total increases by the number of offerings on each date, not by 1 per row); the running total must count course offerings (not distinct course names or buildings) and must be computed directly over the full set of offerings for that academic year without first collapsing rows by course name, building, or start date; return only unique rows, do not include the academic year or the course start date in the output, do not use the course identifier as a tie-breaker, and include only offerings that can be matched to a term start date and to a room and building (exclude offerings with missing/unknown term, room, or building information)."
+106,4,O,"Calculate the total assignable and non-assignable area for each building by summing the respective areas across all of that building’s floors, but include only those floors that have at least one room on that exact same floor within the same building. Also, for each building, count the total number of rooms by counting every individual room that matches to a floor within the same building (each room should be counted once; do not pre-summarize rooms per floor and then add those summaries). Only include buildings that have at least one floor with at least one room. For each building, list the building name, building number, total assignable area, total non-assignable area, and total rooms, sorted in descending order of total assignable area."
+109,2,O,"For each department, considering only departments that have at least one reserve-material detail record (so departments without any associated reserved materials or instructors are not included), list the department name, the number of distinct courses offered, the number of distinct reserved material titles, and the number of distinct instructor names associated with those courses, sorted by the distinct course count from highest to lowest."
+110,1,O,"For each course title, list the title, the total number of reserved materials, and the count of distinct material status associated with those materials, sorted by the total number of reserved materials in descending order."
+111,3,O,"For each instructor, considering only instructors who have at least one material assignment with a linked reserve catalog entry and a linked material status, list their name, the number of unique courses they teach, the total number of material assignments, the average publication year exactly as recorded (do not treat 0 or missing years differently), and the number of distinct statuses, sorted only by the number of unique courses in descending order (do not add any other tie-break sorting)."
+112,1,O,"For each publication year, list the year, the total number of reserved materials, the average length of their titles, distinct number of status, and number of courses, sorted by publication year in descending order."
+113,1,O,"For each IAP category, list the category name, the sponsor name, the number of activities offered, and the average fee per activity, sorted by the number of activities in descending order."
+114,2,O,"For each sponsor, list the sponsor name, the total number of IAP sessions hosted (count every session record, not just distinct sessions), and the number of unique subjects organized (count distinct sessions for subjects), and sort the results by the total number of IAP sessions hosted from highest to lowest."
+115,1,O,"For each person role and IAP category, list the role, the category name, the number of people in this role, and the average fee, sorted by the role count in descending order."
+116,3,O,"List the names of the buildings where the number of floors is calculated as the maximum floor level minus the minimum floor level for that building, using all floor level values exactly as stored (do not exclude any floors based on whether the floor level looks numeric), and return the building(s) with the largest such value (include all ties)."
+117,2,O,"For subjects whose summer term code ends with “SU”, list the subject titles, the number of distinct instructors by instructor name, and the character count of the longest instructor name."
+118,2,O,"For the owner key LIST69.377-keeper-xenon, list the owner, the total number of distinct lists they own, and the total number of distinct members across those lists (do not restrict to only lists marked as “mailing lists”)."
+119,1,O,"For each school, list the school name, total number of courses that appear in SIS subject code catalog, and the total number of degree-granting courses that appear in SIS subject code catalog."
+120,5,O,"For every department that appears in the student directory, list the department name, the department phone number, the number of distinct students counted by email address, and the maximum character length of any student full name in that department. Include departments as long as there is a matching department phone number record for that department, even if the phone number value itself is blank or missing. Do not sort the results."
+7,13,O,"List the long names of buildings and the year they were built for buildings built before 1950, where the built year is obtained by interpreting the built date as a month/day/year date (for example, “04/15/1932” gives 1932).
+
+When counting employees, do it exactly as follows:
+- First, from the building history, form the set of unique combinations of (building long name, extracted built year) and keep the building identifier associated with each of those unique combinations; then keep only those with extracted built year before 1950.
+- Then, connect those buildings to rooms using the building identifier.
+- Link employees to those rooms by matching an employee’s office location to the room’s building-room value, and only keep employees that successfully match to a room (do not include buildings with no matched employees).
+- Use the employee directory after de-duplicating it to unique employee–office-location pairs (do not filter out missing employee IDs or missing office locations beyond what is naturally excluded by the successful room match).
+- Count employees for each (building long name, built year) combination as a per-row repeated value (not by collapsing rows), and keep only building–year combinations where this count is greater than 100.
+
+Return the building long name, the built year, and the employee count value (the repeated per-row count), with no sorting."
+21,27,X,"For each department identified by a DLC key, build a summary using only departments that can be linked through all of these relationships: a room record, that room’s building record, that room’s floor record, that room’s space unit record, a supervisor-usage record whose department name exactly matches the DLC key, and an organization record that provides the DLC name for the same DLC key.
+
+Before doing any joins, take the room table and, for every room, attach an extra value equal to the total room square footage summed across all rooms that share the same building component. Keep this attached building-component square-footage total with each room row when joining to the other tables.
+
+In the final output, keep separate rows for the same DLC key whenever the attached building-component square-footage total differs. For each resulting group (DLC key, DLC name, attached building-component square-footage total), return:
+- the DLC key
+- the DLC name, using only unique DLC key–DLC name pairs from the organization table, matched by the same DLC key
+- the number of distinct floor labels reached via the room’s floor
+- the attached building-component total square footage
+- the number of distinct facility-organization keys reached via the room’s space unit
+- the number of distinct supervisors (by MIT ID) and the total number of supervisees, using supervisor-usage rows matched where department name equals the DLC key
+- the cumulative building height summed across all joined room rows (do not deduplicate building heights)
+
+Do not apply any additional filters and do not sort the results."
+27,27,X,"Create a material-level author value from the material table: for each material, if its author text contains a semicolon, keep exactly the characters from the start of the text up to (but not including) the first semicolon; otherwise keep the author text unchanged. Do not trim or normalize the text, and keep nulls and empty strings as-is.
+
+Then, using that material-level author value, combine tip detail records with their material status, with the subject offering, and with the department to obtain the school name. Return one row for each combination of the material-level author value, school name, and material status, showing (1) the sum of record counts and (2) the count of distinct courses. Label these outputs as “Total_Record_Count” and “Total_Subject”."
+31,27,O,"For each building and HR department combination where that HR department has at least one room in the building, return one row with: building name, building number, building height, building street address, the city and state from the building’s address record whose purpose is exactly “STREET”, the HR department name, the building’s assignable square footage, the total room area for that HR department in that building, and the average room area per room for that HR department in that building.
+
+Use the facilities building key as the building identifier everywhere (the same key must connect the building to its height record, its rooms, and its address records). Only include rows where a “STREET” address exists, and take city/state only from that “STREET” address. Compute the total and average room area at full precision (do not round or cast room areas to a fixed decimal scale). Sort results by assignable square footage descending, then total room area descending, then average room area descending."
+32,24,O,"For term code 2023FA only, list the subject offerings and return one output row per unique subject identifier in that term (so if the same subject identifier appears multiple times in 2023FA, keep only one row for it).
+
+For each output row, show the term description, the subject title, the prerequisites, the total number of subject offering rows in term 2023FA (the same total repeated on every row), the instructor field exactly as stored, and the instructor’s experience defined as the number of subject offering rows in the entire catalog that share the exact same instructor field value (treat missing instructor values as one shared group)."
+34,27,X,"For every room record, return one row showing the room’s full name, the matched building name, the matched floor number, the matched organization name, and the matched HR department name (include only rooms that have matching building, floor, and organization records).
+
+Also include exactly two calculated ratios:
+- the room’s area divided by the total area of all rooms with the same floor identifier, where that floor total is computed over the entire rooms table and repeated for each room on that floor; if the floor total is zero, return 0
+- the room’s area divided by the total area of all rooms with the same building identifier, where that building total is computed over the entire rooms table and repeated for each room in that building; if the building total is zero, return 0
+
+Do not include any other area or total-area fields, and do not sort the results."
+36,8,O,"What are the building names, department names, and organizations, along with the **maximum** floor number and the **minimum** floor number (treat the floor number as a value to compare directly, not by converting it to a different numeric type) and the total number of distinct rooms, for each unique building (distinguished by its building key) and each department/organization—counting only rooms that have a linked building, a linked floor record, and a linked department/organization (so exclude rooms missing any of those links), and do not add any extra sorting beyond grouping by building and department/organization?"
+39,21,O,"For each result row defined by a building (identified by its building key), the building name, one HR department name associated to that building through at least one room, and the building’s full built date (treat different built dates as different even if they fall in the same year), return:
+
+- the building name  
+- the HR department name (one per row; do not merge multiple departments)  
+- the year built, taken as the calendar year from the built date by interpreting the built date as month/day/year; if the built date is missing or blank, the year built should be null (do not apply any extra “blank-checking” logic beyond this)  
+- Total_Gross_Sq_Ft = the sum of the building’s gross square footage  
+- Total_Assignable_Sq_Ft = the sum of the building’s assignable square footage  
+- Avg_Assignable_Sq_Ft = the average of the building’s assignable square footage  
+
+Include buildings even when the built date is missing/blank, and include buildings even when the HR department name is missing; but only include buildings that can be linked through at least one room to an organization record.
+
+Do not show the building key.
+
+When defining distinct rows, use the building key, building name, HR department name, and the full built date exactly as stored; the built year is only derived for display and should not change which rows are distinct.
+
+Also, the output columns must be in this exact order: building name, HR department name, Total_Gross_Sq_Ft, Total_Assignable_Sq_Ft, Avg_Assignable_Sq_Ft, then year built."
+52,8,O,"For each mailing list that has exactly ten distinct members, match each member to a faculty record by comparing the member’s Kerberos name to the faculty Kerberos name in a case-insensitive way, and treat a faculty as “represented by the list” only if at least one of the list’s members matches that faculty. Then, for each mailing list and for each represented faculty, consider only courses in the 2023 fall term where that faculty is the responsible faculty, and count how many distinct course titles that faculty is responsible for within that mailing list (the distinct-title count is per faculty per mailing list). Finally, for each mailing list, report the mailing list name, the number of distinct represented faculty (counted by faculty ID) who have at least one such 2023 fall course, and the total number of courses across those faculty computed as the sum of the per-faculty distinct course-title counts. Exclude mailing lists with zero such faculty, and do not sort the results."
+64,19,O,"For each **Moira group** mailing list whose name **starts with “B”** (case-insensitive), do the following, making sure the output also includes the **single grand-total rollup row across all such lists** (it should have the mailing list name **null**, owner **null**, owner type **null**, visibility label **null**, and the total member count):
+
+1) Count **distinct members** for each combination of **mailing list name + owner + owner type + member visibility**, using the list’s member visibility flag labeled as:
+- **“Public Members”** only when it is exactly **Y**
+- **“Hidden Members”** only when it is exactly **N**
+- otherwise **null**  
+Include lists based **only** on the Moira group indicator, and do not add any extra filter that removes rows with missing member values.
+
+2) Create **rollup-style totals** by rolling up **(mailing list name, member visibility)** so the results include:
+- for each mailing list, one row per visibility label with the member count equal to the **sum of the per-(owner, owner type) distinct-member counts** for that visibility
+- for each mailing list, one additional row where the visibility label is **null** with the member count equal to the **sum across all visibility labels** for that mailing list
+- plus the **overall grand-total row across all included mailing lists** where both the mailing list name and visibility label are **null**  
+Exclude only those rollup rows whose **summed** member count is **0**.
+
+3) For each rollup row, attach owner information by pairing it with the **distinct (owner, owner type) pairs** that exist for that same mailing list, producing separate rows per owner pair, while **keeping every rollup row even if no owner pair exists** (the rollup member counts must not change).
+
+Return the results sorted by mailing list name and then by the visibility label."
+65,27,X,"For courses offered by the Biology department (department name exactly “Biology”), return one row per department name, course title, cluster type, and course level, keeping the row even when the course level, TIP data, or library reserve data is missing.
+
+First, for each Biology offering, attach its course level by matching the course number to the course description table. Also compute and attach the average enrollment for that offering’s cluster type, where the cluster-type average is calculated over Biology offerings only.
+
+Next, attach TIP information by matching the offering’s subject identifier to TIP details and then to TIP materials, and attach library reserve information by matching the offering’s subject identifier to the library reserve catalog system number.
+
+Finally, aggregate by department name, course title, cluster type, and course level and report: total enrollment (sum of the enrollment values across the joined rows), the average of the attached cluster-type average enrollment values, the count of distinct TIP material titles, the average new TIP material price, the average used TIP material price, the sum of TIP detail record counts, the count of distinct library reserve titles, and the count of distinct library reserve ISBNs. Order by department name, then course title, then cluster type."
+67,27,X,"For courses that belong to the department whose name is exactly “Political Science” (determine the department by matching each course’s subject code to the subject-code table, then to the department table), consider only course-catalog rows where the HASS attribute is present (not null) and where the course also has a matching enrollment summary record for the same subject.
+
+Group these courses by HASS attribute value, HASS attribute description, and the subject code description. For each group, report: the HASS attribute value, the HASS attribute description, the subject code description, how many distinct subjects are in the group, the average total units, the total number of enrolled students, and how many distinct department names in the group are flagged as degree-granting. Sort by HASS attribute value, then HASS attribute description, then subject code description."
+69,11,O,"For classes that meet in buildings at MIT, include all classes that can be matched to a course description (so a course level code is available), and only include buildings that have a recorded building address.
+
+Summarize results by the name of the building and the course level code from the course description (treating any code other than G or U as “Other”). For each building-and-course-level group, return:
+- the name of the building
+- the course level shown as “Graduate” when the code is G, “Undergraduate” when the code is U, and “Other” for any other code
+- the count of unique courses in that building-and-level group
+- the total number of distinct instructors for the entire building name, but calculated as the sum of the distinct-instructor counts from each course-level group for that same building name (so if the same instructor appears in multiple course levels, they are counted once per level and then added), and repeat this total on every row for that building name
+
+Do not include any subtotals or grand totals. Sort by the unique-course count (highest first), then by building name."
+70,19,O,"For each room number (course location) across all term codes (do not filter to a single term or require any term-code input parameter), break the results out by the room’s building name and building number, the building’s city and state (and if the same building has multiple address rows, keep a separate row for each city/state), the room’s area, the room’s organization name, the room usage (label this column as “major use”), the term code, and the course level (and if course level is unavailable, still keep the row as its own course-level group).
+
+Return the columns in this order: room number, building name, building number, building city, building state, area, organization name, major use, term code, course level, then the three metrics.
+
+For each such group, report:
+1) the count of distinct subjects meeting there,
+2) the count of distinct meeting times there, and
+3) the sum of units across all offerings in that group (do not treat missing units as zero; just add up the units that are present).
+
+Only include offerings where the room number is present and the meeting time is present (null only; do not exclude empty text). Only include cases where the room number can be matched to a room record that has both a building and a room-usage classification; however, still keep the row even if the building address (city/state) is missing and even if the course level is missing.
+
+Sort by term code, then by total units (highest to lowest), then by room number."
+74,24,O,"Using the detail table, keep only rows where the record count is greater than zero and where the row has matching entries in the material status, material, and subject offered tables.
+
+Then summarize the data by the material status value exactly as stored in the material status table (do not trim, normalize, or merge similar-looking values). Treat a truly missing status value as its own separate group, but display that missing-status group with the label “No material status”. This can result in two separate output rows that both display “No material status”: one coming from the stored status text “No material status”, and one coming from the missing-status group.
+
+For each group, return:
+- the displayed status label (stored status unchanged, except missing status displayed as “No material status”)
+- the count of distinct materials (distinct by material title)
+- the sum of record counts
+- the sum of enrolled students
+
+Also include one additional roll-up row for the overall grand total, labeled exactly “Grand Total”, and ensure it does not replace the missing-status group.
+
+Sort results with the “Grand Total” row last; all other rows sorted by total record count descending, then by the displayed status label."
+75,27,X,"Produce one combined hierarchy-style space-usage report that begins from the floor list (so every floor is included even if it has no rooms) and attaches rooms, buildings, and organizations.
+
+Show these columns on every row: building name, floor number, room number, ownership type, organization name, total number of rooms, total area, and percent of total area.
+
+Build the base (non-hierarchy) rows by summarizing at the level of building name + floor number + room number + ownership type + organization name:
+- total number of rooms is the count of rooms
+- total area is the sum of room area, but if a group has no non-missing room areas then the total area must stay missing (not zero)
+
+In the same result set, include hierarchy rows:
+- all subtotal rows created by rolling up the base rows within each building and floor (rolling up across room number, then ownership type, then organization name)
+- one subtotal row per building across all its floors (building name present; floor number, room number, ownership type, and organization name all missing)
+- one grand total row across all buildings (building name, floor number, room number, ownership type, and organization name all missing)
+
+Percent of total area rules:
+- when a floor number is present (including detailed rows and within-building rollup rows), compute the row’s total area as a percentage of the total area for that same building
+- when building name is present but floor number is missing (building subtotal row), compute the row’s total area as a percentage of the overall total area across all rooms
+- for the grand total row, percent of total area must be 100
+
+For the building-total-area and overall-total-area denominators, ignore missing room areas (treat them as contributing nothing), but still count rooms even when their area is missing.
+
+Do not output any rows where the building name is missing, except the single grand total row. Keep floors with no rooms, and keep subtotal rows even when the room count is zero or the total area is missing.
+
+Format total rooms and total area as whole numbers with thousands separators, round percentages to two decimals, and sort with the grand total row first, then by building name, then by floor number (as stored), then by room number."
+77,27,X,"Create a campus-sector building report that includes every building even if it has no related floor, room, organization, or address rows.
+
+Produce three kinds of rows:
+
+1) Building rows (one per campus sector and building long name) showing:
+- campus sector
+- building long name
+- one city and one state from any address row for that building (if multiple exist, pick any)
+- total floors as the number of distinct floor values for that building
+- assignable area as the sum of the building’s assignable-area value repeated once for each floor row for that building (so it equals building assignable-area multiplied by the number of floor rows); if the building has no floor rows, this must be 0
+- total rooms as the count of room rows for the building
+- total organizations as the count of distinct organization keys referenced by that building’s room rows
+- ownership type
+- a sector rank based on building-row assignable area from largest to smallest, but with the rank value shifted down by 1 so the largest building in a sector has rank 1 and ties share the same rank
+
+2) Campus-sector subtotal rows (one per campus sector) where the building name is missing, and:
+- city and state can be any single city and state from that sector
+- total floors and assignable area come from the same rollup-style subtotal over the floor-expanded building data
+- rooms, organizations, ownership type, and rank are missing
+
+3) One grand-total row where campus sector and building name are missing, and:
+- total floors and assignable area are computed by summing the building-and-sector results (not by re-aggregating the raw tables)
+- city, state, rooms, organizations, and ownership type are missing
+- rank is 1
+
+Sorting: show the grand-total row first; then for each campus sector show the sector subtotal row followed by its building rows; within each sector, order building rows by the adjusted sector rank and then building name."
+78,17,O,"For every TIP material, list its department name, TIP material title, and TIP ISBN (do not include the author). Match it to a library reserves catalog entry only when the catalog ISBN is exactly the same as the TIP ISBN, and keep the TIP material even if no matching catalog entry exists.
+
+If a matching catalog entry exists, list the library term code from each library reserves detail record that is linked to that same catalog entry (so if multiple linked detail records exist with different term codes, return one row per linked detail record/term code). If there is no matching catalog entry, still return the TIP material and leave the library term code blank.
+
+Set the availability status to “Available in Library” only when there is a matching library reserves catalog entry for that TIP ISBN (catalog ISBN equals TIP ISBN); otherwise “Not Available in Library”.
+
+For each TIP ISBN, show the number of distinct course-instructor records linked (through the library reserves detail records) to the matching catalog entry for that ISBN; this instructor count must be the same on every row for that ISBN even if there are multiple term codes, and if there is no matching catalog entry show 0.
+
+Also show two totals that must be repeated on every output row:
+1) for the TIP material’s department, the total number of distinct catalog ISBNs from library reserves catalog entries that have at least one linked library reserves detail record whose linked library subject offering has that same department name;
+2) across all departments, the total number of distinct catalog ISBNs from library reserves catalog entries that have at least one linked library reserves detail record.
+
+Important: do not exclude any library reserves catalog entries from any part of the output or from any of the counts just because the catalog ISBN is blank or missing; instead, allow blank or missing catalog ISBNs to participate in matching and counting exactly as they appear in the data (so a blank/missing catalog ISBN can be counted as a distinct value if present). If the department total is missing for a TIP department, show 0. Order by department name, then TIP material title, and remove any exact duplicate output rows."
+82,27,X,"For the MIT site, group all building-history rows by ownership type and building usage type, using every history row (do not pick only the latest period and do not filter ownership values).
+
+For each ownership-type and usage-type group, return:
+- Ownership (for display): if either ownership type or usage type is missing, treat the ownership display as missing; otherwise use the ownership type value. In the final ordered output, hide repeated ownership display values by showing it only on the first row of each ownership block and leaving it blank on subsequent rows with the same ownership display.
+- Type: the building usage type value (it may be missing).
+- Buildings: count distinct buildings where the building identifier is the parent building number when present, otherwise the building key.
+- Gross square footage: sum the gross square footage from the building-history rows in the group.
+- Room count: count distinct rooms linked to the buildings in the group.
+- Org count: count distinct organizations linked through those rooms, counting only organizations that have a matching organization record.
+
+Sort by ownership type descending, then by usage type, and output columns in this order: Ownership, Type, Buildings, Gross_sqft, Room_count, Org_count."
+83,11,O,"For each building use value that is **not null**, return one row that includes:
+
+- the usage type, but if the building use is exactly **“RESIDENT”** then display **“RESIDENTIAL”** instead  
+- the number of distinct buildings for that use, where “distinct building” means: count distinct **parent building number when it exists**, otherwise count the building’s own identifier  
+- the total gross square footage summed across **all building records** in that use (do not collapse subdivisions for the square-footage sum)  
+- the number of **unique organizations** associated to those buildings by linking **buildings → rooms → organizations**, counting distinct **organizations** (not any organization id stored on rooms); include buildings even if they have no rooms so they still count toward buildings and square footage  
+
+Important: compute the organization count **in the same per-building-use aggregation as the other measures** (do not precompute organization counts in a separate step and then attach them back).
+
+Then add one final overall summary row with **no usage type value**, computed across **all buildings (including those with missing building use)**, using the same distinct-building rule, summing gross square footage across all building records, and counting distinct organizations the same way (buildings → rooms → organizations). For this overall row, calculate the organization count directly in that overall aggregation (do not use a cross product or separate overall organization subquery). Format the gross square footage with commas as thousands separators."
+84,14,O,"For every organization that is present in the department hierarchy, return its ID, number, level, and its name formatted as follows: if the level is 2, 3, 4, 5, or 6 then prefix the name with exactly one single leading space; otherwise show the name with no leading space. Also return an “assign” label that is “ASSIGNABLE” only when assignable equals 1; otherwise “NON-ASSIGNABLE”.
+
+Exclude organizations whose name is exactly “CAMBRIDGE-MIT INST” (all caps, exactly that text), and do not exclude anything else by name.
+
+In addition, for each organization ID, compute three room statistics by doing three separate per-organization lookups of rooms (one lookup per statistic), each time using rooms that belong to that same organization ID (match rooms to organizations using the shared internal organization key, then keep only the rows whose organization ID equals the organization ID being reported). Return (1) total room area, (2) number of rooms by counting the room identifier (count every row’s room identifier, even if the same identifier appears more than once), and (3) average room area. Show each of these three values as a whole number with commas as thousands separators. If an organization has no rooms, do not replace missing results with 0; leave the total area, room count, and average area as missing/blank rather than forcing them to 0. Do not sort the results."
+85,19,O,"Create a report of rooms grouped first by the assignable flag from the major-use lookup (treat assignable = 1 as the label “ASSIGNABLE”, otherwise “NON-ASSIGNABLE”), and then by the room’s own major use description (use the major use description stored on the room record, not the description from the major-use lookup).
+
+For each assignable/room-major-use-description group, return:
+- the count of rooms (count the room value itself; do not de-duplicate),
+- the total area,
+- the average area.
+
+In addition to those detailed rows, include rollups exactly like this:
+- include exactly one subtotal line per assignable category that rolls up across all room major use descriptions within that assignable category (in this subtotal line, the room major use description must be blank/NULL, and it must sort after the detailed rows by treating its sort value as “zzz”);
+- also include one single overall grand-total line across BOTH assignable categories combined (in this grand-total line, both the assignable label and the room major use description must be blank/NULL), and this grand-total line must appear first in the output.
+
+Exclude any rooms whose major use code from the major-use lookup starts with “ZUSE”, and also exclude any rooms whose major use text description from the major-use lookup starts with “ZUSE”.
+
+Order the results so the overall grand-total line is first; then order by the assignable label alphabetically (so “ASSIGNABLE” then “NON-ASSIGNABLE”); within each assignable category, order by the room’s major use description alphabetically, and place the subtotal line last by treating its sort value as “zzz”.
+
+Finally, suppress repeated labels like a report would, using this exact rule:
+- blank out the assignable label when it is the same as the previous row’s assignable label, comparing rows in the final output order;
+- blank out the room major use description when it is the same as the previous row’s room major use description, comparing rows in the final output order."
+86,27,X,"For the building whose name is exactly “Ray and Maria Stata Center”, produce a single report that lists room usage by floor and department, plus rollup summaries.
+
+For each floor and department combination, return the count of rooms, the sum of room area, and the average room area. Also include (in the same result set) one subtotal row per floor that aggregates all departments on that floor, and one final grand total row that aggregates all floors and departments.
+
+Apply these display rules:
+- For each floor subtotal row, show the department label as “SUBTOTAL”.
+- For the grand total row, show the department label as “TOTAL”.
+- For normal detail rows, show the department name as stored (and if it is missing, keep it missing).
+- Use an internal placeholder department value “zzz” only for ordering subtotal/total rows, but do not display “zzz” (display a blank department for that placeholder).
+- Show the floor key only on the first detail row of each floor; leave it blank for the remaining detail rows on that floor.
+- Show the floor key on the floor subtotal row.
+- Leave the floor key blank on the grand total row.
+
+Sort the output by the official floor sort sequence from the floor reference (treat missing sort sequence as 999), then by floor key, then by the internal department ordering key so that within each floor the detail rows come first (with missing department names after named departments), then the subtotal row, and the grand total row is last."
+87,27,X,"For rooms owned by the department whose name is exactly “DP OF FACILITIES”, create a rollup summary at the building and floor level: include one row for each building–floor pair, one subtotal row per building where the floor is missing, and one overall grand-total row where both building and floor are missing. For each row, return the number of rooms, the total room area, and the average room area.
+
+Then, using the building key from the rollup result, look up the building’s long name and access level, and also attach all address records for that building so that postal code and city may repeat (multiple rows per building/floor when multiple addresses exist). If the floor is missing (both building subtotals and the grand total), postal code and city must be null even when a building key is present. Remove duplicate rows and sort by building key, floor key, postal code, and city."
+88,24,O,"Show a report of course offerings that have at least one linked reserve-material detail record. For each offering, return the department, school, course number, subject title, and term code, plus:
+- the total enrolled students obtained by adding the offering’s enrolled-students value once per linked reserve-material detail record (so offerings with multiple reserve items contribute their enrolled-students value multiple times), and
+- the count of distinct catalog ISBNs across the reserve materials linked to that offering.
+These detailed rows must include offerings from all terms, with no restriction to current terms and without using any academic-term-parameter data for the detailed rows.
+
+After all detailed rows, append exactly one additional summary row labeled “TOTAL:” that is calculated only from offerings whose term is flagged as the current term in the academic term parameter table. For this summary row, compute the same two measures (sum of enrolled students with the same per-detail multiplication, and distinct catalog ISBN count) but only over current-term offerings. In the summary row, set department to “TOTAL:” and set school, course number, subject title, and term code to null.
+
+Sort the entire output by department, then course number, then subject title, then term code, using standard ordering (do not force the TOTAL row to the top or bottom)."
+89,14,O,"For every owner–subscriber record where the subscriber works in a department whose name starts with “Computer Science”, produce a two-level rollup report grouped first by ownership type and then by the list’s actual name (the Moira list name), counting distinct owners and distinct subscribers.
+
+The rollup rows must match the built-in rollup behavior exactly, including how missing ownership type is handled: treat a missing ownership type as its own normal ownership-type group (with its own per-list rows and its own subtotal row), and ensure the only row where both ownership type and list name are missing is the single final grand total row.
+
+In the displayed output only:
+- For the subtotal rows (where the list name is missing but the ownership type is present, including when the ownership type itself is missing), display the ownership type as “SUBTOTAL” and leave the list name blank/null.
+- For the grand total row (where both are missing), display the ownership type as “TOTAL” and leave the list name blank/null.
+- Otherwise, display the ownership type value and the actual list name.
+
+Also apply this display rule to the ownership type column: when consecutive rows belong to the same ownership type block, show the ownership type only on the first row of that block and leave it blank/null on the following rows.
+
+Ordering: sort ownership type in descending order, and within each ownership type sort by list name so that the subtotal row (the one with missing list name) comes after the real list names; the grand total row must be last overall."
+90,27,X,"For each IAP subject category, produce exactly one summary row with these columns:
+
+- Category label: the category name  
+- Number of sessions: the count of distinct session keys appearing in subject-detail rows for that category  
+- Total attendees: the sum of the maximum-enrollment values across that category’s subject-detail rows, ignoring missing maximum-enrollment values; if all maximum-enrollment values are missing for the category, the result must be missing (not zero); display the sum with thousands separators  
+- Active years: show the earliest term code and latest term code for the category as “min term code-max term code”  
+- Most common sponsor name: for that category, find the sponsor name that occurs most frequently across subject-detail rows (count occurrences of sponsor names, including missing sponsor names as their own value; ties may return any one)  
+- Most common session start time: for that category, find the session start time that occurs most frequently across subject-detail rows (count occurrences of start times, including missing start times as their own value; ties may return any one)
+
+Important: compute the “most common sponsor name” and the “most common session start time” using two separate per-category frequency calculations (do not base it on sponsor-and-start-time combinations, and do not let one affect the other).
+
+After the per-category rows, append one additional grand-total row labeled exactly “TOTAL”, computed directly from all subject-detail rows (not by summing category results). This total row should include the overall distinct session count and overall total attendees using the same missing-value rule, and leave active years, most common sponsor name, and most common session start time as missing.
+
+Sort the final output alphabetically by the category label so the “TOTAL” row appears in its alphabetical position."
+92,19,O,"For the Stata building, build a three-level summary report using only space units that match all of the following:
+- a space-detail record with building key 32 (join by space unit key),
+- a rooms-load record with building component 32 (join to the space unit by space unit code),
+- a usage-type record (join by usage-type key),
+- and the organization for the space unit (to get the organization DLC name).
+
+Exclude any rows where the usage type text contains “STORAGE”.
+
+Create a hierarchical rollup with these levels in order: access level, then usage type, then organization DLC name, including subtotals at each level and a grand total.
+
+Label rollup rows exactly as follows:
+- access level: when missing, show “TOTAL”
+- usage type: when missing but access level is present, show “SUBTOTAL”
+- organization DLC name: when missing but usage type is present, show “SUBTOTAL”
+- for the grand total row (where usage type and organization are both missing), leave the organization value missing (do not replace it with “SUBTOTAL”)
+
+For each row, output:
+- the access level label,
+- the usage type label,
+- the organization DLC name label,
+- distinct count of space units (count distinct by the space unit identifier, not the key),
+- total area (sum of room square footage),
+- average area,
+with all three numeric outputs formatted as whole numbers with commas.
+
+Sort the report by access level, then by usage type with its subtotal placed after the detailed usage types, then by organization with its subtotal placed after the detailed organizations.
+
+For display, suppress repeated labels in the final output: show access level as missing when it is the same as the previous row’s access level (in the report sort order), and show usage type as missing when it is the same as the previous row’s usage type (in the report sort order)."
+93,14,O,"For each organization at level 3, 4, 5, or 6 (excluding the ones with ID 139 and 250), list organization details together with its hierarchy type, but only for organizations that can be matched to at least one faculty‑roster entry by first matching the organization to an HR organization unit using the same DLC key, and then matching to the faculty roster using the same HR organization unit title.
+
+Return one row for each matched faculty‑roster entry (so the same organization may appear multiple times if it matches multiple faculty‑roster entries).
+
+For each returned row, include:
+- the break group code as the 2‑character code taken from positions 5–6 of the break group value
+- the organization’s ID and name
+- a “formatted name” field that is always the single character 0 (zero), regardless of the organization’s level or name
+- an “EMERITUS” vs “NON‑EMERITUS” label based on whether the matched faculty‑roster entry’s emeritus status is exactly “Emeritus” (otherwise “NON‑EMERITUS”)
+- the organization number and level
+- the employer count computed only from the faculty roster as: for the same HR organization unit title used to match the current row, count distinct employers across all faculty‑roster entries with that exact same HR organization unit title
+- the hierarchy type
+- the full break group value
+
+Do not include the HR organization unit title itself in the output. Sort the results only by hierarchy type."
+94,17,O,"Create a deduplicated set of course offerings by taking only these fields: the course subject title, the academic term start date, the academic term end date, the academic year from the offering, and the meeting place key. In that same step, compute the offering’s duration as the term end date minus the term start date (using direct date subtraction).
+
+Next, match each deduplicated offering to a room by requiring the meeting place key to equal the room key, and then match that room to a building by requiring the room’s building key to equal the building key; exclude any offering that cannot be matched all the way through to a building name.
+
+For each remaining row, return one distinct row showing: the subject title, the building name, the precomputed duration, and the moving average of that duration within the same academic year, ordered by the term start date, using a centered five-row window (two rows before through two rows after). Do not apply any final overall ordering."
+95,5,O,"For each course offering, first remove duplicates so that each offering is counted only once based on the combination of the subject identifier, the subject’s title, the term it is effective in, and the meeting place; then list the subject’s title, the long name of the building where it meets, the start date of that effective term, the subject’s title immediately before it and immediately after it when ordering these de-duplicated offerings by term start date and then subject title, the building’s access level, and the room’s assignable area. Use the academic term code to match the offering’s effective term, use the room key to match the offering’s meeting place to the room, and then match each room to its building. Finally, order the results by ascending term start date and then subject title."
+97,20,O,"For subject records that belong to the Chemistry or Biology departments and have a non-missing cluster type, combine the subject summary data with the academic terms data by matching term code.
+
+For each record, compute the term duration in days by first converting the term start date and term end date from the text format “day-abbreviated-month-two-digit-year” (for example, 05-Jan-24) into real dates, then taking the day difference between the converted end date and converted start date.
+
+Create a grouped report split by the current-term indicator and by cluster type. For each group, return the maximum duration, maximum total units, average duration, and average total units. Also include rollup lines: one subtotal per current-term indicator across all cluster types, plus one overall grand total across all data. In the first output column, show “CURRENT” for current-term indicator Y and “NON-CURRENT” otherwise on regular rows; show “SUBTOTAL” on the per-indicator rollup lines; and show “TOTAL” on the grand total line. On rollup lines, the cluster type must be null.
+
+Sort the output with current terms first, then by the first-column label and cluster type. For display, if the first-column label is the same as the previous row’s label in that sorted order, replace the repeated label with null."
+98,20,X,"For subjects offered by the Biology or Chemistry departments, produce a rollup summary by the academic term’s current-term flag and the offering department name.
+
+Compute each term’s duration in days as the difference between the term end date and term start date, where both dates are stored as text in the form day–abbreviated month–two-digit year (for example, 05-JAN-23) and must be parsed before calculating the difference. For each group, return the maximum duration, maximum total units, average duration, and average total units.
+
+The result must contain only these rows:
+- Detail rows for each combination of current-term flag and department (Biology and Chemistry)
+- One subtotal row per current-term flag that aggregates across both departments (department shown as null)
+- One grand total row across all flags and both departments (department shown as null)
+Do not include rows that aggregate across all flags for a single department.
+
+Add a first column label with these values: CURRENT for current-term flag Y, NON-CURRENT otherwise, SUBTOTAL for the per-flag subtotal rows, and TOTAL for the grand total row. In that label column, show the label only on the first department row within each flag section and make it null on the immediately following department row when the label would repeat; never null out SUBTOTAL or TOTAL.
+
+Order the output with current-term flag Y first, then non-Y; within each flag section list Biology then Chemistry, then the subtotal row; and place the grand total row last."
+99,20,X,"Using only subject-offering records that have a matching detail row and that detail row links to a TIP material, create a single report grouped by department name and master course code.
+
+For each department and master course code combination, return:
+- the number of distinct subjects,
+- the total of the new shelf price summed across all matched detail rows (do not deduplicate for this sum),
+- the number of distinct TIP materials counted by ISBN.
+
+In the same result set, also include rollup rows:
+- for each department, include a subtotal row where the department column shows the department name (not the word “SUBTOTAL”) and the master course code shows the word “SUBTOTAL”,
+- include one final grand total row where the department column shows “TOTAL” and the master course code is blank.
+
+Order the output by department, then by master course code, with each department’s subtotal row after its normal rows, and the grand total row last. For display only, suppress repeated department names on consecutive rows by showing a null department value when the previous row has the same department name; do not suppress the “TOTAL” row. Format the three numeric outputs as whole numbers with comma separators."
+100,20,X,"Build a rollup-style summary from the course subject offerings, grouped by academic term code and department name, returning department detail rows plus one subtotal row per term and one final grand-total row.
+
+Use the rollup indicators to label rows exactly as follows:
+- Detail rows (term and department both present): term label is the term code and department label is the department name.
+- Term subtotal rows (term present, department rolled up): term label is “SUBTOTAL” and the department label remains the real department name column value (so it can still join to department metadata).
+- Grand-total row (term and department both rolled up): term label is “TOTAL” and department label is “TOTAL”.
+- Also keep the special rollup row where both term code and department name are null, leaving both labels null.
+
+For each row, compute the distinct count of courses (distinct subject id) and the average number of equivalent subjects per original row, where the value is 0 when the equivalent-subjects field is null, otherwise it is 1 plus the number of commas in that field.
+
+Enrich every row by joining the department name to the department table to get the school name, then join via department code to the admin department table to get the department phone number (do not suppress these joins for subtotal/total rows).
+
+Sort so the null-term block comes first, then terms in ascending order, and the grand total last; within each term block, sort departments ascending with the subtotal row last. Finally, show the term label only on the first row of each term block and leave it blank for subsequent rows in the same term block."
+101,20,X,"Create a summary report of IAP subject sessions grouped first by the academic term’s current-term status and then by the session category name, and include rollup summary rows.
+
+For each output row, return:
+- a status label based on the rollup level:
+  - when the current-term status is present: show “CURRENT” if it is “Y”, otherwise “NOT CURRENT”
+  - when the current-term status is missing but the category name is present: show “SUBTOTAL”
+  - when both the current-term status and the category name are missing: show “TOTAL”
+- the session category name
+- the number of sessions, counted using the session date
+- total session time and average session time, where each session’s duration is computed by converting time strings like “0130PM” into a time value by inserting a colon and a space (for example “01:30 PM”), then taking the whole-hour difference between start and end, dividing by 24, and treating missing/unparseable times as 0 (do not correct negative durations)
+
+Include all detailed rows plus the “SUBTOTAL” and “TOTAL” rollup rows, but do not include the rollup rows where the current-term status is present and the category name is missing.
+
+Order the results by the status label and then by category name. In the final display, show the status label only on the first row of each status-label group and leave it blank for subsequent rows in the same group."
+102,20,O,"Create a report of academic terms using the academic terms table as the complete list, ordered by term code. For each term, return three fields: academic year, term code, and the number of distinct subjects counted for that term.
+
+Display the academic year only on the first term where that academic year starts in term-code order; for later terms within the same academic year, show a null academic year value (not an empty string).
+
+To calculate the per-term subject count, first transform the subjects-offered table by sorting rows by subject, then term code, then academic year. In that sorted sequence, whenever a subject repeats in the immediately following row, treat the repeated occurrence as null (so only the first row of each consecutive run keeps the subject). Also, in that same transformed output, null out the term code when it is the same as the previous row’s term code in that sorted sequence. Then join this transformed data to the academic terms table by term code and count distinct kept subjects per term. Include all term codes from the academic terms table even when there are no matches, showing 0.
+
+After listing all terms, append one final row with academic year equal to “TOTAL”, a null term code, and the distinct count of subjects across the entire subjects-offered table computed directly (without the consecutive-run transformation)."
+103,18,O,"List all email lists whose name begins with the letter “E” (ignoring case). Treat each combination of list name and owner as a separate row. For each such row, count the total number of member entries on that list for that owner, and keep only rows where this total is between 10 and 20 inclusive.
+
+Next, for each kept list name (not per owner), count how many of that list’s member entries are computer science students by: matching the member entry to a person by kerberos name (ignoring case), then matching that person to the student directory by full name, and counting the entry only when the student directory department code is exactly “6”. Exclude member entries that fail either match.
+
+Finally, return the list name, owner, and total member-entry count for each kept list-name-and-owner row where the computer-science student count for that list name is greater than 75% of that row’s total member-entry count."
+104,17,O,"For each student whose last name starts with “K”, find their Kerberos username from the person table and match it to mailing-list membership rows by comparing the Kerberos username to the mailing-list member value without regard to letter case. For every matched student, return the student’s full name and the phone number of the student’s department. Also return two metrics per student: the number of mailing lists they belong to, counted as the number of mailing-list keys from their matched membership rows (do not remove duplicates), and the average mailing-list size across those mailing lists, where a mailing list’s size is defined as the total number of member entries for that list across all membership rows in the entire dataset, and the average should include repeated list keys multiple times for the same student if they appear multiple times in that student’s matched membership rows. Do not order the output."
+105,13,O,"Show the 100 email lists with the largest total number of subscribers, counting subscribers separately for each unique combination of list name and public status (so the same list name can appear twice if it has different public status). For each of these list rows, return the list name, the total number of subscribers (counting the subscriber entries, not distinct people), and the public status.
+
+Also, for each list row, determine the single department that has the highest number of matched student members, but **do this department calculation by list name only (ignore public status when finding the top department)**—so the public and non‑public versions of the same list name must be pooled together for the department counts. Return that department name and the matched student count, and if there is a tie for the highest matched student count, pick any one of the tied departments.
+
+When counting matched students by department, count matched students by counting student full-name entries after matching (not distinct students). Only include matched students whose department code successfully maps to a department name; if a list row has no matched students with a valid department name, still include the list row and leave the department and matched student count blank.
+
+To match students: compare each subscriber value to a person’s username in a case-insensitive way (treat “ABC” and “abc” as the same), without stripping domains or otherwise modifying the subscriber value; then match that person to the student directory by exact full name; then map the student’s department code to a department name."
+107,4,O,"For building 45 (45 is a numeric building identifier; do not convert or cast it), show one row for each combination of room full name and major use, including the room full name, the largest area among rooms in that group, the major use, the organization name (if there are multiple, show the alphabetically last one), the number of rooms in that group, and the total area summed across rooms in that group (use the area values as stored, without converting/casting them); include only rooms that have a matching organization, and list the results ordered by room full name."
+108,20,X,"For every building that has both at least one address entry and at least one room entry, return one row per building showing its name, number, construction date, and type. For that same building, report (1) how many address records it has in the building-address table, (2) the average gross area value stored on the building record, and (3) how many room records it has in the rooms table. Order the results by building name."

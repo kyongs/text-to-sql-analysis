@@ -15,6 +15,7 @@ from src.model import OpenAIModel, GeminiModel, DeepSeekModel
 from src.evaluator import BeaverEvaluator
 from src.prompt_builder import build_prompt
 from src.utils.logger import TxtLogger
+from src.utils.nlq_condition_hints import generate_nlq_condition_hints
 from src.data_loader.preprocess import run_grand_preprocessing
 
 DATA_LOADERS = {"beaver": BeaverLoader}
@@ -65,11 +66,11 @@ def check_and_run_preprocessing(config: dict):
         print(f"Found preprocessed schema file.")
 
 
-def process_item(item, model, db_type: str, analyze_sql: bool = False, conn_info: dict = None, use_tools: bool = False, enabled_tools: list = None, skeleton_hint: str = None):
+def process_item(item, model, db_type: str, analyze_sql: bool = False, conn_info: dict = None, use_tools: bool = False, enabled_tools: list = None, skeleton_hint: str = None, user_agent: bool = False, few_shot_examples: str = None, three_stage: bool = False):
     """Process a single item and return all relevant data for logging and evaluation."""
     db_id = item['db_id']
     question = item['question']
-    gold_query = item.get('SQL', item.get('query', ''))
+    gold_query = item.get('sql', item.get('SQL', item.get('query', '')))
     schema = item.get('formatted_schema', 'Error: Schema not available.')
 
     evidence = item.get('evidence', '')
@@ -94,14 +95,46 @@ def process_item(item, model, db_type: str, analyze_sql: bool = False, conn_info
     # skeleton hint (experimental)
     if skeleton_hint:
         all_hints.append(skeleton_hint)
+        # NoteTaker에서 skeleton 패턴 체크를 위해 item에 추가
+        item['skeleton_hint'] = skeleton_hint
+
+    # NLQ 키워드 기반 조건 힌트
+    nlq_cond = generate_nlq_condition_hints(question)
+    if nlq_cond:
+        all_hints.append(nlq_cond)
+
+    # # Verify loop template (--verify_nlq 모드) — 현재 비활성
+    # verify_template = item.get('verify_template')
+    # if verify_template:
+    #     all_hints.append(f"SQL Structure Guide (follow this pattern):\n{verify_template}")
 
     final_hints = "\n\n".join(all_hints)
+
+    # Few-shot 예제 추가
+    if few_shot_examples:
+        final_hints = f"{few_shot_examples}\n\n{final_hints}" if final_hints else few_shot_examples
+
     prompt = build_prompt(schema=schema, question=question, db_name=db_id, db_type=db_type, hints=final_hints, use_tools=use_tools, enabled_tools=enabled_tools)
-    
+
     # 모델 호출 (OpenAIModel은 tool flag 있으면 자동으로 tool calling 사용)
     tool_call_log = None
     if type(model).__name__ == 'OpenAIModel':
-        model_response = model.generate(prompt, db_id=db_id, question=question, item=item)
+        # User Agent 모드면 gold_sql 전달 (ask_granularity tool에서 LLM2가 자동 선택)
+        gold_sql_for_agent = gold_query if user_agent else None
+
+        # Three-stage 모드: 별도의 3단계 파이프라인 사용
+        if three_stage:
+            model_response = model.generate_three_stage(
+                schema=schema,
+                question=question,
+                hints=final_hints,
+                db_id=db_id,
+                item=item,
+                gold_sql=gold_sql_for_agent
+            )
+        else:
+            model_response = model.generate(prompt, db_id=db_id, question=question, item=item, gold_sql=gold_sql_for_agent)
+
         if model_response and hasattr(model_response, 'tool_call_log'):
             tool_call_log = model_response.tool_call_log
     else:
@@ -174,6 +207,12 @@ def main():
                        help="Enable compare_distinct_results tool to compare WITH/WITHOUT DISTINCT")
     parser.add_argument("--constraint_check", action='store_true',
                        help="Enable check_schema_constraints tool for schema/type/value validation")
+    parser.add_argument("--ask_granularity", action='store_true',
+                       help="Enable ask_granularity tool - ask user to clarify aggregation granularity")
+    parser.add_argument("--execute_sql", action='store_true',
+                       help="Enable execute_sql tool - LLM can test SQL against DB before final answer")
+    parser.add_argument("--user_agent", action='store_true',
+                       help="Enable User Agent mode - LLM2 auto-selects granularity based on Gold SQL (requires --ask_granularity)")
 
     # Refine agent flags
     parser.add_argument("--refine_syntax", action='store_true',
@@ -206,6 +245,32 @@ def main():
     # Skeleton hint flag (experimental - uses gold SQL structure)
     parser.add_argument("--skeleton_hint", action='store_true',
                        help="[EXPERIMENTAL] Add SQL structure hints from gold SQL (GROUP BY, CASE WHEN, etc.)")
+
+    # Few-shot RAG flags
+    parser.add_argument("--few_shot", type=int, default=0,
+                       help="Number of few-shot examples to include (0=disabled, 1, 3, etc.)")
+    parser.add_argument("--few_shot_method", type=str, default="semantic", choices=["semantic", "random"],
+                       help="Few-shot example selection method: semantic (similarity) or random")
+
+    # Three-stage pipeline flag
+    parser.add_argument("--three_stage", action='store_true',
+                       help="Enable three-stage SQL generation: (1) Note prep, (2) Plan with tools, (3) SQL generation")
+
+    # Forced refine flag
+    parser.add_argument("--forced_refine", action='store_true',
+                       help="Enable forced refine: review SQL with execution results + NLQ + hints before final answer")
+
+    # Verify NLQ flag
+    parser.add_argument("--verify_nlq", type=str, nargs='?', const='./analysis/verify_loop_results.json',
+                       help="Replace questions with final_nlq from verify loop results (default: ./analysis/verify_loop_results.json)")
+
+    # User-like Verify NLQ flag
+    parser.add_argument("--user_verify_nlq", type=str, nargs='?', const='./analysis/verify_loop_results.json',
+                       help="Replace questions with user_like_nlq from verify loop results (default: ./analysis/verify_loop_results.json)")
+
+    # Fixed NLQ from CSV
+    parser.add_argument("--fixed_nlq", type=str, default=None,
+                       help="Replace questions with nlq_fixed from CSV for given idx range (e.g., 0_30, 10_50). CSV: ./analysis/Beaver Error Analysis - NLQ 개선.csv")
 
     args = parser.parse_args()
 
@@ -252,7 +317,15 @@ def main():
         'aggregation_advisor': args.agg_advisor,
         'distinct_advisor': args.distinct_advisor,
         'distinct_comparator': args.distinct_compare,
-        'constraint_checker': args.constraint_check
+        'constraint_checker': args.constraint_check,
+        'ask_granularity': args.ask_granularity,
+        'execute_sql': args.execute_sql
+    }
+
+    # User Agent 설정 (ask_granularity에서 LLM2가 자동 선택)
+    config['user_agent'] = {
+        'enabled': args.user_agent,
+        'model': 'gpt-4o-mini'  # User Agent에 사용할 모델
     }
 
     # Pass refine agent flags to config
@@ -286,12 +359,103 @@ def main():
     # Pass skeleton_hint flag to config
     config['skeleton_hint'] = args.skeleton_hint
 
+    # Pass three_stage flag to config
+    config['three_stage'] = args.three_stage
+
+    # Pass forced_refine flag to config
+    config['forced_refine'] = args.forced_refine
+
     model = MODELS[config['model']['provider']](config)
     if experiment_mode == 'view':
         dataset = data_loader.load_data(load_views=True)
     else:
         dataset = data_loader.load_data(load_views=False)
     if not dataset: return
+
+    # Verify NLQ 로드 (--verify_nlq 활성화 시)
+    verify_nlq_map = {}  # {idx: {"nlq": ..., "template": ..., "success_iter": ...}}
+    if args.verify_nlq:
+        vl_path = args.verify_nlq
+        if os.path.exists(vl_path):
+            with open(vl_path, 'r', encoding='utf-8') as f:
+                vl_data = json.load(f)
+            for r in vl_data.get('items', []):
+                verify_nlq_map[r['idx']] = {
+                    "nlq": r.get('final_nlq', ''),
+                    "template": r.get('final_template'),
+                    "success_iter": r.get('success_iter', -1)
+                }
+
+            # dataset의 question을 final_nlq로 교체
+            replaced = 0
+            for i, item in enumerate(dataset):
+                if i in verify_nlq_map and verify_nlq_map[i]['nlq']:
+                    item['question'] = verify_nlq_map[i]['nlq']
+                    if verify_nlq_map[i].get('template'):
+                        item['verify_template'] = verify_nlq_map[i]['template']
+                    replaced += 1
+
+            success_count = sum(1 for v in verify_nlq_map.values() if v['success_iter'] != -1)
+            print(f"✅ Verify NLQ loaded from {vl_path}")
+            print(f"   {replaced}/{len(dataset)} questions replaced with verify loop final_nlq")
+            print(f"   {success_count}/{len(verify_nlq_map)} from verify loop had success case")
+        else:
+            print(f"⚠️ Verify NLQ file not found: {vl_path}")
+
+    # User-like Verify NLQ 로드 (--user_verify_nlq 활성화 시)
+    if args.user_verify_nlq:
+        vl_path = args.user_verify_nlq
+        if os.path.exists(vl_path):
+            with open(vl_path, 'r', encoding='utf-8') as f:
+                vl_data = json.load(f)
+
+            replaced = 0
+            for r in vl_data.get('items', []):
+                idx = r['idx']
+                user_nlq = r.get('user_like_nlq', '')
+                if user_nlq and idx < len(dataset):
+                    dataset[idx]['question'] = user_nlq
+                    replaced += 1
+
+            success_count = sum(1 for r in vl_data.get('items', []) if r.get('success_iter', -1) != -1)
+            has_user_nlq = sum(1 for r in vl_data.get('items', []) if r.get('user_like_nlq'))
+            print(f"✅ User-like NLQ loaded from {vl_path}")
+            print(f"   {replaced}/{len(dataset)} questions replaced with user_like_nlq")
+            print(f"   {has_user_nlq}/{len(vl_data.get('items', []))} items had user_like_nlq")
+            print(f"   {success_count}/{len(vl_data.get('items', []))} from verify loop had success case")
+        else:
+            print(f"⚠️ User-like NLQ file not found: {vl_path}")
+
+    # Fixed NLQ 로드 (--fixed_nlq 활성화 시)
+    if args.fixed_nlq:
+        import csv
+        csv_path = './analysis/Beaver Error Analysis - NLQ 개선.csv'
+        # 범위 파싱 (e.g., "0_30")
+        parts = args.fixed_nlq.split('_')
+        range_start, range_end = int(parts[0]), int(parts[1])
+
+        if os.path.exists(csv_path):
+            with open(csv_path, 'r', encoding='utf-8-sig') as f:
+                reader = csv.DictReader(f)
+                fixed_map = {}
+                for row in reader:
+                    idx = int(row['idx'])
+                    nlq = row.get('nlq_fixed', '').strip()
+                    if nlq:
+                        fixed_map[idx] = nlq
+
+            replaced = 0
+            for i in range(range_start, min(range_end + 1, len(dataset))):
+                if i in fixed_map:
+                    dataset[i]['question'] = fixed_map[i]
+                    replaced += 1
+
+            print(f"✅ Fixed NLQ loaded from {csv_path}")
+            print(f"   Range: idx {range_start}~{range_end}")
+            print(f"   {replaced} questions replaced with nlq_fixed")
+            print(f"   {len(fixed_map)} total nlq_fixed entries in CSV")
+        else:
+            print(f"⚠️ Fixed NLQ CSV not found: {csv_path}")
 
     # Skeleton hint 로드 (--skeleton_hint 활성화 시)
     skeleton_hints_map = {}
@@ -307,6 +471,19 @@ def main():
         else:
             print(f"⚠️ Skeleton hints file not found: {skeleton_hints_path}")
             print(f"   Run: python scripts/generate_skeleton_hints.py {dataset_path}/dw.json")
+
+    # Few-shot RAG 초기화 (--few_shot 활성화 시)
+    few_shot_retriever = None
+    if args.few_shot > 0:
+        from src.few_shot import FewShotRetriever
+        dataset_path = config['dataset'].get('path', '')
+        dataset_json_path = os.path.join(dataset_path, 'dw.json')
+        if os.path.exists(dataset_json_path):
+            few_shot_retriever = FewShotRetriever(dataset_json_path)
+            print(f"✅ Few-shot RAG initialized: {args.few_shot} examples, method={args.few_shot_method}")
+        else:
+            print(f"⚠️ Dataset file not found for few-shot: {dataset_json_path}")
+            args.few_shot = 0
     
     # 테스트 모드: --test_set 또는 --test_n 옵션 처리
     if args.test_set is not None:
@@ -364,7 +541,7 @@ def main():
         print(f"Generating SQL Queries in parallel with {args.max_workers} workers...")
         
         # Tool 사용 여부 결정
-        any_tool_enabled = args.join_inspector or args.join_path_finder or args.lookup_val or args.agg_advisor or args.distinct_advisor or args.distinct_compare or args.constraint_check
+        any_tool_enabled = args.join_inspector or args.join_path_finder or args.lookup_val or args.agg_advisor or args.distinct_advisor or args.distinct_compare or args.constraint_check or args.ask_granularity or args.execute_sql
         use_tools = (config['model']['provider'] == 'openai' and any_tool_enabled)
         enabled_tool_names = []
         if use_tools:
@@ -391,6 +568,12 @@ def main():
             if enabled_tools_dict.get('constraint_checker'):
                 enabled_list.append("check_schema_constraints (Schema/type/value validation)")
                 enabled_tool_names.append('constraint_checker')
+            if enabled_tools_dict.get('ask_granularity'):
+                enabled_list.append("ask_granularity (Clarify aggregation granularity with user)")
+                enabled_tool_names.append('ask_granularity')
+            if enabled_tools_dict.get('execute_sql'):
+                enabled_list.append("execute_sql (Test SQL against database)")
+                enabled_tool_names.append('execute_sql')
 
             if enabled_list:
                 print(f"Tool calling enabled - {len(enabled_list)} tool(s):")
@@ -426,7 +609,41 @@ def main():
         if args.skeleton_hint and skeleton_hints_map:
             print(f"\n[EXPERIMENTAL] Skeleton hints enabled: SQL structure hints from gold SQL")
 
-        futures = {executor.submit(process_item, item, model, db_type, args.analyze_sql, conn_info, use_tools, enabled_tool_names, skeleton_hints_map.get(item.get('original_index', i), '')): (i, item) for i, item in enumerate(dataset)}
+        # Three-stage 모드 활성화 표시
+        if args.three_stage:
+            print(f"\n[EXPERIMENTAL] Three-stage pipeline enabled:")
+            print(f"   Stage 1: Note preparation (analyze question/schema)")
+            print(f"   Stage 2: Plan with tools (verify values, JOIN paths)")
+            print(f"   Stage 3: SQL generation (using verified notes)")
+
+        # Few-shot 예제 사전 계산
+        few_shot_examples_map = {}
+        if args.few_shot > 0 and few_shot_retriever:
+            from src.few_shot import format_few_shot_examples
+            print(f"\n📊 Pre-computing few-shot examples ({args.few_shot_method})...")
+            for i, item in enumerate(dataset):
+                original_idx = item.get('original_index', i)
+                question = item['question']
+
+                if args.few_shot_method == "semantic":
+                    examples = few_shot_retriever.get_similar_examples(
+                        query=question,
+                        k=args.few_shot,
+                        exclude_indices=[original_idx]
+                    )
+                else:  # random
+                    examples = few_shot_retriever.get_random_examples(
+                        k=args.few_shot,
+                        exclude_indices=[original_idx],
+                        seed=original_idx  # reproducibility
+                    )
+
+                few_shot_examples_map[original_idx] = format_few_shot_examples(
+                    examples, include_similarity=(args.few_shot_method == "semantic")
+                )
+            print(f"✅ Few-shot examples computed for {len(few_shot_examples_map)} items")
+
+        futures = {executor.submit(process_item, item, model, db_type, args.analyze_sql, conn_info, use_tools, enabled_tool_names, skeleton_hints_map.get(item.get('original_index', i), ''), args.user_agent, few_shot_examples_map.get(item.get('original_index', i), ''), args.three_stage): (i, item) for i, item in enumerate(dataset)}
         for future in tqdm(concurrent.futures.as_completed(futures), total=len(dataset), desc="Overall Progress"):
             try:
                 result = future.result()
@@ -471,6 +688,82 @@ def main():
                     f.write(r['sql_analysis'])
                     f.write("\n\n")
             print(f"SQL Analysis reports saved to: {analysis_file}")
+
+    # Save three-stage analysis if enabled (JSON + CSV)
+    if args.three_stage:
+        three_stage_file = os.path.join(output_dir, "three_stage_analysis.json")
+        three_stage_data = []
+
+        for r in all_results:
+            idx = r.get('original_index', -1)
+            question = r.get('question', '')
+            predicted_sql = r.get('predicted_sql', '')
+            tool_call_log = r.get('tool_call_log', [])
+
+            # Extract stage notes from tool_call_log
+            stage1_note = ""
+            stage2_note = ""
+            tool_calls = []
+
+            for log_entry in tool_call_log:
+                log_type = log_entry.get('type')
+                if log_type == 'stage1_note':
+                    stage1_note = log_entry.get('content', '')
+                elif log_type == 'stage2_note':
+                    stage2_note = log_entry.get('content', '')
+                elif log_type == 'tool_call':
+                    tool_calls.append({
+                        'function': log_entry.get('function', ''),
+                        'arguments': log_entry.get('arguments', {})
+                    })
+
+            three_stage_data.append({
+                'idx': idx,
+                'question': question,
+                'stage1_note': stage1_note,
+                'stage2_note': stage2_note,
+                'tool_calls': tool_calls,
+                'predicted_sql': predicted_sql
+            })
+
+        # Sort by index
+        three_stage_data.sort(key=lambda x: x['idx'])
+
+        # Save JSON
+        with open(three_stage_file, 'w', encoding='utf-8') as f:
+            json.dump(three_stage_data, f, indent=2, ensure_ascii=False)
+        print(f"Three-stage analysis saved to: {three_stage_file}")
+
+        # Save CSV for easy analysis
+        import csv
+        import re
+
+        def clean_note_for_csv(note: str) -> str:
+            """Remove === markers and clean up note for CSV."""
+            if not note:
+                return ''
+            # Remove === markers (headers like "=== NOTE: ... ===" and "=== END ... ===")
+            cleaned = re.sub(r'={3,}[^=]*={3,}', '', note)
+            # Remove standalone === lines
+            cleaned = re.sub(r'^={3,}\s*$', '', cleaned, flags=re.MULTILINE)
+            # Remove excessive newlines
+            cleaned = re.sub(r'\n{3,}', '\n\n', cleaned)
+            return cleaned.strip()[:2000]
+
+        csv_file = os.path.join(output_dir, "three_stage_analysis.csv")
+        with open(csv_file, 'w', encoding='utf-8', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(['idx', 'question', 'stage1_note', 'stage2_note', 'tool_calls', 'predicted_sql'])
+            for item in three_stage_data:
+                writer.writerow([
+                    item['idx'],
+                    item['question'],
+                    clean_note_for_csv(item['stage1_note']),
+                    clean_note_for_csv(item['stage2_note']),
+                    json.dumps(item['tool_calls'], ensure_ascii=False),
+                    item['predicted_sql']
+                ])
+        print(f"Three-stage CSV saved to: {csv_file}")
 
     # Save detailed error analysis if enabled (JSON format)
     # Structure: { "iter_1": [{idx, sql, result, res, refine_feedback}, ...], "iter_2": [...], ... }

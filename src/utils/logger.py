@@ -44,27 +44,46 @@ class TxtLogger:
         tool_log_str = ""
         if tool_call_log:
             tool_log_str = "***** TOOL CALL LOG *****\n"
+            import json
             for log_entry in tool_call_log:
                 iteration = log_entry.get("iteration", "?")
+                stage = log_entry.get("stage", None)
                 log_type = log_entry.get("type")
-                
-                if log_type == "tool_call":
-                    tool_log_str += f"\n[Iteration {iteration}] 🤖 LLM Tool Call:\n"
+
+                # Three-stage pipeline logs
+                if log_type == "stage1_note":
+                    tool_log_str += f"\n[Stage 1] 📋 NOTE PREPARATION:\n"
+                    tool_log_str += "-" * 60 + "\n"
+                    content = log_entry.get('content', '')
+                    tool_log_str += content + "\n"
+                    tool_log_str += "-" * 60 + "\n"
+
+                elif log_type == "stage2_note":
+                    tool_log_str += f"\n[Stage 2] 🔧 ENHANCED NOTE (after tools):\n"
+                    tool_log_str += "-" * 60 + "\n"
+                    content = log_entry.get('content', '')
+                    tool_log_str += content + "\n"
+                    tool_log_str += "-" * 60 + "\n"
+
+                elif log_type == "tool_call":
+                    stage_prefix = f"Stage {stage}, " if stage else ""
+                    tool_log_str += f"\n[{stage_prefix}Iteration {iteration}] 🤖 LLM Tool Call:\n"
                     tool_log_str += f"  Function: {log_entry['function']}\n"
-                    import json
                     tool_log_str += f"  Arguments: {json.dumps(log_entry['arguments'], indent=4)}\n"
-                
+
                 elif log_type == "tool_response":
-                    tool_log_str += f"\n[Iteration {iteration}] 📊 Tool Response:\n"
+                    stage_prefix = f"Stage {stage}, " if stage else ""
+                    tool_log_str += f"\n[{stage_prefix}Iteration {iteration}] 📊 Tool Response:\n"
                     response = log_entry['response']
                     # 응답을 들여쓰기 (간략화)
                     lines = response.split('\n')[:20]  # 처음 20줄만
                     tool_log_str += "  " + "\n  ".join(lines) + "\n"
                     if len(response.split('\n')) > 20:
                         tool_log_str += "  ... (truncated)\n"
-                
+
                 elif log_type == "final_response":
-                    tool_log_str += f"\n[Iteration {iteration}] ✅ Final SQL Response:\n"
+                    stage_prefix = f"Stage {stage}" if stage else f"Iteration {iteration}"
+                    tool_log_str += f"\n[{stage_prefix}] ✅ Final SQL Response:\n"
                     tool_log_str += f"  {log_entry['content']}\n"
 
                 elif log_type == "refine_trigger":
@@ -106,6 +125,20 @@ class TxtLogger:
                         tool_log_str += f"  {line}\n"
                     if len(final_note.split('\n')) > 50:
                         tool_log_str += "  ... (truncated)\n"
+
+                elif log_type == "forced_refine":
+                    tool_log_str += f"\n[Forced Refine] SQL Review:\n"
+                    tool_log_str += "-" * 60 + "\n"
+                    tool_log_str += f"  Original SQL: {log_entry.get('original_sql', '')[:200]}\n"
+                    tool_log_str += f"  Exec Result Rows: {log_entry.get('exec_result_rows', 0)}\n"
+                    tool_log_str += f"  Refine Response:\n"
+                    refine_resp = log_entry.get('refine_response', '')
+                    for line in refine_resp.split('\n')[:40]:
+                        tool_log_str += f"    {line}\n"
+                    if len(refine_resp.split('\n')) > 40:
+                        tool_log_str += "    ... (truncated)\n"
+                    tool_log_str += f"  Refined SQL: {log_entry.get('refined_sql', '')[:200]}\n"
+                    tool_log_str += "-" * 60 + "\n"
 
             tool_log_str += "\n"
         

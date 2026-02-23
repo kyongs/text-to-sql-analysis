@@ -1,0 +1,2866 @@
+{
+  "summary": {
+    "G": {
+      "gold_positive": 97,
+      "pred_positive": 103,
+      "tp": 93,
+      "fp": 10,
+      "fn": 4,
+      "tn": 14,
+      "precision": 0.9029126213592233,
+      "recall": 0.9587628865979382,
+      "f1": 0.9299999999999999
+    },
+    "SQ": {
+      "gold_positive": 47,
+      "pred_positive": 16,
+      "tp": 8,
+      "fp": 8,
+      "fn": 39,
+      "tn": 66,
+      "precision": 0.5,
+      "recall": 0.1702127659574468,
+      "f1": 0.25396825396825395
+    },
+    "CTE": {
+      "gold_positive": 30,
+      "pred_positive": 2,
+      "tp": 0,
+      "fp": 2,
+      "fn": 30,
+      "tn": 89,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0
+    },
+    "H": {
+      "gold_positive": 6,
+      "pred_positive": 6,
+      "tp": 3,
+      "fp": 3,
+      "fn": 3,
+      "tn": 112,
+      "precision": 0.5,
+      "recall": 0.5,
+      "f1": 0.5
+    },
+    "U": {
+      "gold_positive": 13,
+      "pred_positive": 14,
+      "tp": 9,
+      "fp": 5,
+      "fn": 4,
+      "tn": 103,
+      "precision": 0.6428571428571429,
+      "recall": 0.6923076923076923,
+      "f1": 0.6666666666666666
+    },
+    "CASE": {
+      "gold_positive": 43,
+      "pred_positive": 31,
+      "tp": 29,
+      "fp": 2,
+      "fn": 14,
+      "tn": 76,
+      "precision": 0.9354838709677419,
+      "recall": 0.6744186046511628,
+      "f1": 0.7837837837837838
+    },
+    "W": {
+      "gold_positive": 28,
+      "pred_positive": 28,
+      "tp": 19,
+      "fp": 9,
+      "fn": 9,
+      "tn": 84,
+      "precision": 0.6785714285714286,
+      "recall": 0.6785714285714286,
+      "f1": 0.6785714285714286
+    }
+  },
+  "results": [
+    {
+      "idx": 0,
+      "question": "What is the current building key, building street address, city, state, and postal code of the history department?",
+      "gold_structure": "SIMPLE",
+      "gold": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 1,
+      "question": "Show the unique activity titles, locations, term start date, and supervisor name for all independent activities, sorted by the ascending order of start date.",
+      "gold_structure": "SIMPLE",
+      "gold": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 2,
+      "question": "List the unique course instructor names, course titles, and the amount of material for each course instructor key and the key of subject offered.",
+      "gold_structure": "AGG_W",
+      "gold": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      },
+      "pred": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 3,
+      "question": "What is the room, floor, building key, building street address, city, state, and postal code of Professor Summer Haynes's office?",
+      "gold_structure": "SQ",
+      "gold": {
+        "G": 0,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 4,
+      "question": "List the unique full room names, their corresponding building names, street addresses, cities, states, postal codes, and building heights for rooms associated with subjects that Computer Science students can enroll in.",
+      "gold_structure": "SIMPLE",
+      "gold": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 0,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 5,
+      "question": "List the unique term code, subject title, room, floor, building key, building street address, city, state, and postal code, formats, and number of enrolled students for all courses with more than 300 attendees.",
+      "gold_structure": "SIMPLE",
+      "gold": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 6,
+      "question": "What are the subject titles, their material titles, ISBN numbers, new shelf prices, and total costs of new materials for each subject title, sorted by individual item prices in ascending order?",
+      "gold_structure": "AGG_W",
+      "gold": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 7,
+      "question": "List the long names of buildings constructed before 1950 that have more than 100 employees, the built year of the building, and number of employees.",
+      "gold_structure": "AGG_SQ_W",
+      "gold": {
+        "G": 0,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 1,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 8,
+      "question": "For each building key, what is the building name and the number of courses offered by the Center for International Studies?",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 9,
+      "question": "What is the name of the building that accomodates the most students, and how many students does it accomodate?",
+      "gold_structure": "AGG_G_SQ",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 10,
+      "question": "List the name and floor of the building with the largest floor number.",
+      "gold_structure": "AGG_SQ_CASE",
+      "gold": {
+        "G": 0,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 0,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 11,
+      "question": "For each IAP category and academic year, list the category name, academic year, total fee collected, total number of IAP subjects, and the minimum and maximum enrollment.",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 12,
+      "question": "For each sponsor of the independent activity periods, list the sponsor name, number of sessions held, the total number of enrollment, the minimum and maximum fee, the number of sessions with info, and the number of sessions without info.",
+      "gold_structure": "AGG_G_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      }
+    },
+    {
+      "idx": 13,
+      "question": "What are the individual's email and name, academic year, total number of IAP subjects, the minimum and maximum fees, and the total course enrollment for each individual and academic year?",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 14,
+      "question": "What is the term code, term description, total number of IAP sessions, total fee collected, and minimum and maximum enrollment for each term code?",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 15,
+      "question": "What is the name of the building, total number of subjects, total fee, and shortest and longest sessions for each physical IAP session location?",
+      "gold_structure": "AGG_G_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 16,
+      "question": "What is total number of subjects, the total fee, and the shortest and longest sessions, for all virtual IAP sessions?",
+      "gold_structure": "AGG_CASE",
+      "gold": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 17,
+      "question": "What is the school code, school name, full name of the department, course level, total number of courses, and total number of degree-granting courses for each school code, department, and course level?",
+      "gold_structure": "AGG_G_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      }
+    },
+    {
+      "idx": 18,
+      "question": "What are the different schools and departments that offer SIS courses? List their school code, school name, department code, department name, the total number of phone numbers, and the most common course level.",
+      "gold_structure": "AGG_G_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      }
+    },
+    {
+      "idx": 19,
+      "question": "What is the school code, school name, DLC key, the graduate level, total number of SIS subjects, the minimum and maximum course numbers, and the total number of departments offering subjects for each school?",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 20,
+      "question": "What is the building component, name of the building, square footage for all rooms, total number of floors, total number of rooms, total number of facility organizations, total number of supervisors, and total number of supervisees for each building component?",
+      "gold_structure": "AGG_G_SQ_W",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 21,
+      "question": "What is the DLC key, name of the DLC, total number of floors, total square footage, total number of facility organizations, total number of supervisors, total number of supervisees, and total building heights for each DLC?",
+      "gold_structure": "AGG_G_SQ_W",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 22,
+      "question": "What is the department name, total number of types of TIP subjects, total number of enrolled students, the minimum and maximum rental new price for each department?",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 23,
+      "question": "What are the details of courses offered in the current academic term, including the academic year, term code, hgn code, the total number of types of courses, the average number of units, the department name, the name and email address of the person in charge?",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 24,
+      "question": "Retrieve information about the IAP subjects, including their titles, categories, session titles, session start time, session end time, sponsor names, and total number of sessions.",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 25,
+      "question": "Show the department names, the corresponding SIS subject code, subject code descriptions, graduate level, and the total number of courses per department.",
+      "gold_structure": "AGG_G_SQ",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 26,
+      "question": "For each term, list the term code, the term description, whether the term is current or not, and the total number of types of CIS courses.",
+      "gold_structure": "AGG_G_SQ_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 27,
+      "question": "What is the author, school name, material status, total record counts, and total number of types of courses for each author and school?",
+      "gold_structure": "AGG_G_SQ_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 28,
+      "question": "What is the course number, subject title, material status, the total, min, and max new shelf price, the total, min, and max used shelf price, total number of schools and the total number of materials for each TIP subject and material status?",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 29,
+      "question": "What is material status, the total number of materials, the total number of subjects, the total number of schools, and the most recent publication year for each material status?",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 30,
+      "question": "What is the term description, whether the term is current or not, total number of types of TIP subjects offered and materials needed, the minimum and maximum number of enrolled students, the total number of schools offering subjects, and the total number of records for each term code?",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 31,
+      "question": "List all buildings with their names, building numbers, building height, street address, city, state, HR department name, assignable square footage, total and average square footage, ordered in descending order of assignable, total, and average square footage.",
+      "gold_structure": "AGG_G_SQ",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 32,
+      "question": "For the 2023 Fall term, what are the unique term descriptions, subject titles along with their prerequisites, total number of types of subjects per term code, instructor of this course, and the number of types of courses ever taught by the instructor?",
+      "gold_structure": "AGG_SQ_CTE_W",
+      "gold": {
+        "G": 0,
+        "SQ": 1,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 33,
+      "question": "Show the details of rooms including the full name of the rooms, the building names, floor numbers, the organizations occupying them, name of the departments occupying them, and the percentage of the room area over the assignable floor area and building.",
+      "gold_structure": "CASE",
+      "gold": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 0,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 34,
+      "question": "Show the details of rooms including the full name of the rooms, the building names, floor numbers, the organizations occupying them, name of the departments occupying them, and the percentage of the room area over the floor area and building.",
+      "gold_structure": "AGG_SQ_CASE_W",
+      "gold": {
+        "G": 0,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 35,
+      "question": "What are the academic year, and instructors names for courses offered in the academic year 2022, along with the total number of types of courses per instructor?",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 36,
+      "question": "What are the building names, department names, organizations, their highest and lowest floor number, along with the total number of rooms per each building key?",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 37,
+      "question": "Provide the complete information for students with the first name Kevin, including their full names, email addresses, department names, department phone numbers, school names, and the total student count per department and school. If a student is associated with more than one department, list a separate row for each department.",
+      "gold_structure": "AGG_SQ",
+      "gold": {
+        "G": 0,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      }
+    },
+    {
+      "idx": 38,
+      "question": "What are the unique titles of subjects offered in the fall term along with their instructor names, instructor emails, and the total number of types of subjects per instructor?",
+      "gold_structure": "AGG_G_SQ",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 39,
+      "question": "List the building names, names of HR departments occupying them, the total gross square footage, the total and average assignable square footage, and the built year per building key.",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 40,
+      "question": "Retrieve the titles of subjects offered in the summer term along with their descriptions, responsible faculty names, email address, building name, room name, floor level, building street address, and the total number of types of courses per departmnet.",
+      "gold_structure": "AGG_SQ",
+      "gold": {
+        "G": 0,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 41,
+      "question": "For each term code, list the term description, attribute desciption, department name, school name, and the number of subjects in the area of humanities, arts and social sciences.",
+      "gold_structure": "AGG_SQ",
+      "gold": {
+        "G": 0,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 42,
+      "question": "List building names, their height, street address, city, state, postal code, their gross and assignable square footage, the smallest and largest floor level and the total area of all rooms for each building key.",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 43,
+      "question": "What is the category title, version, department name, school name, total number of courses for each course level, and the total number of degree-granting courses for each CIP category code?",
+      "gold_structure": "AGG_G_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      }
+    },
+    {
+      "idx": 44,
+      "question": "What is the total number of library materials, the minimum and maximum publication years, and the total number of materials status for each course name?",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 45,
+      "question": "What is the total number of library reserve materials, the minimum and maximum publication years, and the total number of enrolled students for each course instructor?",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 46,
+      "question": "What is the material status, term description, total number of courses and materials, occurences in departments and school, and the total number of instructors for each library material status code and term code?",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 47,
+      "question": "For building 36, list all space units, their floor and building name, building street address, their space usage, and the number of organizations and space units on the same building and floor.",
+      "gold_structure": "AGG_SQ",
+      "gold": {
+        "G": 0,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      }
+    },
+    {
+      "idx": 48,
+      "question": "For each distinct mailing list containing more than 1000 people and with a name starting with A (case insensitive), provide its name, whether it is a mailing list, whether it is a moira group, whether it is a NFS group, the owner of the mailing list, and the number of people in the list.",
+      "gold_structure": "AGG_G_H",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 1,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 1,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 49,
+      "question": "List the mailing lists with the largest number of members and the least number of members, including their names, owners, public status, hidden status, and number of members in the list. If a mailing list has multiple owners, create a separate entry for each owner. Similarly, if multiple lists share the minimum or maximum member count, include all those lists.",
+      "gold_structure": "AGG_G_SQ_CTE",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 1,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 50,
+      "question": "For email lists with names starting with C (case insensitive) and containing faculty who teach courses in the summer in financial aid years after 2001, provide the name of the list, the number of people in the list, and the number of faculty in the list.",
+      "gold_structure": "AGG_G_CTE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 51,
+      "question": "Regarding the mailing list about duo users, provide the number of students in this list, and the number of departments and schools associated with these students.",
+      "gold_structure": "AGG",
+      "gold": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 52,
+      "question": "For faculty who are responsible for courses in 2023 fall term, list the name of mailing lists with ten members that they subscribe to, the number of faculty in these lists, and the number of courses associated with those faculty.",
+      "gold_structure": "AGG_G_CTE_H",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 1,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 1,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 53,
+      "question": "For each course instructor in the 'keeper-zephyr' mailing list, provide the name of mailing lists they subscribe to, instructor name, earliest and latest publication years, and total number of enrolled students.",
+      "gold_structure": "AGG_G_CTE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 54,
+      "question": "For each mailing list with a name beginning with R (case insensitive), and that Professor Ayden Hopkins is subscribed to, list its name, description, owner, number of people in the list, and number of tenured faculty in the list.",
+      "gold_structure": "AGG_G_CTE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      }
+    },
+    {
+      "idx": 55,
+      "question": "For the email list with name 'date-destiny', list the name of the list, department name, the number of students from the Management department, and the percentage of students who are from the Management department, rounded to two decimal places.",
+      "gold_structure": "AGG_G_CTE_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 56,
+      "question": "For the building with the most floors, list the building name and the names of the mailing lists staring with a (case insensitive) that the building employees with kerberos starting with c (case insensitive) subscribe to.",
+      "gold_structure": "AGG_G_CTE_W",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      },
+      "pred": {
+        "G": 0,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 57,
+      "question": "For the email lists subscribed by faculty members with last names begin with Y, list the names of the lists, the total number of subjects managed by faculty in those mailing lists, and the number of such faculty in the lists.",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 58,
+      "question": "For students with last names starting with H who are subscribed to mailing list 'beacon-date-date', list the names of the students, the phone numbers of departments they belong to, and the size of the mailing list 'beacon-date-date' that they are subscribed to.",
+      "gold_structure": "AGG_G_CTE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 59,
+      "question": "Give the count of mailing lists with names starting with B that include members from the Electrical Engineering and Computer Science department, along with the name of the list starting with B that have the highest number of members from that department and the corresponding member count.",
+      "gold_structure": "AGG_G_SQ_CTE",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      }
+    },
+    {
+      "idx": 60,
+      "question": "For the 'kangaroo-inspire-yearn' email list, for each department present in the list, list the department name, the number of students in that department, and its percentage relative to the students in the mailing list.",
+      "gold_structure": "AGG_G_CTE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 61,
+      "question": "Among the mailing lists subscribed by people with physical offices in building 24, provide the name of the most subscribed mailing list and the total number of subscribers.",
+      "gold_structure": "AGG_G_CTE_CASE_W",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      }
+    },
+    {
+      "idx": 62,
+      "question": "For email lists subscribed by either support staff or faculty, list its name, the number of subscribers that are support staff, the number of subscribers that are faculty, as well as its active status.",
+      "gold_structure": "AGG_G_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      }
+    },
+    {
+      "idx": 63,
+      "question": "For the 'ocean-apple' mailing list, identify the department with the highest student count. Provide the department name, phone number, and the total number of students subscribed to the mailing list from that department. If multiple departments have the same highest count, list each one separately.",
+      "gold_structure": "AGG_G_CTE_W",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      }
+    },
+    {
+      "idx": 64,
+      "question": "For each mailing list, list its owner, owner type, the member visibility ('Public Members' if public, and 'Hidden Members' otherwise), and the number of members of this type of visibility. For each owner and owner type, include a grand total for all members in the format of (owner, owner type, null, total members).",
+      "gold_structure": "AGG_G_SQ_CTE_H_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 1,
+        "H": 1,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 1,
+        "CASE": 1,
+        "W": 0
+      }
+    },
+    {
+      "idx": 65,
+      "question": "Group biology courses by cluster type and course level. For each group, list the name of the department, the course title, cluster type, total enrollments, average enrollment within its cluster, course level, number of unique course materials, average new and used prices for TIP materials, total material record count for TIP materials, number of unique library titles, and number of unique library ISBNs.",
+      "gold_structure": "AGG_G_CTE_W",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      }
+    },
+    {
+      "idx": 66,
+      "question": "For subjects offered this year in either the Fall or Spring term, list its department name, school name, subject ID, subject title, course level, total units, the term it is offered ('Spring' for Spring term and 'Fall' for Fall term), term description, the number of distinct instructors teaching in the Fall, and the number of distinct instructors teaching in the Spring.",
+      "gold_structure": "AGG_G_CTE_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      }
+    },
+    {
+      "idx": 67,
+      "question": "For Political Science courses with HASS attributes, for each attribute, list the name and description of the attribute, the number of unique subjects, average units, the total enrollment, the number of departments that grant degrees, and the subject code description.",
+      "gold_structure": "AGG_G_SQ_CTE_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 68,
+      "question": "Group subjects by cluster type, department offering the subject, and the school name. For each group, list the cluster type, name of the department, school name, whether the department grants degrees, total number of subjects, total enrollment, and average enrollment. Exclude clusters or schools with no student data.",
+      "gold_structure": "AGG_G_SQ_CTE",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 1,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 69,
+      "question": "Group classes that take place in buildings at MIT by the building name and course level. For each group, provide the name of the building, the course level ('Graduate' or 'Undergraduate'), the total number of unique courses of such level, and total instructors for these courses. Include subtotals for each building and course level and a grand total across all buildings and course levels.",
+      "gold_structure": "AGG_G_SQ_CASE_W",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      }
+    },
+    {
+      "idx": 70,
+      "question": "For each course, provide the room number of course location, building name, building number, building city, building state, area, organization name, room usage, term code, course level, the total number of subjects, unique meeting times, and total units. Do not include meet place or meet times with NULL values.",
+      "gold_structure": "AGG_G_CTE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 71,
+      "question": "Consider only books cataloged on or after 2000. For each library material status and department, list the material status, department name, number of associated catalog items, and the total number of enrolled students in courses using those materials. Include subtotals for each material status and a grand total across all status (the corresponding status field is 'Grand Total').",
+      "gold_structure": "AGG_G_CTE_U_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 1,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      }
+    },
+    {
+      "idx": 72,
+      "question": "For each department in the library system, list the name of the department, total number of courses using library materials, the number of catalog items associated with those courses, and the average enrollment per course. Include a grand total across all departments (the corresponding department field should be 'Grand Total').",
+      "gold_structure": "AGG_G_CTE_U_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 1,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 1,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 73,
+      "question": "For each department and school offering courses with materials, list the department name, school name, number of unique course materials, number of courses, average new and used shelf prices of materials, total material records, and number of distinct material statuses. Include a grand total across all schools and departments (the corresponding school and department fields should be null).",
+      "gold_structure": "AGG_G_CTE_U",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 1,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 1,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 74,
+      "question": "For each TIP material status, list the total number of unique materials associated with the status, the total number of records associated with the status, and the total student enrollment associated with the status. Any material status with null values should be displayed as 'No material status'. Additionally, include a grand total across all material status (the material status for this row should be displayed as 'Grand Total').",
+      "gold_structure": "AGG_G_SQ_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 1,
+        "CASE": 1,
+        "W": 0
+      }
+    },
+    {
+      "idx": 75,
+      "question": "For each room, list its associated building name, floor number, room number, ownership type, organization name, number of rooms, area, and percentage of area relative to the building. Include subtotals across floors, subtotals across all floors for each building, and a grand total across all buildings. For the subtotal for each building and the grand total, the percentage of area should be relative to area of all buildings. All numeric values should be rounded to integers and formatted using commas as thousands separators except the relative percentages which should be rounded to two decimal places.",
+      "gold_structure": "AGG_G_SQ_U_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 1,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      }
+    },
+    {
+      "idx": 76,
+      "question": "For each financial aid year and academic year, list the number of fiscal periods, quarters, the start term date, the end term date, and number of distinct department-level term parameters.",
+      "gold_structure": "AGG_G_CTE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 77,
+      "question": "Group buildings by campus sectors. For each group, list the campus sector, name of the building, city and state where the building is located, total number of floors, total assignable area, total number of rooms, total number of organizations, ownership type, and a rank column indicating the order (1-indexed) of this row within each sector based on the descending order of assignable area. Include subtotals for each sector and a grand total across all sectors. The subtotal and grand total only need to computed over the total number of floors and assignable area.",
+      "gold_structure": "AGG_G_CTE_U_CASE_W",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 1,
+        "CASE": 1,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      }
+    },
+    {
+      "idx": 78,
+      "question": "For each department, list the name of the department, the title of the TIP material associated with the department, author, ISBN, library term code, and whether it is available in the library reserves ('Available in Library' if yes and 'Not Available in Library' otherwise), the total number of instructors per library book for the department, the total number of materials available in the library for the department, and the total number of available materials across all departments.",
+      "gold_structure": "AGG_G_CTE_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      }
+    },
+    {
+      "idx": 79,
+      "question": "For each department and material status, list the name of the department, the material status, the number of TIP materials associated with this department and status, the number of library materials associated with this department and status, the total number of TIP and library materials associated with this department and status. Include a subtotal for each department and a grand total across all departments.",
+      "gold_structure": "AGG_G_CTE_U",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 1,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      }
+    },
+    {
+      "idx": 80,
+      "question": "For each building that is not a subdivision, list the building number, full name, street address, building type, occupancy date, ownership type, and site location. You should also include three rows at the end showing the number of owned, leased, all buildings at MIT that are not subdivisions, in the format of (null, #building Buildings, null, null, null, null, null).",
+      "gold_structure": "AGG_SQ_U",
+      "gold": {
+        "G": 0,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 1,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 1,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 81,
+      "question": "For each owned building that is not a subdivision, list the construction start year, the building number, and the year of initial occupancy. Display the construction start year only if it differs from the previous row. If the year of initial occupancy or construction start year is unknown, display 'UNKNOWN'. You should also include a row at the end showing the total number of owned buildings that are not subdivisions, in the format of (null, #building Buildings, null).",
+      "gold_structure": "AGG_G_SQ_H_U_CASE_W",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 1,
+        "U": 1,
+        "CASE": 1,
+        "W": 1
+      },
+      "pred": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 1,
+        "CASE": 1,
+        "W": 1
+      }
+    },
+    {
+      "idx": 82,
+      "question": "Group all buildings at MIT into either owned or leased. For each group, state the ownership type, usage type, number of buildings, gross square footage, number of rooms, and the number of associated organizations. Display the ownership type only if it differs from the previous row. Include subtotals for each group and a grand total across all groups. The subtotal and grand total rows should not include ownership type and usage type. Footage should be rounded to integers and formatted using commas as thousands separators.",
+      "gold_structure": "AGG_G_SQ_CASE_W",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 1,
+        "CASE": 1,
+        "W": 1
+      }
+    },
+    {
+      "idx": 83,
+      "question": "For each building use, list the type, the number of distinct buildings (excluding subdivisions) of this use, the total gross square footage of these buildings, and the number of unique organizations associated with the rooms in these buildings. If the building is used as a residence, display the usage type as \"RESIDENTIAL.\" You should also include a row at the end showing the total number of buildings, the gross square footage, and the number of organizations across all types of building use. All numerical values should be rounded to integers and formatted using commas as thousands separators.",
+      "gold_structure": "AGG_G_SQ_U_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 1,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 1,
+        "CASE": 1,
+        "W": 0
+      }
+    },
+    {
+      "idx": 84,
+      "question": "For each organization except Cambridge-MIT Institute, list its ID, number, level, formatted name according to level (if level is 2, there should be 1 space before the name, if level is 3, there should be 2 space before the name, up to level 6), whether it is assignable ('ASSIGNABLE' if assignable, 'NON-ASSIGNABLE' otherwise), total area, number of rooms, and average room area. Area and number of rooms should be rounded to integers and formatted using commas as thousands separators.",
+      "gold_structure": "AGG_SQ_CASE",
+      "gold": {
+        "G": 0,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      }
+    },
+    {
+      "idx": 85,
+      "question": "Group all rooms into whether or not they are assignable and the major use descriptions. For each group, state \"ASSIGNABLE\" if the room is assignable and \"NON-ASSIGNABLE\" otherwise, the major use description, the total number of rooms, total area, and average area. Include subtotals for each group and a grand total across all groups. The assignable status and major use descriptions should only be displayed when they differ from the previous row. Do not include rooms whose major use or major use description starts with 'ZUSE.' The results should be sorted by assignable status and major use description. The subtotal and grand total rows should not include assignable status or major use description.",
+      "gold_structure": "AGG_G_SQ_CASE_W",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      }
+    },
+    {
+      "idx": 86,
+      "question": "List each floor key and department name within the Stata building, as well as the number of rooms, total area, and average area per department on each floor. Include subtotals for each floor and a grand total across all floors. Sort the results by floor key and department name in ascending order. Exclude departments without any rooms in the building. Only the first row of each floor group should include the floor key, and the subtotal and grand total rows should not include floor key or department name. Number of rooms and area should be rounded to integers and formatted using commas as thousands separators.",
+      "gold_structure": "AGG_G_SQ_CASE_W",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 1,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      }
+    },
+    {
+      "idx": 87,
+      "question": "List each building key and floor key within the department of facilities, the number of rooms, total area, average area per floor, building name, access level, zip code, and city. Include subtotals for each building and a grand total across all buildings. The subtotals and grand total should not include zip code or city. Numbers of rooms and area should be rounded to integers and formatted using commas as thousands separators.",
+      "gold_structure": "AGG_G_SQ_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 88,
+      "question": "List the department, school, course number, subject title, total number of enrolled students, term code, and count of distinct catalog ISBNs. Add a summary row at the bottom showing the total number of students and distinct catalog ISBNs for the current term in the format of ('TOTAL:', null, null, null, total number of students, null, number of distinct catalog ISBNs).",
+      "gold_structure": "AGG_G_SQ_U",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 1,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 1,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 89,
+      "question": "For each mailing list that involves subscribers that work in departments with names starting with 'Computer Science', state the ownership type, the list name, the number of owners, and the number of subscribers. Display the ownership type only if it differs from the previous entry. Include subtotals (the corresponding type field shoud be 'SUBTOTAL') for each ownership type and a grand total (the corresponding type field shoud be 'TOTAL') across all ownership types.",
+      "gold_structure": "AGG_G_SQ_CASE_W",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 1,
+        "CASE": 1,
+        "W": 1
+      }
+    },
+    {
+      "idx": 90,
+      "question": "For each IAP category, list its name, number of unique sessions, total number of attendees, active period (in the format of 'beginning term code-end term code'), the most common sponsor name, and the most common session start time. Include a grand total row showing the total number of sessions and attendees across all categories in the format of ('TOTAL', number of sessions, number of attendees, null, null, null).",
+      "gold_structure": "AGG_G_SQ_CTE_U",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 1,
+        "H": 0,
+        "U": 1,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 1,
+        "CASE": 0,
+        "W": 1
+      }
+    },
+    {
+      "idx": 91,
+      "question": "For each building type, list the name of the building type, the number of buildings that are not subdivisions, number of employees, number of unique building street address, number of unique city, number of unique state, number of unique postal code, and average gross square footage per employee. For building type of 'resident', display it as 'RESIDENTIAL'. Include a grand total across all building types (the corresponding type field is 'TOTAL').",
+      "gold_structure": "AGG_G_SQ_U_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 1,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 1,
+        "CASE": 1,
+        "W": 0
+      }
+    },
+    {
+      "idx": 92,
+      "question": "Group spaces in the Stata building by the access level and usage type. For each group, state the access level, usage type, name of the space, the number of spaces, total area across all rooms in the space, and average area across all rooms in the space. Display the access level only if it differs from the previous entry. Include subtotals for each access level, usage type, and space name, subtotals for each access level, and a grand total across all access levels. Exclude usage type that includes \"STORAGE\". All numerical values should be rounded to integers and formatted using commas as thousands separators.",
+      "gold_structure": "AGG_G_SQ_CASE_W",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      }
+    },
+    {
+      "idx": 93,
+      "question": "List each organization's break group, ID, name, and formatted name according to its level, along with whether its members are emeritus or non-emeritus. Also, include the organization number, level, employer count, and hierarchy type for each organization. Exclude organizations '139' and '250'. Sort the results by hierarchy type and ensure totals for employer counts are displayed.",
+      "gold_structure": "AGG_SQ_CASE",
+      "gold": {
+        "G": 0,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      }
+    },
+    {
+      "idx": 94,
+      "question": "For each course, list its title, name of the building of the course location, duration (in terms of days), and a running average of the duration (in terms of days) using a window of two preceding and two following courses (partitioned by academic year and sorted by course start date).",
+      "gold_structure": "AGG_SQ_W",
+      "gold": {
+        "G": 0,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      },
+      "pred": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      }
+    },
+    {
+      "idx": 95,
+      "question": "For each course, list its name, name of the building of the course location, the start date, the name of the course before it, and the name of the course after it, access level of the building, and the assignable area of the room used for the course, sorted by the ascending order start date and course name.",
+      "gold_structure": "W",
+      "gold": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      },
+      "pred": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      }
+    },
+    {
+      "idx": 96,
+      "question": "For each course, list its name, name of the building of the course location, and the cumulative number of courses, including the course itself, held in the same year or preceding years (partitioned by academic year and sorted in the ascending order of course start date).",
+      "gold_structure": "AGG_W",
+      "gold": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      },
+      "pred": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      }
+    },
+    {
+      "idx": 97,
+      "question": "Group courses in the biology and chemistry department by whether they are current or not and the cluster type. For each group, list the current status ('CURRENT' if yes and 'NON-CURRENT' otherwise), cluster type, the maximum duration of courses (in terms of days), the maximum units, average duration (in terms of days), and average units. Include subtotals for each current status (the corresponding current status field is 'SUBTOTAL') and a grand total across all current status (the corresponding current status field is 'TOTAL'). Do not repeat the current status if it is the same as the previous row. Sort the table by current status and cluster type.",
+      "gold_structure": "AGG_G_CASE_W",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      }
+    },
+    {
+      "idx": 98,
+      "question": "Group courses in the biology and chemistry department by whether they are current or not and the department name. For each group, list the current status ('CURRENT' if yes and 'NON-CURRENT' otherwise), department name, the maximum duration of courses (in terms of days), the maximum units, average duration (in terms of days), and average units. Include subtotals for each current status (the corresponding current status field is 'SUBTOTAL') and a grand total across all current status (the corresponding current status field is 'TOTAL'). Do not repeat the current status if it is the same as the previous row. Sort the table by current status and department.",
+      "gold_structure": "AGG_G_SQ_CASE_W",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      }
+    },
+    {
+      "idx": 99,
+      "question": "Group master courses by department. For each group, state the name of the department, the master course code, the number of subjects, the total new shelf price of associated TIP materials, and the number of unique TIP materials. Display the department and master course only if it differs from the previous entry. Include subtotals for each department and a grand total across all departments. All numerical values should be rounded to integers and formatted using commas as thousands separators.",
+      "gold_structure": "AGG_G_SQ_CASE_W",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      }
+    },
+    {
+      "idx": 100,
+      "question": "For each term and department, list the term, department, the number of courses, average number of equivalent subjects, the school name, and department phone number. Include subtotals for each term (the corresponding term field is 'SUBTOTAL') and a grand total across all terms (the corresponding term field is 'TOTAL'). Do not repeat the term if it is the same as the previous row. Sort the table by term and department.",
+      "gold_structure": "AGG_G_SQ_CASE_W",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      }
+    },
+    {
+      "idx": 101,
+      "question": "Group sessions by their current term status. For each group, state the status ('CURRENT' if is current term and 'NOT CURRENT' otherwise), name of the session, number of IAP sessions, total IAP session time in days, and average IAP session time in days. Show a subtotal for each current status and a grand total row across all status. Order the results by current status and cluster type. Display the the current status only if it differs from the previous entry.",
+      "gold_structure": "AGG_G_SQ_H_CASE_W",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 1,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 1
+      }
+    },
+    {
+      "idx": 102,
+      "question": "List each academic year, the term code, and the number of newly introduced subjects in this term. Display the academic year only if it differs from the previous entry. Include a grand total (the corresponding year field should be 'TOTAL') stating the total number of subjects across all academic years.",
+      "gold_structure": "AGG_G_SQ_U_CASE_W",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 1,
+        "CASE": 1,
+        "W": 1
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 1,
+        "CASE": 1,
+        "W": 1
+      }
+    },
+    {
+      "idx": 103,
+      "question": "For email lists with names starting with e (case insensitive), containing 10 to 20 members inclusive, and where over 75% are computer science students, provide the list name, owner, and member count.",
+      "gold_structure": "AGG_G_CTE_H_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 1,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 1,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      }
+    },
+    {
+      "idx": 104,
+      "question": "For students with last names starting with K, list their names, the phone numbers of departments they belong to, total number of mailing lists each student is in, and the average size of the mailing lists each student is in.",
+      "gold_structure": "AGG_G_SQ_CTE",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 105,
+      "question": "From the 100 email lists with the most number of subscribers, list their names, their total number of subscribers, their public status, the name of the department with the most presence in the list, and the number of students from this department in the list.",
+      "gold_structure": "AGG_G_SQ",
+      "gold": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      }
+    },
+    {
+      "idx": 106,
+      "question": "Calculate the total assignable and non-assignable area for each building by summing up the respective areas of all its floors. For each building, list the building name, building number, total assignable area, total non-assignable area, and total room count, sorted in descending order of the total assignable area.",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 107,
+      "question": "List all rooms in building 45, including their full name, area, major use, the organization that occupies them, the count of rooms per major use, and the total area occupied by rooms for each organization.",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 0,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 1
+      }
+    },
+    {
+      "idx": 108,
+      "question": "List the name, number, construction date, and type of all buildings, along with the count of addresses associated with each building, the average gross area of the buildings, and the total number of rooms in each building. Sort the results by building name.",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 109,
+      "question": "For each department, list its name, number of unique courses offered, the number of unique reserved materials, and the number of unique instructors associated with those courses, sorted by the number of unique courses offered in descending order.",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 110,
+      "question": "For each course title, list the title, the total number of reserved materials, and the count of distinct material status associated with those materials, sorted by the total number of reserved materials in descending order.",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 111,
+      "question": "For each instructor, list their name, the number of unique courses they teach, the total number of material assignments, average publication year, and number of distinct status, sorted by the number of unique courses in descending order.",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 112,
+      "question": "For each publication year, list the year, the total number of reserved materials, the average length of their titles, distinct number of status, and number of courses, sorted by publication year in descending order.",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 113,
+      "question": "For each IAP category, list the category name, the sponsor name, the number of activities offered, and the average fee per activity, sorted by the number of activities in descending order.",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 114,
+      "question": "For each sponsor, list the sponsor name, the number of IAP sessions hosted, and the number of unique subjects organized.",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 115,
+      "question": "For each person role and IAP category, list the role, the category name, the number of people in this role, and the average fee, sorted by the role count in descending order.",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 116,
+      "question": "List the names of the buildings with the most floors. If there are ties, list each one separately.",
+      "gold_structure": "AGG_G_CTE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 1,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 0,
+        "SQ": 1,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 117,
+      "question": "For subjects offered in the summer term, list the subject titles, number of instructors, and the length of the longest instructor name.",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 118,
+      "question": "For the mailing list with owner key LIST69.377-keeper-xenon, list the owner, total number of mailing lists, and total number of members across all these mailing lists.",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    },
+    {
+      "idx": 119,
+      "question": "For each school, list the school name, total number of courses that appear in SIS subject code catalog, and the total number of degree-granting courses that appear in SIS subject code catalog.",
+      "gold_structure": "AGG_G_CASE",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 1,
+        "W": 0
+      }
+    },
+    {
+      "idx": 120,
+      "question": "For each department, list the department name, department phone number, number of students, and the length of the longest student full name in that department.",
+      "gold_structure": "AGG_G",
+      "gold": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      },
+      "pred": {
+        "G": 1,
+        "SQ": 0,
+        "CTE": 0,
+        "H": 0,
+        "U": 0,
+        "CASE": 0,
+        "W": 0
+      }
+    }
+  ]
+}

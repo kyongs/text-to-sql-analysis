@@ -3,6 +3,7 @@
 import os
 import re
 import json
+import threading
 import mysql.connector
 from openai import OpenAI
 from typing import Dict, Any, List, Optional, Tuple
@@ -37,6 +38,16 @@ class OpenAIModel:
         self.enable_distinct_advisor = enabled_tools.get('distinct_advisor', False)
         self.enable_distinct_comparator = enabled_tools.get('distinct_comparator', False)
         self.enable_constraint_checker = enabled_tools.get('constraint_checker', False)
+        self.enable_ask_granularity = enabled_tools.get('ask_granularity', False)
+        self.enable_execute_sql = enabled_tools.get('execute_sql', False)
+
+        # User Agent 설정 (ask_granularity에서 LLM2가 자동 선택)
+        user_agent_config = config.get('user_agent', {})
+        self.use_user_agent = user_agent_config.get('enabled', False)
+        self.user_agent_model = user_agent_config.get('model', 'gpt-4o-mini')
+
+        # 현재 처리 중인 gold_sql (thread-local storage for multi-threading safety)
+        self._thread_local = threading.local()
 
         # Refine agent 활성화 여부
         refine_agents = config.get('refine_agents', {})
@@ -55,6 +66,9 @@ class OpenAIModel:
 
         # Fresh refine 활성화 여부 (note_taking과 함께 사용)
         self.enable_fresh_refine = config.get('fresh_refine', False)
+
+        # Forced refine 활성화 여부 (생성 후 항상 실행되는 검증 단계)
+        self.enable_forced_refine = config.get('forced_refine', False)
 
         # Tool 정의 (활성화된 tool만)
         self.tools = self._initialize_tools()
@@ -256,6 +270,86 @@ class OpenAIModel:
                 }
             })
 
+        # Add ask_granularity if enabled
+        if self.enable_ask_granularity:
+            tools.append({
+                "type": "function",
+                "function": {
+                    "name": "ask_granularity",
+                    "description": """**PROACTIVELY USE THIS TOOL** whenever you need to write SQL with aggregation (COUNT, SUM, AVG, MAX, MIN, GROUP BY).
+
+**ALWAYS ask the user** about their preferred result format BEFORE writing the SQL. Don't assume - let the user choose.
+
+YOU generate 2-4 concrete options showing:
+1. Different GROUP BY granularities (single column vs multiple columns)
+2. WINDOW FUNCTION option if they might want detail rows WITH aggregates
+3. Each option with clear result preview
+
+**MUST USE when:**
+- Writing COUNT(*), SUM(), AVG() or any aggregate function
+- Question mentions "how many", "total", "count", "average", "per", "for each", "by"
+- Multiple entities mentioned that could be grouping levels
+
+Example: "List instructors and material count"
+→ STOP and ask: GROUP BY instructor only? Or GROUP BY instructor, subject?
+
+Options format:
+[
+  {"id": "A", "sql_pattern": "GROUP BY instructor", "description": "강사당 1행 - 총계만", "result_preview": "| instructor | total |\\n| Kim | 15 |"},
+  {"id": "B", "sql_pattern": "GROUP BY instructor, subject", "description": "강사+과목 조합당 1행", "result_preview": "| instructor | subject | cnt |\\n| Kim | Math | 10 |"},
+  {"id": "C", "sql_pattern": "COUNT(*) OVER (PARTITION BY instructor)", "description": "자료별 1행 + 강사별 합계 컬럼", "result_preview": "| material | instructor | inst_total |\\n| Book1 | Kim | 15 |"}
+]""",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "question": {
+                                "type": "string",
+                                "description": "The original natural language question"
+                            },
+                            "options": {
+                                "type": "array",
+                                "description": "Array of granularity options YOU generated",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {"type": "string", "description": "Option ID: A, B, C, etc."},
+                                        "sql_pattern": {"type": "string", "description": "SQL pattern: GROUP BY x / GROUP BY x,y / SUM() OVER(...) / WITH ROLLUP"},
+                                        "description": {"type": "string", "description": "What this option means in plain language"},
+                                        "result_preview": {"type": "string", "description": "Example result table (use | for columns, \\n for rows)"}
+                                    },
+                                    "required": ["id", "sql_pattern", "description"]
+                                }
+                            },
+                            "reason": {
+                                "type": "string",
+                                "description": "Why clarification is needed (what's ambiguous)"
+                            }
+                        },
+                        "required": ["question", "options"]
+                    }
+                }
+            })
+
+        # Add execute_sql if enabled
+        if self.enable_execute_sql:
+            tools.append({
+                "type": "function",
+                "function": {
+                    "name": "execute_sql",
+                    "description": "Execute a SQL query against the database and return results. Use this to test your SQL before submitting the final answer. Returns: success/error status, row count, and first 5 rows of data. If error occurs, read the error message, fix the SQL, and try again.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "sql": {
+                                "type": "string",
+                                "description": "The SQL query to execute"
+                            }
+                        },
+                        "required": ["sql"]
+                    }
+                }
+            })
+
         return tools
 
     def _execute_tool_call(self, tool_name: str, arguments: Dict[str, Any], db_id: str) -> str:
@@ -268,6 +362,7 @@ class OpenAIModel:
         from src.agent.distinct_advisor import check_distinct_need, format_distinct_advice
         from src.agent.distinct_comparator import compare_distinct_results, format_distinct_comparison
         from src.agent.constraint_checker import check_schema_constraints, format_constraint_check
+        from src.agent.ask_granularity import ask_granularity
 
         if tool_name == "inspect_join_relationship":
             return inspect_join_relationship(
@@ -326,10 +421,22 @@ class OpenAIModel:
                 db_id=db_id
             )
             return format_constraint_check(result)
+        elif tool_name == "ask_granularity":
+            return ask_granularity(
+                question=arguments["question"],
+                options=arguments["options"],
+                reason=arguments.get("reason", ""),
+                gold_sql=getattr(self._thread_local, 'gold_sql', None),
+                use_user_agent=self.use_user_agent,
+                user_agent_model=self.user_agent_model
+            )
+        elif tool_name == "execute_sql":
+            result = self._execute_sql(arguments["sql"], db_id)
+            return self._format_execute_sql_result(result)
         else:
             return f"Unknown tool: {tool_name}"
 
-    def generate(self, prompt: str, db_id: str = "dw", max_iterations: int = 10, question: str = None, item: Dict[str, Any] = None):
+    def generate(self, prompt: str, db_id: str = "dw", max_iterations: int = 10, question: str = None, item: Dict[str, Any] = None, gold_sql: str = None):
         """
         OpenAI API를 호출하고 필요시 tool calling 수행
         Refine agent가 활성화된 경우 SQL 실행 후 자동 수정 루프 실행
@@ -341,10 +448,13 @@ class OpenAIModel:
             max_iterations: 최대 tool call 반복 횟수
             question: 원본 질문 (refine agent에서 사용)
             item: 데이터셋 아이템 (note_taking에서 hints 비교용)
+            gold_sql: 정답 SQL (User Agent 모드에서 ask_granularity tool이 사용)
 
         Returns:
             response 객체 (tool 사용 시 tool_call_log 포함)
         """
+        # User Agent 모드에서 사용할 gold_sql 저장 (thread-local)
+        self._thread_local.gold_sql = gold_sql
         # Note-taking 초기화 (각 호출마다 새로운 NoteTaker 생성 - 멀티스레드 안전)
         local_note_taker = None
         if self.enable_note_taking and item:
@@ -354,73 +464,116 @@ class OpenAIModel:
             if str(src_dir) not in sys.path:
                 sys.path.insert(0, str(src_dir))
             from note_taker import ParsingNoteTaker
-            local_note_taker = ParsingNoteTaker(item)
+            skeleton_hint = item.get('skeleton_hint') if item else None
+            local_note_taker = ParsingNoteTaker(item, skeleton_hint=skeleton_hint)
 
         # Tool이 있으면 상세 시스템 메시지 (활성화된 tool에 따라 동적 생성)
         if self.use_tools:
-            system_parts = ["You are a MySQL SQL expert. Your job is to write a MySQL SQL query to answer the user's question.\n"]
-            system_parts.append("You have access to tools that help you write better SQL:\n")
+            # execute_sql 전용 모드: execute_sql만 활성화된 경우 전용 프롬프트 사용
+            only_execute_sql = self.enable_execute_sql and not any([
+                self.enable_join_inspector, self.enable_join_path_finder,
+                self.enable_lookup_column_values, self.enable_aggregation_advisor,
+                self.enable_distinct_advisor, self.enable_distinct_comparator,
+                self.enable_constraint_checker, self.enable_ask_granularity
+            ])
 
-            tool_num = 1
-            if self.enable_join_path_finder:
-                system_parts.append(f"""{tool_num}. **find_join_path**: Find the optimal JOIN path between two tables
+            if only_execute_sql:
+                system_message = """You are a MySQL SQL expert. You have access to the execute_sql tool which runs SQL against the real database and returns results (row count + first 5 rows) or error details.
+
+## How to use execute_sql
+1. **Check values first**: When filtering by a string (WHERE col = '...'), run SELECT DISTINCT col FROM table to verify the exact value exists
+2. **Verify before submitting**: Run your final query with LIMIT 100 and check that the columns and values match what the question asks for. If not, fix and re-run
+3. **Multi-granularity aggregation**: When the question needs both detail rows and aggregated values (or aggregation at a different grain than the detail), use CTE or subquery to pre-compute the aggregation, then JOIN back. Execute the intermediate CTE/subquery first to verify correctness before writing the full query
+
+## SQL Guidelines
+- Prefer INNER JOIN over LEFT JOIN unless the question explicitly requires all rows from one side
+- Only SELECT columns that the question asks for. Grouping keys used solely for aggregation do NOT need to appear in SELECT
+- Follow the Hints/Mappings faithfully: use the exact columns specified rather than inventing alternatives (e.g., use COUNT(DISTINCT mapped_column) instead of COUNT(*) when a specific column is mapped)
+- Do NOT fabricate or transform values beyond what is asked. If the question says "list names", return the name column as-is. Do NOT add COALESCE, IFNULL, or NULL-to-0 conversions unless explicitly requested
+- Hints are strong guidance. Follow them closely, but adapt when the data tells you otherwise
+"""
+            else:
+                system_parts = ["You are a MySQL SQL expert. Your job is to write a MySQL SQL query to answer the user's question.\n"]
+                system_parts.append("You have access to tools that help you write better SQL:\n")
+
+                tool_num = 1
+                if self.enable_join_path_finder:
+                    system_parts.append(f"""{tool_num}. **find_join_path**: Find the optimal JOIN path between two tables
    - **USE THIS FIRST** when you need to join tables that might not be directly related
    - Returns the shortest path including any necessary intermediate (bridge) tables
    - **CRITICAL**: Do NOT skip intermediate tables - each hop is required for data integrity
 """)
-                tool_num += 1
+                    tool_num += 1
 
-            if self.enable_join_inspector:
-                system_parts.append(f"""{tool_num}. **inspect_join_relationship**: Analyze JOIN relationships between tables
+                if self.enable_join_inspector:
+                    system_parts.append(f"""{tool_num}. **inspect_join_relationship**: Analyze JOIN relationships between tables
    - Check cardinality (1:1, 1:N, M:N) before writing JOIN queries
    - Identify potential data multiplication issues
 """)
-                tool_num += 1
+                    tool_num += 1
 
-            if self.enable_lookup_column_values:
-                system_parts.append(f"""{tool_num}. **lookup_column_values**: Verify exact column values before using in WHERE clause
+                if self.enable_lookup_column_values:
+                    system_parts.append(f"""{tool_num}. **lookup_column_values**: Verify exact column values before using in WHERE clause
    - **USE THIS** when you need to filter by a string value (department, role, status, type, name)
    - If the exact value is NOT shown in schema Examples, ALWAYS verify it exists first
    - Returns whether the value exists + similar values if not found
    - **CRITICAL**: If NOT FOUND, do NOT use that value - check similar values or re-read hints
 """)
-                tool_num += 1
+                    tool_num += 1
 
-            if self.enable_aggregation_advisor:
-                system_parts.append(f"""{tool_num}. **check_aggregation_pattern**: Determine GROUP BY vs Window Function
+                if self.enable_aggregation_advisor:
+                    system_parts.append(f"""{tool_num}. **check_aggregation_pattern**: Determine GROUP BY vs Window Function
    - **USE THIS FIRST** when the question asks for BOTH detail columns (names, titles, ISBN) AND aggregated values (total, count, sum)
    - Returns whether to use GROUP BY or Window Function with example pattern
    - **CRITICAL**: If it recommends Window Function, use SUM/COUNT(...) OVER (PARTITION BY ...) instead of GROUP BY
 """)
-                tool_num += 1
+                    tool_num += 1
 
-            if self.enable_distinct_advisor:
-                system_parts.append(f"""{tool_num}. **check_distinct_need**: Check if DISTINCT is needed for JOIN queries
+                if self.enable_distinct_advisor:
+                    system_parts.append(f"""{tool_num}. **check_distinct_need**: Check if DISTINCT is needed for JOIN queries
    - **USE THIS** when joining multiple tables to check duplicate row risks
    - Returns risk level (high/medium/low) based on JOIN cardinality analysis
    - **CRITICAL**: If risk is HIGH (M:N relationship), use SELECT DISTINCT or COUNT(DISTINCT ...)
 """)
-                tool_num += 1
+                    tool_num += 1
 
-            if self.enable_distinct_comparator:
-                system_parts.append(f"""{tool_num}. **compare_distinct_results**: Compare results WITH vs WITHOUT DISTINCT
+                if self.enable_distinct_comparator:
+                    system_parts.append(f"""{tool_num}. **compare_distinct_results**: Compare results WITH vs WITHOUT DISTINCT
    - **USE THIS AFTER writing SQL** to verify if DISTINCT actually changes the result
    - Shows: row count difference, duplicate ratio, concrete duplicate examples
    - If no difference (0 duplicates), you can safely omit DISTINCT
    - If high duplicate ratio, DISTINCT is likely needed
 """)
-                tool_num += 1
+                    tool_num += 1
 
-            if self.enable_constraint_checker:
-                system_parts.append(f"""{tool_num}. **check_schema_constraints**: Verify schema constraints
+                if self.enable_constraint_checker:
+                    system_parts.append(f"""{tool_num}. **check_schema_constraints**: Verify schema constraints
    - Check if tables/columns exist before using them
    - Get PK/FK relationships for correct JOIN conditions
    - Get data types (DATE, TIMESTAMP) for proper comparisons
    - Get allowed values for ENUM-like columns
 """)
-                tool_num += 1
+                    tool_num += 1
 
-            system_parts.append("""When writing SQL queries:
+                if self.enable_ask_granularity:
+                    system_parts.append(f"""{tool_num}. **ask_granularity**: Clarify aggregation granularity with the user
+   - **PROACTIVELY USE** when writing SQL with COUNT, SUM, AVG, GROUP BY
+   - Generate 2-4 options showing different GROUP BY levels or Window Functions
+   - Wait for user selection before writing the final SQL
+   - **MUST USE** when question mentions "how many", "total", "count", "for each", "per"
+""")
+                    tool_num += 1
+
+                if self.enable_execute_sql:
+                    system_parts.append(f"""{tool_num}. **execute_sql**: Execute SQL against the database to test your query
+   - **USE THIS** after writing your SQL to verify it runs correctly
+   - Returns row count and sample data (first 5 rows)
+   - If error occurs, read the error message, fix the SQL, and try again
+   - If result is empty (0 rows), reconsider your WHERE conditions or JOIN logic
+""")
+                    tool_num += 1
+
+                system_parts.append("""When writing SQL queries:
 - **Multi-hop JOINs**: If find_join_path shows intermediate tables, you MUST include ALL of them in your query
 - **DISTINCT usage**: If the tool shows M:N (many-to-many) cardinality, consider using SELECT DISTINCT or COUNT(DISTINCT ...) to avoid duplicate rows
 - **JOIN type selection**: Logically determine whether to use INNER JOIN or LEFT JOIN based on:
@@ -429,7 +582,7 @@ class OpenAIModel:
   * The business logic of the question
 - **GROUP BY optimization**: For M:N relationships, use GROUP BY with appropriate aggregate functions (COUNT DISTINCT, MAX, MIN, etc.)
 """)
-            system_message = "\n".join(system_parts)
+                system_message = "\n".join(system_parts)
         else:
             system_message = "You are a SQLite SQL expert. Your job is to write a SQLite SQL query to answer the user's question."
 
@@ -693,6 +846,17 @@ Please provide a corrected SQL query."""
                             else:
                                 break
 
+                    # Forced refine 단계 (생성 후 항상 실행되는 검증)
+                    if self.enable_forced_refine and sql and question and item:
+                        refined_sql, refine_response = self._forced_refine(
+                            sql, db_id, question, item, tool_call_log
+                        )
+                        if refined_sql != sql:
+                            sql = refined_sql
+                        # response를 refine 결과로 교체 (최종 SQL이 content에 들어가도록)
+                        if refine_response:
+                            response = refine_response
+
                     break
 
                 # Tool call 실행
@@ -774,21 +938,40 @@ Please provide a corrected SQL query."""
 
         for log_entry in tool_call_log:
             iteration = log_entry.get("iteration", "?")
+            stage = log_entry.get("stage", None)
             log_type = log_entry.get("type")
 
-            if log_type == "tool_call":
-                formatted += f"\n[Iteration {iteration}] 🤖 LLM Tool Call:\n"
+            # Three-stage pipeline logs
+            if log_type == "stage1_note":
+                formatted += f"\n[Stage 1] 📋 NOTE PREPARATION:\n"
+                formatted += "-" * 60 + "\n"
+                content = log_entry.get('content', '')
+                formatted += content + "\n"
+                formatted += "-" * 60 + "\n"
+
+            elif log_type == "stage2_note":
+                formatted += f"\n[Stage 2] 🔧 ENHANCED NOTE (after tools):\n"
+                formatted += "-" * 60 + "\n"
+                content = log_entry.get('content', '')
+                formatted += content + "\n"
+                formatted += "-" * 60 + "\n"
+
+            elif log_type == "tool_call":
+                stage_prefix = f"Stage {stage}, " if stage else ""
+                formatted += f"\n[{stage_prefix}Iteration {iteration}] 🤖 LLM Tool Call:\n"
                 formatted += f"  Function: {log_entry['function']}\n"
                 formatted += f"  Arguments: {json.dumps(log_entry['arguments'], indent=4)}\n"
 
             elif log_type == "tool_response":
-                formatted += f"\n[Iteration {iteration}] 📊 Tool Response:\n"
+                stage_prefix = f"Stage {stage}, " if stage else ""
+                formatted += f"\n[{stage_prefix}Iteration {iteration}] 📊 Tool Response:\n"
                 response = log_entry['response']
                 # 응답을 들여쓰기
                 formatted += "  " + response.replace("\n", "\n  ") + "\n"
 
             elif log_type == "final_response":
-                formatted += f"\n[Iteration {iteration}] ✅ Final SQL Response:\n"
+                stage_prefix = f"Stage {stage}" if stage else f"Iteration {iteration}"
+                formatted += f"\n[{stage_prefix}] ✅ Final SQL Response:\n"
                 formatted += f"{log_entry['content']}\n"
 
             elif log_type == "refine_trigger":
@@ -817,6 +1000,17 @@ Please provide a corrected SQL query."""
                 formatted += f"\n[Note Final] 📋 Final Note:\n"
                 final_note = log_entry.get('final_note', '')
                 formatted += "  " + final_note.replace("\n", "\n  ") + "\n"
+
+            elif log_type == "forced_refine":
+                formatted += f"\n[Forced Refine] SQL Review:\n"
+                formatted += "-" * 60 + "\n"
+                formatted += f"  Original SQL: {log_entry.get('original_sql', '')[:200]}\n"
+                formatted += f"  Exec Result Rows: {log_entry.get('exec_result_rows', 0)}\n"
+                formatted += f"  Refine Response:\n"
+                refine_resp = log_entry.get('refine_response', '')
+                formatted += "    " + refine_resp.replace("\n", "\n    ")[:1000] + "\n"
+                formatted += f"  Refined SQL: {log_entry.get('refined_sql', '')[:200]}\n"
+                formatted += "-" * 60 + "\n"
 
         formatted += "=" * 80 + "\n"
         return formatted
@@ -848,7 +1042,7 @@ Please provide a corrected SQL query."""
 
         return None
 
-    def _execute_sql(self, sql: str, db_id: str, timeout_ms: int = 30000) -> Dict[str, Any]:
+    def _execute_sql(self, sql: str, db_id: str, timeout_ms: int = 30000, max_rows: int = 5) -> Dict[str, Any]:
         """
         SQL 실행 및 결과 반환
 
@@ -858,7 +1052,7 @@ Please provide a corrected SQL query."""
                 "row_count": int,
                 "error": str or None,
                 "error_type": "syntax_error" | "empty_result" | "timeout" | None,
-                "results": list (처음 몇 행)
+                "results": list (처음 max_rows 행)
             }
         """
         result = {
@@ -888,7 +1082,7 @@ Please provide a corrected SQL query."""
 
             result["success"] = True
             result["row_count"] = len(rows)
-            result["results"] = rows[:5]  # 처음 5행만 저장
+            result["results"] = rows[:max_rows]
 
             # Empty result 체크
             if len(rows) == 0:
@@ -912,6 +1106,173 @@ Please provide a corrected SQL query."""
             result["error_type"] = "syntax_error"
 
         return result
+
+    def _format_execute_sql_result(self, result: Dict[str, Any]) -> str:
+        """execute_sql tool 결과를 LLM이 읽기 좋은 문자열로 포맷"""
+        lines = []
+
+        if result["success"]:
+            lines.append(f"SUCCESS: {result['row_count']} rows returned")
+            if result["row_count"] == 0:
+                lines.append("WARNING: Query returned 0 rows. Check your WHERE conditions or JOIN logic.")
+            elif result["results"]:
+                # 컬럼 헤더
+                cols = list(result["results"][0].keys())
+                lines.append("| " + " | ".join(cols) + " |")
+                lines.append("| " + " | ".join(["---"] * len(cols)) + " |")
+                # 데이터 행 (최대 5행)
+                for row in result["results"]:
+                    vals = [str(v) if v is not None else "NULL" for v in row.values()]
+                    # 너무 긴 값은 잘라냄
+                    vals = [v[:50] + "..." if len(v) > 50 else v for v in vals]
+                    lines.append("| " + " | ".join(vals) + " |")
+                if result["row_count"] > 5:
+                    lines.append(f"... ({result['row_count'] - 5} more rows)")
+        else:
+            lines.append(f"ERROR ({result['error_type']}): {result['error']}")
+            if result["error_type"] == "timeout":
+                lines.append("HINT: Query timed out. Consider adding indexes, limiting results, or simplifying the query.")
+
+        return "\n".join(lines)
+
+    def _build_refine_hints(self, item: Dict[str, Any]) -> str:
+        """item에서 evidence, mapping, join_keys를 추출하여 refine 힌트 문자열 생성"""
+        parts = []
+        evidence = item.get('evidence', '')
+        if evidence:
+            parts.append(f"Evidence: {evidence}")
+        mapping = item.get('mapping', {})
+        if mapping:
+            mapping_texts = [f"- '{k}' → {', '.join(v)}" for k, v in mapping.items()]
+            parts.append("Mappings:\n" + "\n".join(mapping_texts))
+        join_keys = item.get('join_keys', [])
+        if join_keys:
+            join_str = ", ".join([f"({p[0]} = {p[1]})" for p in join_keys])
+            parts.append(f"Join Keys: {join_str}")
+        return "\n\n".join(parts)
+
+    def _forced_refine(self, sql: str, db_id: str, question: str, item: Dict[str, Any], tool_call_log: List[Dict]) -> tuple:
+        """
+        강제 refine 단계: SQL 실행 결과 + NLQ + hints를 보고 재검토.
+        생성 후 항상 실행되는 마지막 검증 단계.
+
+        Returns:
+            (refined_sql, response) 튜플
+        """
+        # 1. SQL 실행 (30행까지)
+        exec_result = self._execute_sql(sql, db_id, max_rows=30)
+
+        # 2. 결과 포맷팅
+        result_str = self._format_execute_sql_result(exec_result)
+
+        # 3. Hints 조립
+        hints_str = self._build_refine_hints(item)
+
+        # 4. 2단계: 먼저 PASS/FAIL 판정, FAIL일 때만 수정
+        judge_system = """You judge whether a SQL query correctly answers the question. Reply with ONLY one word: PASS or FAIL.
+
+PASS = The SQL reasonably answers the question. No critical errors.
+FAIL = The SQL has a clear, concrete problem:
+  - WHERE filter or condition the question never asked for (over-translation)
+  - Hallucinated string values not in the Mappings/Evidence
+  - Results obviously don't match the question's intent
+  - COALESCE/IFNULL/FORMAT added without being requested
+
+When in doubt, PASS. Most SQL is correct."""
+
+        judge_user = f"""Question: {question}
+
+{hints_str}
+
+SQL:
+```sql
+{sql}
+```
+
+Execution Result ({exec_result['row_count']} rows):
+{result_str}
+
+Verdict (PASS or FAIL):"""
+
+        # 5. 1단계: PASS/FAIL 판정
+        try:
+            judge_response = self.client.chat.completions.create(
+                model=self.model_config['name'],
+                messages=[
+                    {"role": "system", "content": judge_system},
+                    {"role": "user", "content": judge_user}
+                ],
+                temperature=0,
+                max_completion_tokens=10
+            )
+
+            verdict = judge_response.choices[0].message.content.strip().upper()
+            is_fail = "FAIL" in verdict
+
+            if not is_fail:
+                # PASS → 원본 SQL 그대로
+                tool_call_log.append({
+                    "type": "forced_refine",
+                    "original_sql": sql,
+                    "refined_sql": sql,
+                    "verdict": "PASS",
+                    "exec_result_rows": exec_result["row_count"],
+                    "refine_response": f"PASS - no changes"
+                })
+                return sql, None
+
+            # FAIL → 2단계: 수정 요청
+            fix_system = """You are a SQL fixer. A SQL query was flagged as having a problem. Fix ONLY the specific issue. Keep everything else exactly the same.
+Return the fixed SQL in ```sql ... ``` block."""
+
+            fix_user = f"""Question: {question}
+
+{hints_str}
+
+Original SQL (flagged as problematic):
+```sql
+{sql}
+```
+
+Execution Result ({exec_result['row_count']} rows):
+{result_str}
+
+Fix only the concrete issue. Keep structure, JOINs, GROUP BY, aliases unchanged unless they are the problem."""
+
+            response = self.client.chat.completions.create(
+                model=self.model_config['name'],
+                messages=[
+                    {"role": "system", "content": fix_system},
+                    {"role": "user", "content": fix_user}
+                ],
+                temperature=0
+            )
+
+            refine_content = response.choices[0].message.content
+            refined_sql = self._extract_sql_from_response(refine_content)
+
+            # 로깅
+            tool_call_log.append({
+                "type": "forced_refine",
+                "original_sql": sql,
+                "refined_sql": refined_sql or sql,
+                "verdict": "FAIL",
+                "exec_result_rows": exec_result["row_count"],
+                "refine_response": refine_content
+            })
+
+            return (refined_sql if refined_sql else sql), response
+
+        except Exception as e:
+            print(f"Forced refine error: {e}")
+            tool_call_log.append({
+                "type": "forced_refine",
+                "original_sql": sql,
+                "refined_sql": sql,
+                "exec_result_rows": exec_result.get("row_count", 0),
+                "refine_response": f"Error: {str(e)}"
+            })
+            return sql, None
 
     def _parse_and_store_lookup_result(self, function_args: Dict, function_response: str, note_taker):
         """
@@ -1120,4 +1481,207 @@ Generated SQL:
 
         except Exception as e:
             print(f"LLM feedback 요청 중 오류: {e}")
+            return None
+
+    def generate_three_stage(
+        self,
+        schema: str,
+        question: str,
+        hints: str = "",
+        db_id: str = "dw",
+        item: Dict[str, Any] = None,
+        gold_sql: str = None,
+        max_tool_iterations: int = 10
+    ):
+        """
+        Three-stage SQL generation pipeline.
+
+        Stage 1: Note Preparation - analyze question and schema
+        Stage 2: Plan with Tools - call tools to gather information
+        Stage 3: SQL Generation - generate SQL using prepared notes
+
+        Args:
+            schema: Database schema
+            question: Natural language question
+            hints: Additional hints (evidence, mapping, etc.)
+            db_id: Database ID
+            item: Dataset item (for ask_granularity tool)
+            gold_sql: Gold SQL (for User Agent mode)
+            max_tool_iterations: Max iterations for Stage 2 tool calls
+
+        Returns:
+            response object with tool_call_log
+        """
+        from src.prompt_builder.three_stage_prompts import (
+            build_stage1_prompt, build_stage2_prompt, build_stage3_prompt
+        )
+
+        # Thread-local storage for User Agent mode
+        self._thread_local.gold_sql = gold_sql
+
+        tool_call_log = []
+
+        try:
+            # ================================================================
+            # STAGE 1: NOTE PREPARATION (No tools)
+            # ================================================================
+            stage1_prompts = build_stage1_prompt(schema, question, hints)
+
+            stage1_messages = [
+                {"role": "system", "content": stage1_prompts["system"]},
+                {"role": "user", "content": stage1_prompts["user"]}
+            ]
+
+            stage1_response = self.client.chat.completions.create(
+                model=self.model_config['name'],
+                messages=stage1_messages,
+                temperature=0
+            )
+
+            stage1_note = stage1_response.choices[0].message.content
+
+            tool_call_log.append({
+                "stage": 1,
+                "type": "stage1_note",
+                "content": stage1_note
+            })
+
+            # ================================================================
+            # STAGE 2: PLAN WITH TOOLS
+            # ================================================================
+            stage2_prompts = build_stage2_prompt(schema, question, stage1_note, hints)
+
+            # Build Stage 2 system message with tool descriptions
+            stage2_system = stage2_prompts["system"]
+            if self.use_tools:
+                stage2_system += "\n\nAvailable tools:\n"
+                if self.enable_lookup_column_values:
+                    stage2_system += "- lookup_column_values: Verify if a value exists in a column\n"
+                if self.enable_join_path_finder:
+                    stage2_system += "- find_join_path: Find JOIN path between tables\n"
+                if self.enable_join_inspector:
+                    stage2_system += "- inspect_join_relationship: Check JOIN cardinality\n"
+                if self.enable_ask_granularity:
+                    stage2_system += "- ask_granularity: Clarify aggregation pattern with user\n"
+                if self.enable_execute_sql:
+                    stage2_system += "- execute_sql: Execute SQL against database to test and verify results\n"
+
+            stage2_messages = [
+                {"role": "system", "content": stage2_system},
+                {"role": "user", "content": stage2_prompts["user"]}
+            ]
+
+            # Stage 2 loop with tool calls
+            stage2_note = None
+            for iteration in range(max_tool_iterations):
+                if self.use_tools:
+                    stage2_response = self.client.chat.completions.create(
+                        model=self.model_config['name'],
+                        messages=stage2_messages,
+                        tools=self.tools,
+                        tool_choice="auto",
+                        temperature=0
+                    )
+                else:
+                    stage2_response = self.client.chat.completions.create(
+                        model=self.model_config['name'],
+                        messages=stage2_messages,
+                        temperature=0
+                    )
+
+                response_message = stage2_response.choices[0].message
+
+                # If no tool calls, we have the enhanced note
+                if not response_message.tool_calls:
+                    stage2_note = response_message.content
+                    tool_call_log.append({
+                        "stage": 2,
+                        "iteration": iteration + 1,
+                        "type": "stage2_note",
+                        "content": stage2_note
+                    })
+                    break
+
+                # Process tool calls
+                stage2_messages.append(response_message)
+
+                for tool_call in response_message.tool_calls:
+                    function_name = tool_call.function.name
+                    function_args = json.loads(tool_call.function.arguments)
+
+                    tool_call_log.append({
+                        "stage": 2,
+                        "iteration": iteration + 1,
+                        "type": "tool_call",
+                        "function": function_name,
+                        "arguments": function_args
+                    })
+
+                    # Execute tool
+                    function_response = self._execute_tool_call(
+                        function_name, function_args, db_id
+                    )
+
+                    tool_call_log.append({
+                        "stage": 2,
+                        "iteration": iteration + 1,
+                        "type": "tool_response",
+                        "function": function_name,
+                        "response": function_response[:500] if len(function_response) > 500 else function_response
+                    })
+
+                    stage2_messages.append({
+                        "tool_call_id": tool_call.id,
+                        "role": "tool",
+                        "name": function_name,
+                        "content": function_response
+                    })
+
+            # Fallback if no note was generated
+            if not stage2_note:
+                stage2_note = stage1_note + "\n\n[No additional verification performed]"
+
+            # ================================================================
+            # STAGE 3: SQL GENERATION (No tools)
+            # ================================================================
+            stage3_prompts = build_stage3_prompt(schema, question, stage2_note)
+
+            stage3_messages = [
+                {"role": "system", "content": stage3_prompts["system"]},
+                {"role": "user", "content": stage3_prompts["user"]}
+            ]
+
+            stage3_response = self.client.chat.completions.create(
+                model=self.model_config['name'],
+                messages=stage3_messages,
+                temperature=0
+            )
+
+            final_sql_content = stage3_response.choices[0].message.content
+
+            tool_call_log.append({
+                "stage": 3,
+                "type": "final_response",
+                "content": final_sql_content
+            })
+
+            # Create response wrapper
+            class ResponseWrapper:
+                def __init__(self, response, tool_log):
+                    self._response = response
+                    self.tool_call_log = tool_log
+                    self.choices = response.choices
+                    self.id = response.id
+                    self.model = response.model
+                    self.created = response.created
+
+                def __getattr__(self, name):
+                    return getattr(self._response, name)
+
+            return ResponseWrapper(stage3_response, tool_call_log)
+
+        except Exception as e:
+            print(f"Three-stage generation error: {e}")
+            import traceback
+            traceback.print_exc()
             return None

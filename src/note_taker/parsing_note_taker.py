@@ -11,24 +11,65 @@ from typing import Dict, List, Set, Tuple, Any, Optional
 class ParsingNoteTaker:
     """파싱 기반 NoteTaker - Hints vs SQL 비교, iter별 NOTE 관리"""
 
-    def __init__(self, item: Dict[str, Any] = None):
+    def __init__(self, item: Dict[str, Any] = None, skeleton_hint: str = None):
         """
         Args:
             item: 데이터셋 아이템 (mapping, join_keys 포함)
+            skeleton_hint: SQL 구조 힌트 (DISTINCT, OVER, GROUP BY 등)
         """
         self.item = item
+        self.skeleton_hint = skeleton_hint
         self.hints_parsed = self.parse_hints(item) if item else None
+        self.skeleton_patterns = self.parse_skeleton_hint(skeleton_hint) if skeleton_hint else set()
         self.iter_notes = []  # iter별 NOTE 저장: [{iter, sql, schema_check, refine_feedback}, ...]
         self.lookup_results = []  # lookup_val 결과 저장: [{table, column, search_term, found, similar_values}, ...]
         self.join_analysis_results = []  # join_inspector 결과 저장: [{table1, table2, cardinality, warning}, ...]
 
-    def set_item(self, item: Dict[str, Any]):
+    def set_item(self, item: Dict[str, Any], skeleton_hint: str = None):
         """데이터셋 아이템 설정"""
         self.item = item
+        self.skeleton_hint = skeleton_hint
         self.hints_parsed = self.parse_hints(item)
+        self.skeleton_patterns = self.parse_skeleton_hint(skeleton_hint) if skeleton_hint else set()
         self.iter_notes = []
         self.lookup_results = []
         self.join_analysis_results = []
+
+    def parse_skeleton_hint(self, skeleton_hint: str) -> Set[str]:
+        """
+        Skeleton hint에서 SQL 패턴 추출
+
+        Args:
+            skeleton_hint: "[SQL 구조 힌트]\n- DISTINCT 사용\n- Window Function (OVER) 사용"
+
+        Returns:
+            {'DISTINCT', 'OVER', 'GROUP BY', 'SUBQUERY', ...}
+        """
+        patterns = set()
+        if not skeleton_hint:
+            return patterns
+
+        hint_lower = skeleton_hint.lower()
+
+        # 패턴 매핑
+        if 'distinct' in hint_lower:
+            patterns.add('DISTINCT')
+        if 'window function' in hint_lower or 'over' in hint_lower:
+            patterns.add('OVER')
+        if 'group by' in hint_lower:
+            patterns.add('GROUP BY')
+        if 'subquery' in hint_lower:
+            patterns.add('SUBQUERY')
+        if 'having' in hint_lower:
+            patterns.add('HAVING')
+        if 'case when' in hint_lower:
+            patterns.add('CASE WHEN')
+        if 'union' in hint_lower:
+            patterns.add('UNION')
+        if 'cte' in hint_lower or 'with ' in hint_lower:
+            patterns.add('CTE')
+
+        return patterns
 
     def add_lookup_result(self, table: str, column: str, search_term: str, found: bool, similar_values: List[str] = None):
         """
@@ -566,6 +607,44 @@ class ParsingNoteTaker:
         return None
 
     # 기존 호환성을 위한 메서드들
+    def check_skeleton_patterns(self, sql: str) -> Set[str]:
+        """
+        SQL에서 누락된 skeleton 패턴 찾기
+
+        Args:
+            sql: 생성된 SQL
+
+        Returns:
+            누락된 패턴 set (예: {'DISTINCT', 'OVER'})
+        """
+        if not self.skeleton_patterns:
+            return set()
+
+        sql_upper = sql.upper()
+        missing = set()
+
+        for pattern in self.skeleton_patterns:
+            if pattern == 'DISTINCT' and 'DISTINCT' not in sql_upper:
+                missing.add('DISTINCT')
+            elif pattern == 'OVER' and 'OVER' not in sql_upper and 'OVER(' not in sql_upper:
+                missing.add('Window Function (OVER)')
+            elif pattern == 'GROUP BY' and 'GROUP BY' not in sql_upper:
+                missing.add('GROUP BY')
+            elif pattern == 'SUBQUERY' and 'SELECT' not in sql_upper[sql_upper.find('FROM'):] if 'FROM' in sql_upper else True:
+                # FROM 이후에 SELECT가 있으면 서브쿼리
+                if sql_upper.count('SELECT') < 2:
+                    missing.add('Subquery')
+            elif pattern == 'HAVING' and 'HAVING' not in sql_upper:
+                missing.add('HAVING')
+            elif pattern == 'CASE WHEN' and 'CASE' not in sql_upper:
+                missing.add('CASE WHEN')
+            elif pattern == 'UNION' and 'UNION' not in sql_upper:
+                missing.add('UNION')
+            elif pattern == 'CTE' and 'WITH ' not in sql_upper:
+                missing.add('CTE (WITH)')
+
+        return missing
+
     def generate_note(self, item: Dict[str, Any], sql: str) -> Optional[str]:
         """기존 호환성 메서드"""
         if not self.hints_parsed:
@@ -574,6 +653,12 @@ class ParsingNoteTaker:
         comparison = self.compare(self.hints_parsed, sql_parsed)
 
         notes = []
+
+        # Skeleton pattern check (SQL 구조 힌트)
+        missing_patterns = self.check_skeleton_patterns(sql)
+        if missing_patterns:
+            patterns = ', '.join(sorted(missing_patterns))
+            notes.append(f"[Structure Check] 이 SQL 패턴이 누락된건 아닌지 확인해주세요: {patterns}")
 
         if comparison['missing_columns']:
             cols = ', '.join(sorted(comparison['missing_columns']))

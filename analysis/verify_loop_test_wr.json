@@ -1,0 +1,36 @@
+{
+  "config": {
+    "model": "gpt-5.2-2025-12-11",
+    "max_iter": 2,
+    "n_items": 1
+  },
+  "summary": {
+    "cumulative": [
+      1,
+      1
+    ],
+    "per_iter": [
+      1,
+      0
+    ],
+    "total": 1
+  },
+  "items": [
+    {
+      "idx": 0,
+      "gold_nlq": "What is the current building key, building street address, city, state, and postal code of the history department?",
+      "gold_sql": "SELECT DISTINCT d.FCLT_BUILDING_KEY, e.BUILDING_STREET_ADDRESS, d.CITY, d.STATE, d.POSTAL_CODE FROM FCLT_BUILDING_ADDRESS d JOIN FCLT_ROOMS a ON a.FCLT_BUILDING_KEY = d.FCLT_BUILDING_KEY JOIN FCLT_ORG_DLC_KEY b ON a.FCLT_ORGANIZATION_KEY = b.FCLT_ORGANIZATION_KEY JOIN MASTER_DEPT_HIERARCHY c ON b.DLC_KEY = c.DLC_KEY JOIN BUILDINGS e ON e.BUILDING_KEY = d.FCLT_BUILDING_KEY WHERE lower(c.DLC_NAME) = lower('History') AND d.ADDRESS_PURPOSE = 'STREET';",
+      "success_iter": 1,
+      "iterations": [
+        {
+          "attempt": 1,
+          "nlq": "What is the current building key, building street address, city, state, and postal code of the history department?",
+          "generated_sql": "SELECT DISTINCT\n  fba.FCLT_BUILDING_KEY AS building_key,\n  b.BUILDING_STREET_ADDRESS AS building_street_address,\n  fba.CITY AS city,\n  fba.STATE AS state,\n  fba.POSTAL_CODE AS postal_code\nFROM FCLT_ROOMS r\nJOIN FCLT_ORG_DLC_KEY od\n  ON r.FCLT_ORGANIZATION_KEY = od.FCLT_ORGANIZATION_KEY\nJOIN MASTER_DEPT_HIERARCHY mdh\n  ON od.DLC_KEY = mdh.DLC_KEY\nJOIN FCLT_BUILDING_ADDRESS fba\n  ON fba.FCLT_BUILDING_KEY = r.FCLT_BUILDING_KEY\nJOIN BUILDINGS b\n  ON b.BUILDING_KEY = fba.FCLT_BUILDING_KEY\nWHERE fba.ADDRESS_PURPOSE = 'STREET'\n  AND mdh.DLC_NAME LIKE '%History%';",
+          "match": true,
+          "error": null
+        }
+      ],
+      "final_nlq": "What is the current building key, building street address, city, state, and postal code of the history department?"
+    }
+  ]
+}

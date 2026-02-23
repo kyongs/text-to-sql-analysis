@@ -11,7 +11,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- DISTINCT 사용"
   },
@@ -27,7 +28,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- DISTINCT 사용"
   },
@@ -43,7 +45,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- Window Function (OVER) 사용\n- DISTINCT 사용"
   },
@@ -59,7 +62,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -75,7 +79,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- DISTINCT 사용"
   },
@@ -91,7 +96,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- DISTINCT 사용"
   },
@@ -107,7 +113,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- Window Function (OVER) 사용\n- DISTINCT 사용"
   },
@@ -123,7 +130,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- Window Function (OVER) 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -139,7 +147,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -155,7 +164,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -171,7 +181,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -187,7 +198,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -203,7 +215,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용\n- DISTINCT 사용"
   },
@@ -219,7 +232,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -235,7 +249,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -251,7 +266,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용\n- DISTINCT 사용"
   },
@@ -267,7 +283,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- CASE WHEN 사용\n- DISTINCT 사용"
   },
@@ -283,7 +300,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용\n- DISTINCT 사용"
   },
@@ -299,7 +317,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용\n- DISTINCT 사용"
   },
@@ -315,7 +334,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -331,7 +351,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -347,7 +368,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -363,7 +385,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -379,7 +402,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -395,7 +419,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -411,7 +436,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -427,7 +453,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -443,7 +470,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -459,7 +487,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -475,7 +504,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -491,7 +521,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -507,7 +538,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -523,7 +555,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- Window Function (OVER) 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -539,7 +572,8 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- CASE WHEN 사용"
   },
@@ -555,7 +589,8 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용"
   },
@@ -571,7 +606,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -587,7 +623,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -603,7 +640,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -619,7 +657,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -635,7 +674,8 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용"
   },
@@ -651,7 +691,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -667,7 +708,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -683,7 +725,8 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용"
   },
@@ -699,7 +742,8 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용"
   },
@@ -715,7 +759,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -731,7 +776,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -747,7 +793,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -763,7 +810,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -779,7 +827,8 @@
       "having": true,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Subquery 사용\n- HAVING 사용"
   },
@@ -795,7 +844,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -811,7 +861,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -827,7 +878,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- DISTINCT 사용"
   },
@@ -843,7 +895,8 @@
       "having": true,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- HAVING 사용\n- DISTINCT 사용"
   },
@@ -859,7 +912,8 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용"
   },
@@ -875,7 +929,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -891,7 +946,8 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- CASE WHEN 사용\n- Subquery 사용"
   },
@@ -907,7 +963,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -923,7 +980,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -939,7 +997,8 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용"
   },
@@ -955,7 +1014,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -971,7 +1031,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -987,7 +1048,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CTE (WITH ... AS) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1003,7 +1065,8 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용"
   },
@@ -1019,7 +1082,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1035,7 +1099,8 @@
       "having": true,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- HAVING 사용\n- DISTINCT 사용"
   },
@@ -1051,7 +1116,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1067,7 +1133,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1083,7 +1150,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1099,7 +1167,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1115,7 +1184,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1131,7 +1201,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1147,7 +1218,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- UNION 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1163,7 +1235,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- UNION 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1179,7 +1252,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- UNION 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1195,7 +1269,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1211,7 +1286,8 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- UNION 사용\n- CASE WHEN 사용\n- Subquery 사용"
   },
@@ -1227,7 +1303,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1243,7 +1320,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CTE (WITH ... AS) 사용\n- UNION 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1259,7 +1337,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1275,7 +1354,8 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- UNION 사용\n- Subquery 사용"
   },
@@ -1291,7 +1371,8 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- UNION 사용\n- Subquery 사용"
   },
@@ -1307,7 +1388,8 @@
       "having": true,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- UNION 사용\n- CASE WHEN 사용\n- Subquery 사용\n- HAVING 사용"
   },
@@ -1323,7 +1405,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1339,7 +1422,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- UNION 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1355,7 +1439,8 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- CASE WHEN 사용\n- Subquery 사용"
   },
@@ -1371,9 +1456,10 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": true
     },
-    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용"
+    "formatted": "[Report Layout Pattern — ROLLUP + GROUPING + LAG]\nThis question asks for a grouped report with subtotals/totals and suppressed repeated labels.\nUse the following 2-stage SQL pattern:\n\nStage 1 (Inner subquery): Aggregate with WITH ROLLUP and label rows using GROUPING()\n```\nSELECT\n  CASE WHEN GROUPING(group_col) = 1 THEN 'TOTAL'\n       WHEN GROUPING(detail_col) = 1 THEN 'SUBTOTAL'\n       ELSE group_col END AS group_label,\n  CASE WHEN GROUPING(detail_col) = 1 THEN NULL\n       ELSE detail_col END AS detail_label,\n  -- use 'zzz' or similar dummy for sort columns when GROUPING()=1\n  CASE WHEN GROUPING(detail_col) = 1 THEN 'zzz'\n       ELSE detail_col END AS detail_sort,\n  COUNT(*) AS cnt, SUM(measure) AS total, AVG(measure) AS avg_val\nFROM tables\nWHERE filters\nGROUP BY group_col, detail_col WITH ROLLUP\nORDER BY group_col, detail_sort\n\nStage 2 (Outer query): Suppress repeated group labels with LAG()\n```\nSELECT\n  CASE WHEN LAG(group_label) OVER (ORDER BY group_col, detail_sort) = group_label\n       THEN NULL ELSE group_label END AS group_label,\n  detail_label, cnt, total, avg_val\nFROM (Stage1) tbltmp\n\nKey rules:\n- WITH ROLLUP goes after GROUP BY (MySQL syntax)\n- GROUPING(col) = 1 means the row is a subtotal/total for that column\n- Use LAG() in the outer query to show group_label only on the first row of each group\n- Subtotal/total rows should have NULL for detail columns\n- Create sort columns with dummy values ('zzz') so subtotal rows sort last within each group\n- FORMAT(value, 0) only if the question explicitly asks for comma-formatted numbers"
   },
   {
     "index": 86,
@@ -1387,9 +1473,10 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": true
     },
-    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용"
+    "formatted": "[Report Layout Pattern — ROLLUP + GROUPING + LAG]\nThis question asks for a grouped report with subtotals/totals and suppressed repeated labels.\nUse the following 2-stage SQL pattern:\n\nStage 1 (Inner subquery): Aggregate with WITH ROLLUP and label rows using GROUPING()\n```\nSELECT\n  CASE WHEN GROUPING(group_col) = 1 THEN 'TOTAL'\n       WHEN GROUPING(detail_col) = 1 THEN 'SUBTOTAL'\n       ELSE group_col END AS group_label,\n  CASE WHEN GROUPING(detail_col) = 1 THEN NULL\n       ELSE detail_col END AS detail_label,\n  -- use 'zzz' or similar dummy for sort columns when GROUPING()=1\n  CASE WHEN GROUPING(detail_col) = 1 THEN 'zzz'\n       ELSE detail_col END AS detail_sort,\n  COUNT(*) AS cnt, SUM(measure) AS total, AVG(measure) AS avg_val\nFROM tables\nWHERE filters\nGROUP BY group_col, detail_col WITH ROLLUP\nORDER BY group_col, detail_sort\n\nStage 2 (Outer query): Suppress repeated group labels with LAG()\n```\nSELECT\n  CASE WHEN LAG(group_label) OVER (ORDER BY group_col, detail_sort) = group_label\n       THEN NULL ELSE group_label END AS group_label,\n  detail_label, cnt, total, avg_val\nFROM (Stage1) tbltmp\n\nKey rules:\n- WITH ROLLUP goes after GROUP BY (MySQL syntax)\n- GROUPING(col) = 1 means the row is a subtotal/total for that column\n- Use LAG() in the outer query to show group_label only on the first row of each group\n- Subtotal/total rows should have NULL for detail columns\n- Create sort columns with dummy values ('zzz') so subtotal rows sort last within each group\n- FORMAT(value, 0) only if the question explicitly asks for comma-formatted numbers"
   },
   {
     "index": 87,
@@ -1403,7 +1490,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1419,7 +1507,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- UNION 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1435,9 +1524,10 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": true
     },
-    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+    "formatted": "[Report Layout Pattern — ROLLUP + GROUPING + LAG]\nThis question asks for a grouped report with subtotals/totals and suppressed repeated labels.\nUse the following 2-stage SQL pattern:\n\nStage 1 (Inner subquery): Aggregate with WITH ROLLUP and label rows using GROUPING()\n```\nSELECT\n  CASE WHEN GROUPING(group_col) = 1 THEN 'TOTAL'\n       WHEN GROUPING(detail_col) = 1 THEN 'SUBTOTAL'\n       ELSE group_col END AS group_label,\n  CASE WHEN GROUPING(detail_col) = 1 THEN NULL\n       ELSE detail_col END AS detail_label,\n  -- use 'zzz' or similar dummy for sort columns when GROUPING()=1\n  CASE WHEN GROUPING(detail_col) = 1 THEN 'zzz'\n       ELSE detail_col END AS detail_sort,\n  COUNT(*) AS cnt, SUM(measure) AS total, AVG(measure) AS avg_val\nFROM tables\nWHERE filters\nGROUP BY group_col, detail_col WITH ROLLUP\nORDER BY group_col, detail_sort\n\nStage 2 (Outer query): Suppress repeated group labels with LAG()\n```\nSELECT\n  CASE WHEN LAG(group_label) OVER (ORDER BY group_col, detail_sort) = group_label\n       THEN NULL ELSE group_label END AS group_label,\n  detail_label, cnt, total, avg_val\nFROM (Stage1) tbltmp\n\nKey rules:\n- WITH ROLLUP goes after GROUP BY (MySQL syntax)\n- GROUPING(col) = 1 means the row is a subtotal/total for that column\n- Use LAG() in the outer query to show group_label only on the first row of each group\n- Subtotal/total rows should have NULL for detail columns\n- Create sort columns with dummy values ('zzz') so subtotal rows sort last within each group\n- FORMAT(value, 0) only if the question explicitly asks for comma-formatted numbers\n\n[Additional SQL Hints]\n- DISTINCT 사용"
   },
   {
     "index": 90,
@@ -1451,7 +1541,8 @@
       "having": false,
       "distinct": true,
       "top_n": true,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- UNION 사용\n- Subquery 사용\n- DISTINCT 사용\n- ORDER BY + LIMIT (Top-N 패턴)"
   },
@@ -1467,7 +1558,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- UNION 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1483,9 +1575,10 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": true
     },
-    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+    "formatted": "[Report Layout Pattern — ROLLUP + GROUPING + LAG]\nThis question asks for a grouped report with subtotals/totals and suppressed repeated labels.\nUse the following 2-stage SQL pattern:\n\nStage 1 (Inner subquery): Aggregate with WITH ROLLUP and label rows using GROUPING()\n```\nSELECT\n  CASE WHEN GROUPING(group_col) = 1 THEN 'TOTAL'\n       WHEN GROUPING(detail_col) = 1 THEN 'SUBTOTAL'\n       ELSE group_col END AS group_label,\n  CASE WHEN GROUPING(detail_col) = 1 THEN NULL\n       ELSE detail_col END AS detail_label,\n  -- use 'zzz' or similar dummy for sort columns when GROUPING()=1\n  CASE WHEN GROUPING(detail_col) = 1 THEN 'zzz'\n       ELSE detail_col END AS detail_sort,\n  COUNT(*) AS cnt, SUM(measure) AS total, AVG(measure) AS avg_val\nFROM tables\nWHERE filters\nGROUP BY group_col, detail_col WITH ROLLUP\nORDER BY group_col, detail_sort\n\nStage 2 (Outer query): Suppress repeated group labels with LAG()\n```\nSELECT\n  CASE WHEN LAG(group_label) OVER (ORDER BY group_col, detail_sort) = group_label\n       THEN NULL ELSE group_label END AS group_label,\n  detail_label, cnt, total, avg_val\nFROM (Stage1) tbltmp\n\nKey rules:\n- WITH ROLLUP goes after GROUP BY (MySQL syntax)\n- GROUPING(col) = 1 means the row is a subtotal/total for that column\n- Use LAG() in the outer query to show group_label only on the first row of each group\n- Subtotal/total rows should have NULL for detail columns\n- Create sort columns with dummy values ('zzz') so subtotal rows sort last within each group\n- FORMAT(value, 0) only if the question explicitly asks for comma-formatted numbers\n\n[Additional SQL Hints]\n- DISTINCT 사용"
   },
   {
     "index": 93,
@@ -1499,7 +1592,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1515,7 +1609,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- Window Function (OVER) 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1531,7 +1626,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- Window Function (OVER) 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1547,7 +1643,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- Window Function (OVER) 사용\n- DISTINCT 사용"
   },
@@ -1563,9 +1660,10 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": true
     },
-    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용"
+    "formatted": "[Report Layout Pattern — ROLLUP + GROUPING + LAG]\nThis question asks for a grouped report with subtotals/totals and suppressed repeated labels.\nUse the following 2-stage SQL pattern:\n\nStage 1 (Inner subquery): Aggregate with WITH ROLLUP and label rows using GROUPING()\n```\nSELECT\n  CASE WHEN GROUPING(group_col) = 1 THEN 'TOTAL'\n       WHEN GROUPING(detail_col) = 1 THEN 'SUBTOTAL'\n       ELSE group_col END AS group_label,\n  CASE WHEN GROUPING(detail_col) = 1 THEN NULL\n       ELSE detail_col END AS detail_label,\n  -- use 'zzz' or similar dummy for sort columns when GROUPING()=1\n  CASE WHEN GROUPING(detail_col) = 1 THEN 'zzz'\n       ELSE detail_col END AS detail_sort,\n  COUNT(*) AS cnt, SUM(measure) AS total, AVG(measure) AS avg_val\nFROM tables\nWHERE filters\nGROUP BY group_col, detail_col WITH ROLLUP\nORDER BY group_col, detail_sort\n\nStage 2 (Outer query): Suppress repeated group labels with LAG()\n```\nSELECT\n  CASE WHEN LAG(group_label) OVER (ORDER BY group_col, detail_sort) = group_label\n       THEN NULL ELSE group_label END AS group_label,\n  detail_label, cnt, total, avg_val\nFROM (Stage1) tbltmp\n\nKey rules:\n- WITH ROLLUP goes after GROUP BY (MySQL syntax)\n- GROUPING(col) = 1 means the row is a subtotal/total for that column\n- Use LAG() in the outer query to show group_label only on the first row of each group\n- Subtotal/total rows should have NULL for detail columns\n- Create sort columns with dummy values ('zzz') so subtotal rows sort last within each group\n- FORMAT(value, 0) only if the question explicitly asks for comma-formatted numbers"
   },
   {
     "index": 98,
@@ -1579,9 +1677,10 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": true
     },
-    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용"
+    "formatted": "[Report Layout Pattern — ROLLUP + GROUPING + LAG]\nThis question asks for a grouped report with subtotals/totals and suppressed repeated labels.\nUse the following 2-stage SQL pattern:\n\nStage 1 (Inner subquery): Aggregate with WITH ROLLUP and label rows using GROUPING()\n```\nSELECT\n  CASE WHEN GROUPING(group_col) = 1 THEN 'TOTAL'\n       WHEN GROUPING(detail_col) = 1 THEN 'SUBTOTAL'\n       ELSE group_col END AS group_label,\n  CASE WHEN GROUPING(detail_col) = 1 THEN NULL\n       ELSE detail_col END AS detail_label,\n  -- use 'zzz' or similar dummy for sort columns when GROUPING()=1\n  CASE WHEN GROUPING(detail_col) = 1 THEN 'zzz'\n       ELSE detail_col END AS detail_sort,\n  COUNT(*) AS cnt, SUM(measure) AS total, AVG(measure) AS avg_val\nFROM tables\nWHERE filters\nGROUP BY group_col, detail_col WITH ROLLUP\nORDER BY group_col, detail_sort\n\nStage 2 (Outer query): Suppress repeated group labels with LAG()\n```\nSELECT\n  CASE WHEN LAG(group_label) OVER (ORDER BY group_col, detail_sort) = group_label\n       THEN NULL ELSE group_label END AS group_label,\n  detail_label, cnt, total, avg_val\nFROM (Stage1) tbltmp\n\nKey rules:\n- WITH ROLLUP goes after GROUP BY (MySQL syntax)\n- GROUPING(col) = 1 means the row is a subtotal/total for that column\n- Use LAG() in the outer query to show group_label only on the first row of each group\n- Subtotal/total rows should have NULL for detail columns\n- Create sort columns with dummy values ('zzz') so subtotal rows sort last within each group\n- FORMAT(value, 0) only if the question explicitly asks for comma-formatted numbers"
   },
   {
     "index": 99,
@@ -1595,9 +1694,10 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": true
     },
-    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+    "formatted": "[Report Layout Pattern — ROLLUP + GROUPING + LAG]\nThis question asks for a grouped report with subtotals/totals and suppressed repeated labels.\nUse the following 2-stage SQL pattern:\n\nStage 1 (Inner subquery): Aggregate with WITH ROLLUP and label rows using GROUPING()\n```\nSELECT\n  CASE WHEN GROUPING(group_col) = 1 THEN 'TOTAL'\n       WHEN GROUPING(detail_col) = 1 THEN 'SUBTOTAL'\n       ELSE group_col END AS group_label,\n  CASE WHEN GROUPING(detail_col) = 1 THEN NULL\n       ELSE detail_col END AS detail_label,\n  -- use 'zzz' or similar dummy for sort columns when GROUPING()=1\n  CASE WHEN GROUPING(detail_col) = 1 THEN 'zzz'\n       ELSE detail_col END AS detail_sort,\n  COUNT(*) AS cnt, SUM(measure) AS total, AVG(measure) AS avg_val\nFROM tables\nWHERE filters\nGROUP BY group_col, detail_col WITH ROLLUP\nORDER BY group_col, detail_sort\n\nStage 2 (Outer query): Suppress repeated group labels with LAG()\n```\nSELECT\n  CASE WHEN LAG(group_label) OVER (ORDER BY group_col, detail_sort) = group_label\n       THEN NULL ELSE group_label END AS group_label,\n  detail_label, cnt, total, avg_val\nFROM (Stage1) tbltmp\n\nKey rules:\n- WITH ROLLUP goes after GROUP BY (MySQL syntax)\n- GROUPING(col) = 1 means the row is a subtotal/total for that column\n- Use LAG() in the outer query to show group_label only on the first row of each group\n- Subtotal/total rows should have NULL for detail columns\n- Create sort columns with dummy values ('zzz') so subtotal rows sort last within each group\n- FORMAT(value, 0) only if the question explicitly asks for comma-formatted numbers\n\n[Additional SQL Hints]\n- DISTINCT 사용"
   },
   {
     "index": 100,
@@ -1611,9 +1711,10 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": true
     },
-    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
+    "formatted": "[Report Layout Pattern — ROLLUP + GROUPING + LAG]\nThis question asks for a grouped report with subtotals/totals and suppressed repeated labels.\nUse the following 2-stage SQL pattern:\n\nStage 1 (Inner subquery): Aggregate with WITH ROLLUP and label rows using GROUPING()\n```\nSELECT\n  CASE WHEN GROUPING(group_col) = 1 THEN 'TOTAL'\n       WHEN GROUPING(detail_col) = 1 THEN 'SUBTOTAL'\n       ELSE group_col END AS group_label,\n  CASE WHEN GROUPING(detail_col) = 1 THEN NULL\n       ELSE detail_col END AS detail_label,\n  -- use 'zzz' or similar dummy for sort columns when GROUPING()=1\n  CASE WHEN GROUPING(detail_col) = 1 THEN 'zzz'\n       ELSE detail_col END AS detail_sort,\n  COUNT(*) AS cnt, SUM(measure) AS total, AVG(measure) AS avg_val\nFROM tables\nWHERE filters\nGROUP BY group_col, detail_col WITH ROLLUP\nORDER BY group_col, detail_sort\n\nStage 2 (Outer query): Suppress repeated group labels with LAG()\n```\nSELECT\n  CASE WHEN LAG(group_label) OVER (ORDER BY group_col, detail_sort) = group_label\n       THEN NULL ELSE group_label END AS group_label,\n  detail_label, cnt, total, avg_val\nFROM (Stage1) tbltmp\n\nKey rules:\n- WITH ROLLUP goes after GROUP BY (MySQL syntax)\n- GROUPING(col) = 1 means the row is a subtotal/total for that column\n- Use LAG() in the outer query to show group_label only on the first row of each group\n- Subtotal/total rows should have NULL for detail columns\n- Create sort columns with dummy values ('zzz') so subtotal rows sort last within each group\n- FORMAT(value, 0) only if the question explicitly asks for comma-formatted numbers\n\n[Additional SQL Hints]\n- DISTINCT 사용"
   },
   {
     "index": 101,
@@ -1627,9 +1728,10 @@
       "having": true,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": true
     },
-    "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- HAVING 사용"
+    "formatted": "[Report Layout Pattern — ROLLUP + GROUPING + LAG]\nThis question asks for a grouped report with subtotals/totals and suppressed repeated labels.\nUse the following 2-stage SQL pattern:\n\nStage 1 (Inner subquery): Aggregate with WITH ROLLUP and label rows using GROUPING()\n```\nSELECT\n  CASE WHEN GROUPING(group_col) = 1 THEN 'TOTAL'\n       WHEN GROUPING(detail_col) = 1 THEN 'SUBTOTAL'\n       ELSE group_col END AS group_label,\n  CASE WHEN GROUPING(detail_col) = 1 THEN NULL\n       ELSE detail_col END AS detail_label,\n  -- use 'zzz' or similar dummy for sort columns when GROUPING()=1\n  CASE WHEN GROUPING(detail_col) = 1 THEN 'zzz'\n       ELSE detail_col END AS detail_sort,\n  COUNT(*) AS cnt, SUM(measure) AS total, AVG(measure) AS avg_val\nFROM tables\nWHERE filters\nGROUP BY group_col, detail_col WITH ROLLUP\nORDER BY group_col, detail_sort\n\nStage 2 (Outer query): Suppress repeated group labels with LAG()\n```\nSELECT\n  CASE WHEN LAG(group_label) OVER (ORDER BY group_col, detail_sort) = group_label\n       THEN NULL ELSE group_label END AS group_label,\n  detail_label, cnt, total, avg_val\nFROM (Stage1) tbltmp\n\nKey rules:\n- WITH ROLLUP goes after GROUP BY (MySQL syntax)\n- GROUPING(col) = 1 means the row is a subtotal/total for that column\n- Use LAG() in the outer query to show group_label only on the first row of each group\n- Subtotal/total rows should have NULL for detail columns\n- Create sort columns with dummy values ('zzz') so subtotal rows sort last within each group\n- FORMAT(value, 0) only if the question explicitly asks for comma-formatted numbers\n\n[Additional SQL Hints]\n- HAVING 사용"
   },
   {
     "index": 102,
@@ -1643,7 +1745,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Window Function (OVER) 사용\n- UNION 사용\n- CASE WHEN 사용\n- Subquery 사용\n- DISTINCT 사용"
   },
@@ -1659,7 +1762,8 @@
       "having": true,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- CASE WHEN 사용\n- Subquery 사용\n- HAVING 사용"
   },
@@ -1675,7 +1779,8 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용"
   },
@@ -1691,7 +1796,8 @@
       "having": false,
       "distinct": false,
       "top_n": true,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- Subquery 사용\n- ORDER BY + LIMIT (Top-N 패턴)"
   },
@@ -1707,7 +1813,8 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용"
   },
@@ -1723,7 +1830,8 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용"
   },
@@ -1739,7 +1847,8 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용"
   },
@@ -1755,7 +1864,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -1771,7 +1881,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -1787,7 +1898,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -1803,7 +1915,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -1819,7 +1932,8 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용"
   },
@@ -1835,7 +1949,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -1851,7 +1966,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -1867,7 +1983,8 @@
       "having": false,
       "distinct": false,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CTE (WITH ... AS) 사용\n- Subquery 사용"
   },
@@ -1883,7 +2000,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -1899,7 +2017,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   },
@@ -1915,7 +2034,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- CASE WHEN 사용\n- DISTINCT 사용"
   },
@@ -1931,7 +2051,8 @@
       "having": false,
       "distinct": true,
       "top_n": false,
-      "set_operation": false
+      "set_operation": false,
+      "rollup_report": false
     },
     "formatted": "[SQL 구조 힌트]\n- GROUP BY 사용\n- DISTINCT 사용"
   }

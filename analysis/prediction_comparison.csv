@@ -1,0 +1,122 @@
+idx,question,gold_structure,4o_all,5.2_all,G,SQ,CTE,H,U,CASE,W
+0,"What is the current building key, building street ...",SIMPLE,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+1,"Show the unique activity titles, locations, term s...",SIMPLE,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+2,"List the unique course instructor names, course ti...",AGG_W,X,X,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2",
+3,"What is the room, floor, building key, building st...",SQ,X,X,"4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+4,"List the unique full room names, their correspondi...",SIMPLE,X,X,"4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+5,"List the unique term code, subject title, room, fl...",SIMPLE,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+6,"What are the subject titles, their material titles...",AGG_W,X,X,4o,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2",
+7,List the long names of buildings constructed befor...,AGG_SQ_W,X,X,4o,,"4o, 5.2",4o,"4o, 5.2","4o, 5.2",
+8,"For each building key, what is the building name a...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+9,What is the name of the building that accomodates ...,AGG_G_SQ,X,O,"4o, 5.2",5.2,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+10,List the name and floor of the building with the l...,AGG_SQ_CASE,X,X,"4o, 5.2",5.2,"4o, 5.2","4o, 5.2","4o, 5.2",,"4o, 5.2"
+11,"For each IAP category and academic year, list the ...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+12,For each sponsor of the independent activity perio...,AGG_G_CASE,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+13,"What are the individual's email and name, academic...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+14,"What is the term code, term description, total num...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+15,"What is the name of the building, total number of ...",AGG_G_CASE,X,X,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2",,"4o, 5.2"
+16,"What is total number of subjects, the total fee, a...",AGG_CASE,X,X,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2",,"4o, 5.2"
+17,"What is the school code, school name, full name of...",AGG_G_CASE,X,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2",5.2,"4o, 5.2"
+18,What are the different schools and departments tha...,AGG_G_CASE,X,X,"4o, 5.2",4o,"4o, 5.2","4o, 5.2","4o, 5.2",,4o
+19,"What is the school code, school name, DLC key, the...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+20,"What is the building component, name of the buildi...",AGG_G_SQ_W,X,X,"4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2",
+21,"What is the DLC key, name of the DLC, total number...",AGG_G_SQ_W,X,X,"4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2",
+22,"What is the department name, total number of types...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+23,What are the details of courses offered in the cur...,AGG_G,X,O,5.2,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+24,"Retrieve information about the IAP subjects, inclu...",AGG_G,X,O,5.2,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+25,"Show the department names, the corresponding SIS s...",AGG_G_SQ,X,X,"4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+26,"For each term, list the term code, the term descri...",AGG_G_SQ_CASE,X,X,5.2,,"4o, 5.2","4o, 5.2","4o, 5.2",,"4o, 5.2"
+27,"What is the author, school name, material status, ...",AGG_G_SQ_CASE,X,X,"4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2",,"4o, 5.2"
+28,"What is the course number, subject title, material...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+29,"What is material status, the total number of mater...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+30,"What is the term description, whether the term is ...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+31,"List all buildings with their names, building numb...",AGG_G_SQ,X,X,5.2,,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+32,"For the 2023 Fall term, what are the unique term d...",AGG_SQ_CTE_W,X,X,,"4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2",
+33,Show the details of rooms including the full name ...,CASE,X,X,"4o, 5.2",4o,"4o, 5.2","4o, 5.2","4o, 5.2",,"4o, 5.2"
+34,Show the details of rooms including the full name ...,AGG_SQ_CASE_W,X,X,4o,,"4o, 5.2","4o, 5.2","4o, 5.2",,
+35,"What are the academic year, and instructors names ...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+36,"What are the building names, department names, org...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+37,Provide the complete information for students with...,AGG_SQ,X,X,5.2,,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2",4o
+38,What are the unique titles of subjects offered in ...,AGG_G_SQ,X,X,"4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+39,"List the building names, names of HR departments o...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+40,Retrieve the titles of subjects offered in the sum...,AGG_SQ,X,X,,,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+41,"For each term code, list the term description, att...",AGG_SQ,X,X,,,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+42,"List building names, their height, street address,...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+43,"What is the category title, version, department na...",AGG_G_CASE,X,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2",5.2,"4o, 5.2"
+44,"What is the total number of library materials, the...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+45,What is the total number of library reserve materi...,AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+46,"What is the material status, term description, tot...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+47,"For building 36, list all space units, their floor...",AGG_SQ,X,X,,,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2",
+48,For each distinct mailing list containing more tha...,AGG_G_H,X,O,5.2,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+49,List the mailing lists with the largest number of ...,AGG_G_SQ_CTE,X,X,5.2,"4o, 5.2",,"4o, 5.2",4o,"4o, 5.2","4o, 5.2"
+50,For email lists with names starting with C (case i...,AGG_G_CTE,X,X,"4o, 5.2","4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+51,"Regarding the mailing list about duo users, provid...",AGG,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+52,For faculty who are responsible for courses in 202...,AGG_G_CTE_H,X,X,"4o, 5.2",5.2,4o,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+53,For each course instructor in the 'keeper-zephyr' ...,AGG_G_CTE,X,X,"4o, 5.2","4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+54,For each mailing list with a name beginning with R...,AGG_G_CTE,X,X,5.2,5.2,,"4o, 5.2","4o, 5.2",4o,"4o, 5.2"
+55,"For the email list with name 'date-destiny', list ...",AGG_G_CTE_CASE,X,X,5.2,4o,,"4o, 5.2","4o, 5.2",4o,"4o, 5.2"
+56,"For the building with the most floors, list the bu...",AGG_G_CTE_W,X,X,,,4o,"4o, 5.2","4o, 5.2","4o, 5.2",
+57,For the email lists subscribed by faculty members ...,AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+58,For students with last names starting with H who a...,AGG_G_CTE,X,X,5.2,5.2,,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+59,Give the count of mailing lists with names startin...,AGG_G_SQ_CTE,X,X,"4o, 5.2","4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2",
+60,"For the 'kangaroo-inspire-yearn' email list, for e...",AGG_G_CTE,X,X,"4o, 5.2",4o,,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+61,Among the mailing lists subscribed by people with ...,AGG_G_CTE_CASE_W,X,X,"4o, 5.2","4o, 5.2",,"4o, 5.2","4o, 5.2",,5.2
+62,For email lists subscribed by either support staff...,AGG_G_CASE,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+63,"For the 'ocean-apple' mailing list, identify the d...",AGG_G_CTE_W,X,X,"4o, 5.2",4o,4o,5.2,"4o, 5.2","4o, 5.2",5.2
+64,"For each mailing list, list its owner, owner type,...",AGG_G_SQ_CTE_H_CASE,X,X,"4o, 5.2",,,,,"4o, 5.2","4o, 5.2"
+65,Group biology courses by cluster type and course l...,AGG_G_CTE_W,X,X,"4o, 5.2","4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2",5.2
+66,For subjects offered this year in either the Fall ...,AGG_G_CTE_CASE,X,X,"4o, 5.2","4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+67,For Political Science courses with HASS attributes...,AGG_G_SQ_CTE_CASE,X,X,"4o, 5.2",,,"4o, 5.2","4o, 5.2",,"4o, 5.2"
+68,"Group subjects by cluster type, department offerin...",AGG_G_SQ_CTE,X,X,"4o, 5.2",,,,"4o, 5.2","4o, 5.2","4o, 5.2"
+69,Group classes that take place in buildings at MIT ...,AGG_G_SQ_CASE_W,X,X,"4o, 5.2",,5.2,"4o, 5.2","4o, 5.2","4o, 5.2",4o
+70,"For each course, provide the room number of course...",AGG_G_CTE,X,X,"4o, 5.2","4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+71,Consider only books cataloged on or after 2000. Fo...,AGG_G_CTE_U_CASE,O,X,"4o, 5.2","4o, 5.2",4o,"4o, 5.2",4o,"4o, 5.2","4o, 5.2"
+72,"For each department in the library system, list th...",AGG_G_CTE_U_CASE,X,X,"4o, 5.2","4o, 5.2",4o,"4o, 5.2","4o, 5.2",,"4o, 5.2"
+73,For each department and school offering courses wi...,AGG_G_CTE_U,X,X,"4o, 5.2","4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+74,"For each TIP material status, list the total numbe...",AGG_G_SQ_CASE,X,X,"4o, 5.2",,"4o, 5.2","4o, 5.2",,"4o, 5.2","4o, 5.2"
+75,"For each room, list its associated building name, ...",AGG_G_SQ_U_CASE,X,X,"4o, 5.2",5.2,,"4o, 5.2",,5.2,
+76,"For each financial aid year and academic year, lis...",AGG_G_CTE,X,X,"4o, 5.2","4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+77,"Group buildings by campus sectors. For each group,...",AGG_G_CTE_U_CASE_W,X,X,"4o, 5.2","4o, 5.2",4o,"4o, 5.2",4o,,"4o, 5.2"
+78,"For each department, list the name of the departme...",AGG_G_CTE_CASE,X,X,"4o, 5.2","4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2",4o
+79,"For each department and material status, list the ...",AGG_G_CTE_U,X,X,"4o, 5.2","4o, 5.2",,"4o, 5.2",,4o,5.2
+80,"For each building that is not a subdivision, list ...",AGG_SQ_U,X,X,4o,,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+81,"For each owned building that is not a subdivision,...",AGG_G_SQ_H_U_CASE_W,X,X,,,"4o, 5.2",,"4o, 5.2","4o, 5.2",5.2
+82,Group all buildings at MIT into either owned or le...,AGG_G_SQ_CASE_W,X,X,"4o, 5.2",,4o,"4o, 5.2",,"4o, 5.2",5.2
+83,"For each building use, list the type, the number o...",AGG_G_SQ_U_CASE,X,X,"4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+84,For each organization except Cambridge-MIT Institu...,AGG_SQ_CASE,X,X,4o,,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+85,Group all rooms into whether or not they are assig...,AGG_G_SQ_CASE_W,X,X,"4o, 5.2",,5.2,5.2,"4o, 5.2","4o, 5.2","4o, 5.2"
+86,List each floor key and department name within the...,AGG_G_SQ_CASE_W,X,X,"4o, 5.2",,5.2,,5.2,"4o, 5.2","4o, 5.2"
+87,List each building key and floor key within the de...,AGG_G_SQ_CASE,X,X,"4o, 5.2",,"4o, 5.2","4o, 5.2",5.2,,"4o, 5.2"
+88,"List the department, school, course number, subjec...",AGG_G_SQ_U,X,X,"4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+89,For each mailing list that involves subscribers th...,AGG_G_SQ_CASE_W,X,X,"4o, 5.2",4o,5.2,"4o, 5.2",,"4o, 5.2",5.2
+90,"For each IAP category, list its name, number of un...",AGG_G_SQ_CTE_U,X,X,"4o, 5.2",5.2,,"4o, 5.2","4o, 5.2","4o, 5.2",
+91,"For each building type, list the name of the build...",AGG_G_SQ_U_CASE,X,X,"4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+92,Group spaces in the Stata building by the access l...,AGG_G_SQ_CASE_W,X,X,"4o, 5.2",,5.2,5.2,"4o, 5.2","4o, 5.2","4o, 5.2"
+93,"List each organization's break group, ID, name, an...",AGG_SQ_CASE,X,X,,,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+94,"For each course, list its title, name of the build...",AGG_SQ_W,X,X,"4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+95,"For each course, list its name, name of the buildi...",W,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+96,"For each course, list its name, name of the buildi...",AGG_W,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+97,Group courses in the biology and chemistry departm...,AGG_G_CASE_W,X,O,"4o, 5.2","4o, 5.2",5.2,"4o, 5.2",5.2,"4o, 5.2",5.2
+98,Group courses in the biology and chemistry departm...,AGG_G_SQ_CASE_W,X,X,"4o, 5.2",,5.2,"4o, 5.2",5.2,"4o, 5.2",5.2
+99,Group master courses by department. For each group...,AGG_G_SQ_CASE_W,X,X,"4o, 5.2",,5.2,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+100,"For each term and department, list the term, depar...",AGG_G_SQ_CASE_W,X,X,"4o, 5.2",,"4o, 5.2","4o, 5.2",5.2,"4o, 5.2",5.2
+101,Group sessions by their current term status. For e...,AGG_G_SQ_H_CASE_W,X,X,"4o, 5.2",,"4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2"
+102,"List each academic year, the term code, and the nu...",AGG_G_SQ_U_CASE_W,X,X,"4o, 5.2",,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2",5.2
+103,For email lists with names starting with e (case i...,AGG_G_CTE_H_CASE,X,X,5.2,5.2,4o,"4o, 5.2","4o, 5.2",5.2,"4o, 5.2"
+104,"For students with last names starting with K, list...",AGG_G_SQ_CTE,X,X,"4o, 5.2",,,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+105,From the 100 email lists with the most number of s...,AGG_G_SQ,X,X,"4o, 5.2","4o, 5.2",5.2,"4o, 5.2","4o, 5.2","4o, 5.2",
+106,Calculate the total assignable and non-assignable ...,AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+107,"List all rooms in building 45, including their ful...",AGG_G,O,X,4o,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2",4o
+108,"List the name, number, construction date, and type...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+109,"For each department, list its name, number of uniq...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+110,"For each course title, list the title, the total n...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+111,"For each instructor, list their name, the number o...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+112,"For each publication year, list the year, the tota...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+113,"For each IAP category, list the category name, the...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+114,"For each sponsor, list the sponsor name, the numbe...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+115,"For each person role and IAP category, list the ro...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+116,List the names of the buildings with the most floo...,AGG_G_CTE,X,X,,4o,,"4o, 5.2","4o, 5.2","4o, 5.2",5.2
+117,"For subjects offered in the summer term, list the ...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+118,For the mailing list with owner key LIST69.377-kee...,AGG_G,X,O,5.2,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
+119,"For each school, list the school name, total numbe...",AGG_G_CASE,X,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2",5.2,"4o, 5.2"
+120,"For each department, list the department name, dep...",AGG_G,O,O,"4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2","4o, 5.2"
